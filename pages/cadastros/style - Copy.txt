@@ -253,35 +253,46 @@ input[type="Checkbox"]:checked+label span:before{
 */
 /* caixa padrão vazia */
 .checkbox-kl{
-	/* position:  absolute; */
+	position:  relative;
 	display: inline-block;
-	margin-left: 145;
-	margin-top: 5;
-	top: 75px;
-	left: 120px;
+	/* background: blue; */
+	top: 27px;
+	left: 127px;
 	width: 16px;
 	height: 16px;
 	border: 2px solid black;
 }
 .check-custum input[type="checkbox"]{
-	position: absolute;
 	width: 100%;
 	height: 100%;
 	opacity: 0;
+	position: absolute;
 	top: 0;
 	right: 0;
 	z-index: 3;
 }
 /* caixa padrão selecionada */
 .check-custum input:checked ~ .checkbox-kl{
-	/* position:  relative; */
+	position:  relative;
 	display: inline-block;
-	margin-left: 145;
-	margin-top: 5;
-	top: 75px;
-	left: 120px;
+	top: 27px;
+	left: 127px;
 	width: 16px;
 	height: 16px;
 	background: #008d4c;
 	border: 2px solid #008d4c;
 }
+/* .check-custum input:checked ~ .checkbox-kl{
+	margin: 25px 0px 25px 25px;
+	background-color: yellow;
+	color: blue;
+	border-color: red
+
+} */
+
+/* .check-custum input:checked ~ .check-custum{
+	background: red;
+	background-color: blue;
+	color: red;
+	border-color: green;
+} */
