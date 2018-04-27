@@ -4,7 +4,7 @@
   "description": "Marketplace de Projetos - TCC",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app"
   },
   "author": "Matheus Levi e Klebson Leonardo",
   "license": "ISC",
