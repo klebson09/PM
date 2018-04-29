@@ -84,3 +84,9 @@ $(".previous").click(function(){
 $(".submit").click(function(){
 	return false;
 })
+
+function addMembro(){
+	var membro = document.getElementById("txtFieldAddMembroEq").value;
+
+	window.alert(membro);
+}

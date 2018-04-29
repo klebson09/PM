@@ -7,6 +7,9 @@ var consign = require('consign');
 /* importar o módulo do body-parser */
 var bodyParser = require('body-parser');
 
+/*importar o módulo do mysql*/
+var mysql = require('mysql');
+
 /* importar o módulo do express-validator */
 var expressValidator = require('express-validator');
 
