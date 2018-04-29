@@ -8,7 +8,7 @@ module.exports.autenticar = function(application, req, res){
 	req.assert('email', 'Campo Email vazio').notEmpty();
 	req.assert('senha', 'Campo Senha vazio').notEmpty();
 
-	console.log('email: ', req.body.email);
+	// console.log('email: ', req.body.email);
 	var erros = req. validationErrors();
 
 	if(erros){

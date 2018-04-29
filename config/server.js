@@ -31,14 +31,14 @@ app.use(express.static('./app/public'));
 app.use(bodyParser.urlencoded({extended: true})); // quando tiver um post em alguma das requisições é recuperado a informação com via json da propriedade body do request
 
 /*configurar o middleware express-validator */
-app.use(expressValidator({
+app.use(expressValidator());
+
+/*configurar o middleware express-session */
+app.use(expressSession({
   secret: 'kdiacljfowmnsiel',
   resave: false,
   saveUninitialized: false
 }));
-
-/*configurar o middleware express-session */
-app.use(expressSession());
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
 consign()
