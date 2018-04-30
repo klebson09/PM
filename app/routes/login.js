@@ -1,4 +1,4 @@
-var dbConnection = require('../../config/dbConnection');
+// var dbConnection = require('../../config/dbConnection');
 
 module.exports = function(application){
     // application.get('/login', function(req, res){
@@ -6,13 +6,16 @@ module.exports = function(application){
       application.app.controllers.login.pagLogin(application, req, res);
     });
 
-  application.post('/autenticar', function(req, res){
+  application.get('/autenticar', function(req, res){
     console.log("ROTA AUTENTICAÇÃO LOGIN");
-    var connection = dbConnection();
-    //busca no banco de dados
-    connection.query('SELECT * FROM noticias', function(error, result){
-      res.send(result);
-      res.render("login/login", {noticias : result});
+    //abrir conexão com o banco de dados -bd Mysql
+    var connection = application.config.dbConnection();
+    var loginModel = application.app.models.loginModel; //localiza o model login
+
+    loginModel.getLogin(connection, function(error, result){
+      // res.send(result);
+      console.log("ROTA AUTENTICAÇÃO LOGIN request in MODEL <<<---");
+      res.render("login/login", {noticias : result} );
     });
     // application.app.controllers.login.autenticar(application, req, res);
   });
