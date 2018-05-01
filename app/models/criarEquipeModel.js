@@ -6,9 +6,18 @@ module.exports = function(){
 
   this.cadastrarEquipe = function(dadosFormEquipe, connection, callback){
     console.log("INSERT cadastrarEquipe");
-    console.log(dadosFormEquipe);
-    connection.query('INSERT INTO noticias VALUES SET ?',dadosFormEquipe, callback);
-    // console.log(ver);
+    console.log(dadosFormEquipe.titulo);
+    var queryInsert = 'INSERT INTO noticias (titulo, noticia) VALUES ("'+dadosFormEquipe.titulo+'", "'+dadosFormEquipe.noticia+'")';
+    connection.query(queryInsert ,dadosFormEquipe,callback);
+    // connection.query(queryInsert ,dadosFormEquipe, function(error) {
+    //     if (error) {
+    //       console.log(queryInsert);
+    //         console.log(error.message);
+    //     } else {
+    //       console.log(queryInsert);
+    //         console.log('success');
+    //     }
+    // });
   }
   return this;
 }

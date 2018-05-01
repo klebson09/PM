@@ -16,7 +16,7 @@ module.exports = function(application){
     criarEquipeModel.cadastrarEquipe(dadosFormEquipe, connection, function(error, result){
       // res.send(result);
       console.log("ROTA criar equipe POST  <<<---");
-      res.redirect('/criar_equipe');
+      res.redirect('/');
       // res.render("includes/criarEqp");
     });
 
