@@ -28,7 +28,7 @@ app.set('views', './app/views'); //indica onde as wiews estão
 app.use(express.static('./app/public'));
 
 /* configurar o middleware body-parser */
-app.use(bodyParser.urlencoded({extended: true})); // quando tiver um post em alguma das requisições é recuperado a informação com via json da propriedade body do request
+app.use(bodyParser.urlencoded({extended: true})); // quando tiver um post em alguma das requisições é recuperado a informação via json da propriedade body do request
 
 /*configurar o middleware express-validator */
 app.use(expressValidator());
