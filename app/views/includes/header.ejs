@@ -231,7 +231,7 @@
                 <a href="#" class="btn btn-default btn-flat">Profile</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                <button type="button" class="btn btn-default btn-flat" id="sign_out">Sign out</button>
               </div>
             </li>
           </ul>
@@ -239,4 +239,17 @@
       </ul>
     </div>
   </nav>
+  <!-- jQuery 2.1.3 -->
+    <script src="plugins/jQuery/jQuery-2.1.3.min.js"></script>
+                  <script>
+                    $(document).ready(function() {
+
+                      $('#sign_out').click(function(){
+                        window.location.href = '/sair';
+                      });
+
+                    });
+                  </script>
+
+
 </header>

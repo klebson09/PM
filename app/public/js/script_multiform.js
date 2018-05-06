@@ -82,7 +82,8 @@ $(".previous").click(function(){
 });
 
 $(".submit").click(function(){
-	return false;
+	console.log("estou perturbando auqi mo vei o/o/o/o");
+	return "/criar_equipe_post";
 })
 
 function addMembro(){
