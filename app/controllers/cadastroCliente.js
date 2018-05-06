@@ -4,8 +4,8 @@ module.exports.cadCliente = function(application, req, res){
 
 module.exports.inclCliente = function(application, req, res){
 	console.log("CONTROLLER INCLUIR CLIENTE");
-	var dadosFormLogin = "0";
-	// var dadosFormLogin = req.body;
+	// var dadosFormLogin = "0";
+	var dadosFormLogin = req.body;
 	// req.assert('email', 'Campo Email vazio').notEmpty();
 	// req.assert('senha', 'Campo Senha vazio').notEmpty();
 	//

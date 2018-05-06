@@ -2,11 +2,28 @@ function ClienteDAO(connection){
   this._connection = connection();
 }
 
-ClienteDAO.prototype.incluirCliente = function(usuario, req, res){
+ClienteDAO.prototype.incluirCliente = function(cliente, req, res){
   console.log("DAO incluirCliente O| O|");
+  var tipoPessoa = cliente.tipoPessoa;
+  var cpf = cliente.cpf;
+  var nomeCliente = cliente.nomeCliente;
+  var nomeEmpresa = cliente.nomeEmpresa;
+  var telefone = cliente.telefone;
+  var celular = cliente.celular;
+  var hangouts = cliente.hangouts;
+  var skype = cliente.skype;
 
-  var sql =  "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento)";
-      sql += "VALUES ('1', 'cliente_ssocial@gmail.com', '654321', 'joelma', '1', '1', '1990-09-02')"
+  //fieldset 2 cadastro conta
+  var email = cliente.email;
+  var senha = cliente.senha;
+
+  //provisorio
+  var idContato = 1;
+  var tipoUsuario = 1;
+  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+cpf+" "+tipoUsuario+" "+tipoPessoa+" " );
+
+  // var sql =  "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa)";
+  //     sql += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"', '"+tipoUsuario+"', '"+tipoPessoa+"')"
 
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {

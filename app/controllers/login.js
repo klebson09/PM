@@ -9,9 +9,11 @@ module.exports.autenticar = function(application, req, res){
 	req.assert('senha', 'Campo Senha vazio').notEmpty();
 
 	// console.log('email: ', req.body.email);
-	var erros = req. validationErrors();
+	var erros = req.validationErrors();
 
 	if(erros){
+		console.log(erros);
+		console.log("break");
 		res.render("login/login", {validacao:erros});
 		return;
 	}

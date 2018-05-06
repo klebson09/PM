@@ -3,7 +3,7 @@ module.exports = function(application){
       application.app.controllers.cadastroCliente.cadCliente(application, req, res);
     });
 
-    application.post('/autenticar', function(req, res){
+    application.post('/cadastro_cliente', function(req, res){
     console.log("ROTA AUTENTICAÇÃO LOGIN");
 
     application.app.controllers.cadastroCliente.inclCliente(application, req, res);
