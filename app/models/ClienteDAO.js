@@ -4,8 +4,9 @@ function ClienteDAO(connection){
 
 ClienteDAO.prototype.incluirCliente = function(cliente, req, res){
   console.log("DAO incluirCliente O| O|");
-  var tipoPessoa = cliente.tipoPessoa;
-  var cpf = cliente.cpf;
+  // var tipoPessoa = cliente.tipoPessoa;
+  tipoPessoa = "F";
+  var cpf_cnpj = cliente.cpf;
   var nomeCliente = cliente.nomeCliente;
   var nomeEmpresa = cliente.nomeEmpresa;
   var telefone = cliente.telefone;
@@ -20,10 +21,10 @@ ClienteDAO.prototype.incluirCliente = function(cliente, req, res){
   //provisorio
   var idContato = 1;
   var tipoUsuario = 1;
-  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+cpf+" "+tipoUsuario+" "+tipoPessoa+" " );
+  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+cpf_cnpj+" "+tipoUsuario+" "+tipoPessoa+" " );
 
-  // var sql =  "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa)";
-  //     sql += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"', '"+tipoUsuario+"', '"+tipoPessoa+"')"
+  var sql =  "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, cpf_cnpj, tipoPessoa)";
+      sql += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"', '"+cpf_cnpj+"', '"+tipoUsuario+"', '"+tipoPessoa+"')"
 
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
