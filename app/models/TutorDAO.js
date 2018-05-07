@@ -1,4 +1,4 @@
-var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
+var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
  var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
  var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
 
@@ -16,10 +16,9 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, githu
    var nome = usuario.nome;
    var dataNascimento = usuario.dataNascimento;
    var telefone = usuario.Telefone;
-   var celular = usuario.Telefone;
+   var celular = usuario.celular;
    var hangouts = usuario.Hangouts;
    var skype = usuario.Skype;
-   var gitHub = usuario.GitHub;
    var instituicaoEnsino = usuario.instituicaoEnsino;
    var siape = usuario.siape;
    var formacaoAcademica = usuario.formacaoAcademica;

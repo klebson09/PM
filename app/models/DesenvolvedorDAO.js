@@ -16,7 +16,7 @@
    var nome = usuario.nome;
    var dataNascimento = usuario.dataNascimento;
    var telefone = usuario.Telefone;
-   var celular = usuario.Telefone;
+   var celular = usuario.celular;
    var hangouts = usuario.Hangouts;
    var skype = usuario.Skype;
    var gitHub = usuario.GitHub;

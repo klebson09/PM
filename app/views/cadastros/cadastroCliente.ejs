@@ -52,10 +52,10 @@
                   </div>
 
                   <div class="form-group col-md-3">
-                    <input type="text" class="form-control" id="Telefone1" name="Telefone" placeholder="Telefone"/>
+                    <input type="text" class="form-control" id="Telefone1" name="telefone" placeholder="Telefone"/>
                   </div>
                   <div class="form-group col-md-3">
-                    <input type="text" class="form-control" id="Telefone2" name="Telefone" placeholder="Telefone"/>
+                    <input type="text" class="form-control" id="Telefone2" name="celular" placeholder="Celular"/>
                   </div>
                   <div class="form-group col-md-3">
                     <input type="email" class="form-control"  id="Hangouts" name="Hangouts" placeholder="Hangouts"/>
@@ -94,19 +94,19 @@
 
 
                    <div class="form-group col-md-12 cmp">
-                      <textarea rows="5" class="form-control" name="descrProjeto" placeholder="Para que finalidade será o seu sistema" ></textarea>
+                      <textarea rows="5" class="form-control" name="descrProjetoModelarSistema" placeholder="Para que finalidade será o seu sistema" ></textarea>
                    </div>
                    <!-- <div class="row"> -->
-                   <section class="content-header">
-                     <h1>
+                   
+                     <h4>
                        <small>Escolha a plataforma do sistema</small>
-                     </h1>
-                   </section>
+                     </h4>
+            
                    <div class="row col-md-offset-1 ">
                      <div class="col-md-3 check-custum " id="div_1">
                        <i class="glyphicon glyphicon-folder-open" > </i>
                        <label for="professional_types_designer" class="lab">
-                         <input type="checkbox"  onclick="selecionar(this)" class="check-input" id="check_1" value="designer">
+                         <input type="checkbox"  onclick="selecionar(this)" name="mobile" class="check-input" id="check_1" value="1">
                          <span class="checkbox-kl"></span>
                          <p class="radio-box-subtitle " >Mobile</p>
                        </label>
@@ -114,7 +114,7 @@
                      <div class="col-md-3 check-custum " id="div_2">
                        <i class="glyphicon glyphicon-folder-open " > </i>
                        <label for="professional_types_designer" class="lab">
-                         <input type="checkbox"  onclick="selecionar(this)" class="check-input" id="check_2" value="designer">
+                         <input type="checkbox"  onclick="selecionar(this)"  name="web" class="check-input" id="check_2" value="1" >
                          <span class="checkbox-kl"></span>
                          <p class="radio-box-subtitle " >Web</p>
                        </label>
@@ -122,16 +122,17 @@
                    <div class="col-md-3 check-custum " id="div_3">
                      <i class="glyphicon glyphicon-folder-open " > </i>
                      <label for="professional_types_designer" class="lab">
-                       <input type="checkbox"  onclick="selecionar(this)" class="check-input" id="check_3" value="designer">
+                       <input type="checkbox"  onclick="selecionar(this)" name="desktop" class="check-input" id="check_3" value="1">
                        <span class="checkbox-kl"></span>
                        <p class="radio-box-subtitle " >Desktop</p>
                      </label>
                    </div>
                  </div>
                       <div class="row">
-                         <input type="text" class="form-control camaleao" name="areaAtuação" placeholder="Área de Atuação" />
+                         <input type="text" class="form-control camaleao" name="areaAtuacao" placeholder="Área de Atuação" />
                       </div>
-                   <!-- </div> -->
+                   <!-- </div>cxc -->
+                   <br/>
                    <input type="button" name="Anterior" class="previous action-button  btn  btn-success" value="Anterior" />
                    <!-- <input type="button" name="Anterior" class="next action-button" value="Próximo" /> -->
                    <input type="button" name="proximo" class=" next action-button btn  btn-success" value="Próximo"/>
