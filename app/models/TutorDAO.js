@@ -1,5 +1,5 @@
 var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
- var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento)";
+ var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
  var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
 
  function TutorDAO(connection){	
@@ -40,7 +40,7 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, githu
      var idContato = result.insertId;
      console.log(idContato);
 
-     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+dataNascimento+"')";
+     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+dataNascimento+"', '"+cpf+"')";
      
      this._connection.query(sqlUsuario, function(err,result){
      	if (err) throw err;

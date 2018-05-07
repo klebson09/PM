@@ -5,7 +5,7 @@ module.exports = function(application){
 
     application.post('/cadastro_cliente', function(req, res){
     console.log("ROTA AUTENTICAÇÃO LOGIN");
-
+    console.log(req.body);
     application.app.controllers.cadastroCliente.inclCliente(application, req, res);
   });
 }
