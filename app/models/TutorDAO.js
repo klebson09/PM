@@ -1,15 +1,15 @@
- var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
+var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
  var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento)";
- var sqlDadosEducacionaisDev = "INSERT INTO dados_educacionais_desenvolvedor (idContaUsuario, matricula, instituicaoEnsino, curso, turno, periodo, declaracaoMatricula)";
+ var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
 
- function DesenvolvedorDAO(connection){	
+ function TutorDAO(connection){	
    this._connection = connection();
    console.log("-> this._connection = "+this._connection);
  }
+  
+ TutorDAO.prototype.incluirTutor = function(usuario, req, res){
 
- DesenvolvedorDAO.prototype.incluirDev = function(usuario, req, res){
-
-   console.log("DESENVOLVEDOR DAO");
+   console.log("TUTOR DAO");
    console.log("Inserindo Contato...");
 
    var cpf = usuario.cpf;
@@ -21,11 +21,9 @@
    var skype = usuario.Skype;
    var gitHub = usuario.GitHub;
    var instituicaoEnsino = usuario.instituicaoEnsino;
-   var matricula = usuario.matricula;
-   var curso = usuario.curso;
-   var nivel = usuario.nivel;
-   var nivperiodo = usuario.nivperiodo;
-   var docDeclaracaoMatricula = usuario.docDeclaracaoMatricula;
+   var siape = usuario.siape;
+   var formacaoAcademica = usuario.formacaoAcademica;
+   var cargo = usuario.cargo;
    var email = usuario.email;
    var senha = usuario.senha;
 
@@ -42,7 +40,7 @@
      var idContato = result.insertId;
      console.log(idContato);
 
-     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'D', 'F', '"+dataNascimento+"')";
+     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+dataNascimento+"')";
      
      this._connection.query(sqlUsuario, function(err,result){
      	if (err) throw err;
@@ -51,24 +49,24 @@
 	     var idUsuario = result.insertId;
 	     console.log(idUsuario);
 
-	     sqlDadosEducacionaisDev += "VALUES ('"+idUsuario+"', '"+matricula+"', '"+instituicaoEnsino+"', '"+curso+"',  '"+nivel+"',  '"+nivperiodo+"',  '"+docDeclaracaoMatricula+"')";
+	     sqlDadosEducacionaisTutor += "VALUES ('"+idUsuario+"', '"+siape+"', '"+instituicaoEnsino+"', '"+formacaoAcademica+"',  '"+cargo+"')";
 
-	     this._connection.query(sqlDadosEducacionaisDev, function(err,result){
+	     this._connection.query(sqlDadosEducacionaisTutor, function(err,result){
 
 	     	if (err) throw err;
 
-     			console.log("insert DADOS EDUCACIONAIS DESENVOLVEDOR ok O/ -->>");
+     			console.log("insert DADOS EDUCACIONAIS TUTOR ok O/ -->>");
 
-     			res.send("TUDO OK, DESENVOLVEDOR CADASTRADO");
+     			res.send("TUDO OK, TUTOR CADASTRADO");
 
 	     });
      });
 
    });
 
-     }
+     }//
  
 
  module.exports = function(){
-   return DesenvolvedorDAO;
+   return TutorDAO;
  }
