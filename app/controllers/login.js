@@ -1,5 +1,6 @@
 module.exports.pagLogin = function(application, req, res){
 	// res.render("login/login", {validacao: {}});
+	  console.log("CONTROLLER LOGIN");
 	res.render("login/login", {validacao: {}});
 }
 module.exports.autenticar = function(application, req, res){

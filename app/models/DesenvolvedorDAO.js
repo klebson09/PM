@@ -2,7 +2,7 @@
  var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
  var sqlDadosEducacionaisDev = "INSERT INTO dados_educacionais_desenvolvedor (idContaUsuario, matricula, instituicaoEnsino, curso, turno, periodo, declaracaoMatricula)";
 
- function DesenvolvedorDAO(connection){	
+ function DesenvolvedorDAO(connection){
    this._connection = connection();
    console.log("-> this._connection = "+this._connection);
  }
@@ -43,7 +43,7 @@
      console.log(idContato);
 
      sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'D', 'F', '"+dataNascimento+"', '"+cpf+"')";
-     
+
      this._connection.query(sqlUsuario, function(err,result){
      	if (err) throw err;
 
@@ -67,7 +67,7 @@
    });
 
      }
- 
+
 
  module.exports = function(){
    return DesenvolvedorDAO;

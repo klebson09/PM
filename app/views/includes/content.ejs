@@ -4,7 +4,16 @@
   <section class="content-header">
     <h1>
       Apresentação dos Protótipos
-      <small>Version 1.0</small>
+      <small>Tipo Usuário
+        <% if (sessionNomeTipoUsuario == 1){ %>
+          Cliente
+        <% } else if(sessionNomeTipoUsuario == 2) { %>
+          Desenvolvedor
+        <% } else if(sessionNomeTipoUsuario == 3) { %>
+          Tutor
+        <% } else { %>
+          Error
+        <% } %></small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>

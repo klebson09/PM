@@ -20,10 +20,17 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, res){
         req.session.tipoUsuario = result[0].tipoUsuario;
         req.session.nomeUsuario = result[0].nomeUsuario;
         req.session.email       = result[0].email;
+        console.log(req.session.tipoUsuario);
+        console.log(req.session.nomeUsuario);
       }
       if (req.session.autenticado) {
         console.log("AUTORIZADO");
-        res.render("includes/blank", {validacao: {}});
+        res.render("includes/blank", {
+          sessionNomeUsuario: req.session.nomeUsuario,
+          sessionNomeTipoUsuario: req.session.tipoUsuario,
+          });
+
+
       }else {
         // res.send("Acesso negado");
         console.log("NEGADO");

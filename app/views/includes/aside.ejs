@@ -8,9 +8,19 @@
         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
       </div>
       <div class="pull-left info">
-        <p>Leonardo Santana</p>
+        <p><%= sessionNomeUsuario %></p>
 
-        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        <a href="#"><i class="fa fa-circle text-success"></i>
+          <% if (sessionNomeTipoUsuario == 1){ %>
+            Cliente
+          <% } else if(sessionNomeTipoUsuario == 2) { %>
+            Desenvolvedor
+          <% } else if(sessionNomeTipoUsuario == 3) { %>
+            Tutor
+          <% } else { %>
+            Error
+          <% } %>
+          </a>
       </div>
     </div>
     <!-- search form -->
@@ -32,9 +42,9 @@
           <i class="fa fa-dashboard"></i> <span>Cadastros</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="/cadastro_cliente"><i class="fa fa-circle-o"></i> Cadastro Cliente</a></li>
+          <!-- <li><a href="/cadastro_cliente"><i class="fa fa-circle-o"></i> Cadastro Cliente</a></li>
           <li><a href="/cadastro_desenvolvedor"><i class="fa fa-circle-o"></i> Cadastro Desenvolvedor</a></li>
-          <li class="active"><a href="/cadastro_tutor"><i class="fa fa-circle-o"></i> Cadastro Tutor</a></li>
+          <li class="active"><a href="/cadastro_tutor"><i class="fa fa-circle-o"></i> Cadastro Tutor</a></li> -->
           <li><a href="/criar_equipe"><i class="fa fa-circle-o"></i> Cadastro Equipe</a></li>
         </ul>
       </li>
