@@ -3,6 +3,10 @@ module.exports = function(application){
     application.app.controllers.criarEquipe.criarEqp(application, req, res);
   });
 
+  application.get('/criarEqp2', function(req, res){
+    application.app.controllers.criarEquipe.criarEqp2(application, req, res);
+  });
+
   application.post('/criar_equipe_post', function(req, res){
     var dadosFormEquipe = req.body; // pega as informações do formulário
     // application.app.controllers.criarEquipe.criarEqp(application, req, res);
