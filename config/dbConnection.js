@@ -5,11 +5,10 @@ var connMysql =function(){
   return mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'root',
     database: 'pm'
   });
 }
-
 
 module.exports = function(){
   console.log("modulo dbConnection disponibilizado");

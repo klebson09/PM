@@ -6,6 +6,8 @@ module.exports.pagLogin = function(application, req, res){
 module.exports.autenticar = function(application, req, res){
 	console.log("CONTROLLER AUTENTICAR");
 	var dadosFormLogin = req.body;
+	console.log("********");
+	console.log(dadosFormLogin);
 	req.assert('email', 'Campo Email vazio').notEmpty();
 	req.assert('senha', 'Campo Senha vazio').notEmpty();
 	req.assert('email', 'Email inválido').isEmail();

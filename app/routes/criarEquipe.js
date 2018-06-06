@@ -8,21 +8,9 @@ module.exports = function(application){
   });
 
   application.post('/criar_equipe_post', function(req, res){
-    var dadosFormEquipe = req.body; // pega as informações do formulário
-    // application.app.controllers.criarEquipe.criarEqp(application, req, res);
-    // console.log("ROTA criar equipe POST  <<<---");
-    // console.log(req.body.nomeEquipe);// forma de pegar o elemento do input
-    // res.send(dadosFormEquipe);
-      // application.app.controllers.criarEquipe.criarEqp(application, req, res);
-    var connection = application.config.dbConnection();
-    var criarEquipeModel = application.app.models.criarEquipeModel;
+    console.log(req.body);
+    application.app.controllers.criarEquipe.cadastrarEquipe(application, req, res);
 
-    criarEquipeModel.cadastrarEquipe(dadosFormEquipe, connection, function(error, result){
-      // res.send(result);
-      console.log("ROTA criar equipe POST  <<<---");
-      res.redirect('/');
-      // res.render("includes/criarEqp");
-    });
 
   });
 }

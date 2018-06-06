@@ -16,14 +16,24 @@
     <link rel="stylesheet" href="multipleselect/jquery.dropdown.css">
 
     <script>
-      var obj = JSON.parse('[{ "id": "1", "name": "Matheus Levi Barouh dos Santos", "email": "matheuslevibarouh@gmail.com", "tipoUsuario": "Dev" },'+
-      '{ "id": "2", "name": "Klebson Leonardo Santana", "email": "klebsonleornardo@gmail.com", "tipoUsuario": "Dev" },'+
-      '{ "id": "3", "name": "Ramide Sales Augusto Dantas", "email": "ramidedantas@gmail.com", "tipoUsuario": "Tutor" }]');
+      var obj = tratarJSON();
 
       var objSelecionados = [];
 
 
+      function tratarJSON(){
+        var resultado = <%- data %>
+        var jsonTratado = [];
 
+        var i=0;
+
+        for(i=0; i<resultado.length;i++){
+          var membro = JSON.parse('{"id": "'+resultado[i].idContaUsuario+'", "name": "'+resultado[i].nomeUsuario+'", "email": "'+resultado[i].email+'", "tipoUsuario": "'+resultado[i].tipoUsuario+'" }');
+          jsonTratado.push(membro);
+        }
+
+        return jsonTratado;
+      }
 
       function retirarMembro(e){
         objSelecionados.splice(objSelecionados.findIndex(obj => obj.id==e),1);
@@ -34,10 +44,10 @@
       function atualizarTabelaMembros(){
         if(objSelecionados.length > 0){
           $.each(objSelecionados, function(key,value){
-                  if(value.tipoUsuario == "Tutor"){
-                    $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-blue">'+value.tipoUsuario+'</span></td></td></tr>');
+                  if(value.tipoUsuario == "T"){
+                    $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-blue">Tutor</span></td></td></tr>');
                   }else{
-                    $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-red">'+value.tipoUsuario+'</span></td></td></tr>');
+                    $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-red">Dev</span></td></td></tr>');
                   }
           });
         } else {
