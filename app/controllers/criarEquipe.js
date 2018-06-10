@@ -1,9 +1,27 @@
 module.exports.criarEqp = function(application, req, res){
   // res.render("includes/criarEquipe", {validacao:{}});
   if (req.session.autenticado) {
-    res.render("includes/criarEquipe");
-  }else {
+    console.log("criarEqp");
+    var connection = application.config.dbConnection;
+    var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
 
+    UsuarioDAO.obterMembrosEquipe(function(erro, resultado){
+      console.log("callback obter membros equipe");
+      if(erro){
+        throw erro;
+      } else {
+          console.log(JSON.stringify(resultado));
+          console.log("Vai responder");
+          res.render("includes/criarEquipe", {
+            sessionNomeUsuario: req.session.nomeUsuario,
+            sessionNomeTipoUsuario: req.session.tipoUsuario,
+            data: JSON.stringify(resultado)
+            });
+      }
+    });
+
+
+  }else {
     res.render('login/login', {validacao: {}});
   }
 
@@ -45,6 +63,7 @@ module.exports.cadastrarEquipe = function(application, req, res){
               throw erro;
             } else {
               console.log("Membros adicionados a equipe");
+              res.send("EQUIPE CADASTRADA COM SUCESSO")
             }
           })
       }
