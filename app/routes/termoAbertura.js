@@ -4,7 +4,7 @@ module.exports = function(application){
       application.app.controllers.termoAbertura.termoDeAbertura(application, req, res);
     });
 
-    application.get('/criar_termo_abertura', function(req, res){
+    application.post('/criar_termo_abertura', function(req, res){
       application.app.controllers.termoAbertura.criarTermoDeAbertura(application, req, res);
     });
 }
