@@ -41,6 +41,12 @@ label
     /* margin-bottom: 5px; */
 }
 
+.optionDefault{
+	color: #bbb;
+}
+
+
+
 /*form styles*/
 #msform {
 	margin: 50px auto 50px auto;

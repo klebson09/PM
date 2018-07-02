@@ -46,7 +46,7 @@
                      <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" placeholder="CPF"/>
                   </div>
                   <!-- col-md-offset-1 -->
-                
+
                   <div class="form-group  col-md-9 ">
                      <input type="text" class="form-control" name="nomeCliente" placeholder="Digite seu nome completo" />
                   </div>
@@ -90,7 +90,7 @@
                       <div class="form-group col-md-12 ">
                          <input type="text" class="form-control" name="nomeProjeto" placeholder="Nome do Projeto"  />
                       </div>
-                      
+
                    <!-- </div> -->
                    <div class="form-group col-md-12 cmp">
                       <textarea rows="5" class="form-control" name="descrProjeto" placeholder="Descreva com suas palavras sobre o projeto a ser desenvolvido:" ></textarea>
@@ -111,13 +111,11 @@
                       <textarea rows="5" class="form-control" name="descrProjetoModelarSistema" placeholder="Para que finalidade será o seu sistema"></textarea>
                    </div>
                    <!-- <div class="row"> -->
-                   
-                     <h4>
-                       <small>Escolha a plataforma do sistema</small>
-                     </h4>
-            
-                   <div class="row col-md-offset-1 ">
-                     <div class="col-md-3 check-custum " id="div_1">
+
+
+
+                   <div class="form-group col-md-12 cmp">
+                     <!--<div class="col-md-3 check-custum " id="div_1">
                        <i class="glyphicon glyphicon-folder-open" > </i>
                        <label for="professional_types_designer" class="lab">
                          <input type="checkbox"  onclick="selecionar(this)" name="mobile" class="check-input" id="check_1" value="1">
@@ -140,11 +138,18 @@
                        <span class="checkbox-kl"></span>
                        <p class="radio-box-subtitle " >Desktop</p>
                      </label>
-                   </div>
+                   </div> -->
+                   <select class="form-control selecao" name="plataforma">
+                      <option value="0" disabled selected><span class="optionDefault">Selecione a Plataforma do Sistema</span></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                   </select>
                  </div>
-                      <div class="row">
-                         <input type="text" class="form-control camaleao" name="areaAtuacao" placeholder="Área de Atuação" />
-                      </div>
+                 <div class="form-group col-md-12 cmp">
+                    <input type="text" class="form-control camaleao" name="areaAtuacao" placeholder="Área de Atuação" />
+                </div>
                    <!-- </div>cxc -->
                    <br/>
                    <input type="button" name="Anterior" class="previous action-button  btn  btn-success" value="Anterior" />
@@ -168,8 +173,8 @@
                <input type="button" name="Anterior" class="previous action-button   btn  btn-success" value="Anterior" />
                <!-- <input type="submit" name="Pronto" class="submit action-button" value="Cadastrar" /> -->
                <input type="submit" name="Pronto" class="submit action-button btn  btn-success" value="Cadastrar" />
-			   
-			   
+
+
             </fieldset>
          </form>
       </div>
@@ -216,23 +221,23 @@
     }
 
       }
-	  
+
 	  //Máscaras dos campos
-	  
-	  $(document).ready(function () { 
-	  
+
+	  $(document).ready(function () {
+
         var $cpf = $("#cpf_cnpj");
         $cpf.mask('000.000.000-00', {reverse: false});
-		
+
 		 var $telefone = $("#telefone");
         $telefone.mask('(00)0000-0000', {reverse: false});
-		
+
 		 var $celular = $("#celular");
         $celular.mask('(00)00000-0000', {reverse: false});
-		
+
     });
     </script>
       <!-- jQuery -->
-     
+
    </body>
 </html>
