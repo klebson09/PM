@@ -9,11 +9,12 @@ module.exports.termoDeAbertura = function(application, req, res){
 module.exports.criarTermoDeAbertura = function(application, req, res){
 	console.log(req.body);
 
+  var connection = application.config.dbConnection;
 	var termoAbertura = req.body;
-	var termoAberturaDAO = new application.app.models.TermoAberturaDAO();
+	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
 
 
-	termoAberturaDAO.criarTermoAbertura(termoAbertura, function(err, result){
+	termoAberturaDAO.criarTermoAbertura(termoAbertura, function(erro, result){
 		if(erro){
 			throw erro;
 		} else {
