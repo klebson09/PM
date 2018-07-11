@@ -8,8 +8,11 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, res){
   console.log("USUARIODAO O| O|");
   var emailWhere = usuario.email;
   var senhaWhere = usuario.senha;
+  
 
   var sql =  'SELECT * FROM conta_usuario WHERE email = "'+emailWhere+'" and senha = "'+senhaWhere+'" ';
+
+
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
     this._connection.query(sql, function (err, result) {
@@ -17,10 +20,14 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, res){
       console.log("RESULT ==>>> " +result);
       if (result[0] != undefined) {
         console.log(result[0].nomeUsuario);
+
         req.session.autenticado = true;
+        req.session.idContaUsuario = result[0].idContaUsuario;
         req.session.tipoUsuario = result[0].tipoUsuario;
         req.session.nomeUsuario = result[0].nomeUsuario;
         req.session.email       = result[0].email;
+        req.session.equipe      = result[0].equipe;
+
 
         console.log(req.session.tipoUsuario);
         console.log(req.session.nomeUsuario);

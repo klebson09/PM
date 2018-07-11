@@ -12,7 +12,6 @@ projetosDispDAO.prototype.projetosDisponiveis = function(req, callback){
     // this._connection.query(sql, [tituloWhere], function (err, result) {
     this._connection.query(sql, callback);
 }
-
 module.exports = function(){
   return projetosDispDAO;
 }

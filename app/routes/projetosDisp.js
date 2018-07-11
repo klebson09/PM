@@ -3,4 +3,7 @@ module.exports = function(application){
     application.get('/projeto_disp', function(req, res){
       application.app.controllers.projetosDisp.projDisp(application, req, res);
     });
+    application.post('/projeto_disp', function(req, res){
+      application.app.controllers.projetosDisp.projDisp(application, req, res);
+    });
 }
