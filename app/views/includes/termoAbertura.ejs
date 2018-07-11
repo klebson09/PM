@@ -143,7 +143,15 @@
   <script type="text/javascript" src="tabulator-master/dist/js/tabulator.min.js"></script>
 
   <script>
+
+  var tableData = [
+  {descricao:"Documentação do Projeto", dataInicial:"01/08/2018", dataFinal:"01/09/2018", status:"A começar", observacoes:"Klebson vai fazer"},
+  {descricao:"UML", dataInicial:"01/08/2018", dataFinal:"01/09/2018", status:"A começar", observacoes:"Matheus vai fazer"},
+]
+
     $("#example-table").tabulator({
+    data:tableData,
+    layout:"fitColumns",
     columns:[
         {title:"Descrição", field:"descricao", sorter:"string", width:200, editor:true},
         {title:"Data Inicial", field:"dataInicial", sorter:"date", align:"center", formatter:"datepicker"},
@@ -152,6 +160,8 @@
         {title:"Observações", field:"observacoes", formatter:"textarea", align:"left", width:200},
     ],
 });
+
+$("#example-table").tabulator("addRow", {descricao:"Acompanhamento", dataInicial:"01/08/2018", dataFinal:"01/09/2018", status:"A começar", observacoes:"Ramide vai fazer"}, true);
 
 
   </script>
