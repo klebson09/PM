@@ -36,3 +36,38 @@ module.exports.projDisp = function(application, req, res){
 
 	}
 }
+
+module.exports.candidatarse = function(application, req, res){
+	
+	// res.render("includes/projetosDisp", {validacao: {}});
+	if (req.session.autenticado) {
+
+		// res.render("includes/projetosDisp", {
+		// 	sessionNomeUsuario: 'USUARIO PROVISÓRIO',
+		// 	sessionNomeTipoUsuario: '1',
+		// 	});
+		console.log("*******candidatarse++++++");
+			var connection = application.config.dbConnection;
+			var propostaDAO = new application.app.models.propostaDAO(connection);
+			propostaDAO.insertProposta(req, function(err, result){
+				if(err){
+		      throw err;
+		    } else {
+
+	        console.log(JSON.stringify(result));
+					//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
+//===>> IMPLEMENTAR UMA PAGINA INFORMANDO Q O A EQUIPE SE CANDIDATOU AO PROJETO
+	        res.render("includes/projetosDisp", {
+						sessionNomeUsuario: req.session.nomeUsuario,
+            sessionNomeTipoUsuario: req.session.tipoUsuario,
+	          data: result
+
+					});
+		    }
+			});
+	}else {
+
+		res.render('login/login', {validacao: {}});
+
+	}
+}
