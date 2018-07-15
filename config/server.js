@@ -19,6 +19,8 @@ var expressSession = require('express-session');
 /* iniciar o objeto do express */
 var app = express();
 
+var moment = require('moment');
+
 /* setar as variáveis 'view engine' e 'views' do express */
 // autoload das rotas --> ONDE É ENCONTRADO
 app.set('view engine', 'ejs');//setar ou criar objetos na engine

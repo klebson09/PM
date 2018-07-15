@@ -18,8 +18,8 @@ TermoAberturaDAO.prototype.criarTermoAbertura = function(termoAbertura, callback
   var orcamento = termoAbertura.orcamentoEstimado;
   var restricoes = termoAbertura.restricoesProjeto;
 
-  sqlInsertTermoAbertura += "VALUES ('"+idProjeto+"', '"+tituloProjeto+"', '"+objetivo+"', '"+escopo+"', '"+escopoNegativo+"', '"+interfacesOutrosProjetos+"', '"+prazoEstimado+"', '"+orcamento+"', '"+restricoes+"')";
-
+  sqlInsertTermoAbertura += "VALUES ("+idProjeto+", '"+tituloProjeto+"', '"+objetivo+"', '"+escopo+"', '"+escopoNegativo+"', '"+interfacesOutrosProjetos+"', '"+prazoEstimado+"', "+orcamento+", '"+restricoes+"')";
+  console.log(sqlInsertTermoAbertura);
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
   this._connection.query(sqlInsertTermoAbertura, callback);

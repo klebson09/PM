@@ -58,7 +58,7 @@
 
       function zerarTabelaMembros(){
         var tabelaMembrosCorpo = document.getElementById("tabelaMembrosCorpo");
-
+        
         while(tabelaMembrosCorpo.hasChildNodes()){
           tabelaMembrosCorpo.removeChild(tabelaMembrosCorpo.lastChild);
         }
@@ -140,7 +140,7 @@
   limitCount: Infinity,
 
   // search field
-  input: '<input type="text" maxLength="20" placeholder="Search">',
+  input: '<input type="text" maxLength="40" placeholder="Selecione">',
 
   // dynamic data here
   data: obj,
