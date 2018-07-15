@@ -41,27 +41,27 @@ for(var i=0; i < data.length; i++){
                 <div class="box-body">
                    <%=data[i].descricao; %>
                    idProjeto <%=data[i].idProjeto; %>
-                </div>
-                <div class="box-footer ">
-                  <form action="/candidatarse_projeto" method="post">
+                 </div>
+                 <div class="box-footer ">
+                   <form action="/candidatarse_projeto" method="post">
                      <input type="hidden" id="id_projeto" name="idProjeto" value="yy">
                      <input type="hidden" id="id_conta_us" name="idContaUsuario" value="xxx">
-                     <!-- <a href="/criar_equipe" id="btnCandidatarSe" class="submit action-button btn  btn-success col-md-offset-5">Candidatar-se</a> -->
+                     < !-- <a href="/criar_equipe" id="btnCandidatarSe" class="submit action-button btn  btn-success col-md-offset-5">Candidatar-se</a> -->
                      <input type="submit" id="btnCandidatarSe"  class="submit action-button btn  btn-success col-md-offset-5" value="Candidatar-se"  />
 
-                  </form>
-                  <script>
-                    const novoValor = <%= data[i].idProjeto; %>;
-                    const campo = document.getElementById("id_projeto");
-                    campo.value = novoValor;
+                   </form>
+                   <script>
+                   const novoValor = <%= data[i].idProjeto; %>;
+                   const campo = document.getElementById("id_projeto");
+                   campo.value = novoValor;
 
-                    const novoValor2 = <%= data[i].idContaUsuario; %>;
-                    const campo2 = document.getElementById("id_conta_us");
-                    campo2.value = novoValor2;
-                  </script>
+                   const novoValor2 = <%= data[i].idContaUsuario; %>;
+                   const campo2 = document.getElementById("id_conta_us");
+                   campo2.value = novoValor2;
+                   </script>
 
-                  </div>
-              </div>
+                 </div>
+               </div>
 
             </div>
           </div>

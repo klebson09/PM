@@ -28,7 +28,7 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
       var idEquipe = result[0].idEquipe;
       var insertProposta = 'INSERT INTO proposta(idProjeto, idEquipe, status)';
       insertProposta += 'VALUES ("'+req.body.idProjeto+'", "'+idEquipe+'", "'+status+'")';
-      
+
       this._connection.query(insertProposta, function(err, result){
 
         if (err) throw err;
