@@ -3,11 +3,11 @@
 
 <!--[if gte FF 8]>
 
-			body{
-				background-color: red;
-			}
+body{
+	background-color: red;
+}
 
-	<![endif]-->
+<![endif]-->
 
 /*basic reset*/
 * {margin: 0; padding: 0;}
@@ -18,27 +18,27 @@ html {
 	/* background: url('http://thecodeplayer.com/uploads/media/gs.png');
 	/*background = gradient + image pattern combo*/
 	/* background:
-		linear-gradient(rgba(186,187,196, 0.8), rgba(155, 89, 182, 0.2)),
-		url('http://thecodeplayer.com/uploads/media/gs.png'); */
+	linear-gradient(rgba(186,187,196, 0.8), rgba(155, 89, 182, 0.2)),
+	url('http://thecodeplayer.com/uploads/media/gs.png'); */
 }
 
 body {
 	font-family: montserrat, arial, verdana; /*OBS DEVEMOS USAR ESSA FONTE EM TODO SISTEMA*/
-    /* background-color: transparent; */
-    /* padding: 10px; */
+	/* background-color: transparent; */
+	/* padding: 10px; */
 }
 
 label
 {
-    /* margin-top: 15px; */
-    /* margin-right: 15px; */
+	/* margin-top: 15px; */
+	/* margin-right: 15px; */
 }
 
 .cmp
 {
-    /* padding-left: 0px; */
-    /* padding-right: 0px; */
-    /* margin-bottom: 5px; */
+	/* padding-left: 0px; */
+	/* padding-right: 0px; */
+	/* margin-bottom: 5px; */
 }
 
 .optionDefault{
@@ -111,20 +111,28 @@ label
 	margin-bottom: 20px; */
 }
 /*progressbar*/
+
 #progressbar {
 	margin-bottom: 30px;
 	overflow: hidden;
 	/*CSS counters to number the steps*/
 	counter-reset: step;
-
 }
+.progressbarCliente {
+	margin-left: 120px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	/*CSS counters to number the steps*/
+	counter-reset: step;
+}
+
 #progressbar li {
 	list-style-type: none;
 	color: black;
 	text-transform: uppercase;
 	font-size: 9px;
 	/* width: 32.89%; */
-		width: 24.89%;
+	width: 24.89%;
 	float: left;
 	position: relative;
 }
@@ -210,7 +218,7 @@ label
 /* checkbox com icones */
 .checkbox-new{
 	/* opacity: 0; */
-  /* display: none; */
+	/* display: none; */
 	/* background: #f4f4f4; */
 }
 #professional_types_designer{
@@ -234,27 +242,27 @@ input[type="Checkbox"]{
 	/* display: none; */
 }
 /* label span{
-	position:  relative;
-	display: inline-block;
-	/* background: blue; */
-	/* top: 27px;
-	left: 100px;
-	width: 16px;
-	height: 16px;
-	border: 2px solid black;
+position:  relative;
+display: inline-block;
+/* background: blue; */
+/* top: 27px;
+left: 100px;
+width: 16px;
+height: 16px;
+border: 2px solid black;
 }
 
 input[type="Checkbox"]:checked+label span:before{
-	content: "";
-	position: absolute;
-	top: 3px;
-	left: 3px;
-	right: 3px;
-	bottom: 3px;
-	background: #00a65a;
-	width: 16px;
-	height: 16px;
-	border: 2px solid black;
+content: "";
+position: absolute;
+top: 3px;
+left: 3px;
+right: 3px;
+bottom: 3px;
+background: #00a65a;
+width: 16px;
+height: 16px;
+border: 2px solid black;
 }
 */
 /* caixa padrão vazia */
@@ -290,4 +298,120 @@ input[type="Checkbox"]:checked+label span:before{
 	height: 16px;
 	background: #008d4c;
 	border: 2px solid #008d4c;
+}
+@media screen and (max-width: 600px) {
+	.progressbarCliente{
+		margin-left: 85px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+		font-size: 7px;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
+}
+@media screen and (max-width: 400px) {
+	.progressbarCliente{
+		margin-left: 115px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
+}
+@media screen and (max-width: 600px) {
+	.progressbarTutor{
+		margin-left: 85px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
+}
+@media screen and (max-width: 400px) {
+	.progressbarTutor{
+		margin-left: 50px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.progressbarDesenvolvedor{
+		margin-left: 85px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
+}
+@media screen and (max-width: 400px) {
+	.progressbarDesenvolvedor{
+		margin-left: 50px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	#progressbar li {
+		list-style-type: none;
+		color: black;
+		text-transform: uppercase;
+		font-size: 7px;
+		/* width: 32.89%; */
+		width: 24.89%;
+		float: left;
+		position: relative;
+	}
 }

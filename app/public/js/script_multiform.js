@@ -3,13 +3,25 @@ Orginal Page: http://thecodeplayer.com/walkthrough/jquery-multi-step-form-with-p
 
 */
 //jQuery time
-console.log("ops cheguei no script_multiform");
+//console.log("ops cheguei no script_multiform");
 var current_fs, next_fs, previous_fs; //fieldsets
 var left, opacity, scale; //fieldset properties which we will animate
 var animating; //flag to prevent quick multi-click glitches
 
 $(".next").click(function(){
 	console.log("OPAAAA O/");
+
+
+
+	var $cpf = $('#cpf_cnpj');
+	var $nomeCliente = $('#nomeCliente');
+	var $telefone = $('#telefone');
+	var $celular = $('#celular');
+	var $Hangouts = $('#Hangouts');
+	if($cpf.val() == ''){
+		window.alert("CPF/CNPJ VAZIO - cpf_cnpj -->"+$cpf.val());
+	}
+
 	if(animating) return false;
 	animating = true;
 
