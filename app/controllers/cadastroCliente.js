@@ -8,7 +8,7 @@ module.exports.inclCliente = function(application, req, res){
 	var dadosFormLogin = req.body;
 
 	//Validando campos obrigatórios
-
+/*
 	req.assert('nomeCliente', 'Campo Nome obrigatório').notEmpty();
 	req.assert('cpf_cnpj', 'Campo CPF obrigatório').notEmpty();
 	req.assert('nomeProjeto', 'Campo Nome do Projeto obrigatório').notEmpty();
@@ -34,7 +34,7 @@ module.exports.inclCliente = function(application, req, res){
 	if(erros){
 		res.render("cadastros/cadastroCliente", {validacao:erros});
 		return;
-	}
+	}*/
 	var connection = application.config.dbConnection;
 	var ClienteDAO = new application.app.models.ClienteDAO(connection);
 

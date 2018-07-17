@@ -299,6 +299,26 @@ border: 2px solid black;
 	background: #008d4c;
 	border: 2px solid #008d4c;
 }
+
+.error{
+		 border-color :#FF0000 !important;
+		 opacity: 0.75;
+		 color: white;
+}
+
+.error::placeholder{
+	color: black !important;
+}
+
+#msg{
+	width: 200px;
+	height: 200px;
+	padding: 100px;
+	position: relative;
+	bottom: -50%;
+	left:25%;
+}
+
 @media screen and (max-width: 600px) {
 	.progressbarCliente{
 		margin-left: 85px;
