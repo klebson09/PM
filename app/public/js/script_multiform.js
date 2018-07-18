@@ -8,13 +8,33 @@ var current_fs, next_fs, previous_fs; //fieldsets
 var left, opacity, scale; //fieldset properties which we will animate
 var animating;
 var currentTab=0; //flag to prevent quick multi-click glitches
-
+//verifica cpf_cnpj se são validos ou não
+$('.cpf_cnpj').blur(function(){
+	// O CPF ou CNPJ
+	var cpf_cnpj = $(this).val();
+	// Testa a validação
+	if (valida_cpf_cnpj(cpf_cnpj) ){
+		//console.log("cpf_cnpj ok");
+	}else{
+		var msg_erro_cpf_cnpj = new Array();
+		if(cpf_cnpj == ''){
+			//alert("deu bronca aqui era pra exibir");
+			msg_erro_cpf_cnpj.push($(this).attr("placeholder")+" está vazio!");
+			exibirMensagemErro(msg_erro_cpf_cnpj);
+		}else{
+			//var erro_valida_cpf_cnpj = 'CPF ou CNPJ inválido!';
+			msg_erro_cpf_cnpj.push($(this).attr("placeholder")+" está inválido!");
+			//msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
+			exibirMensagemErro(msg_erro_cpf_cnpj);
+		}
+	}
+});
 function validarCamposEtapa(current_fs){
 	var valido = true;
 	var msgs = new Array();
 	var currentFieldset = current_fs.get(0);
 	var inputs = currentFieldset.getElementsByClassName("validar");
-  var i = 0;
+	var i = 0;
 	for(i=0;i<inputs.length;i++){
 		if(!validarCampoEstaVazio(inputs[i])){
 			valido = false;
@@ -27,7 +47,7 @@ function validarCamposEtapa(current_fs){
 	}
 
 	if(!valido){
-		 exibirMensagemErro(msgs);
+		exibirMensagemErro(msgs);
 	}
 
 	return valido;
@@ -48,7 +68,7 @@ function exibirMensagemErro(mensagens){
 	var close = document.createTextNode("x");
 
 	var j=0;
-
+	//Lista de erros
 	for(j=0;j<mensagens.length;j++){
 		var li = document.createElement("li");
 		var txt = document.createTextNode(mensagens[j]);
@@ -88,9 +108,9 @@ function exibirMensagemErro(mensagens){
 	divMsg.append(msgBox);
 
 	$("#msg").animate({bottom:75}, 250, function() {
-    $("#msform").css("opacity", 0.4);
+		$("#msform").css("opacity", 0.4);
 		$("#msg").removeAttr('style');
-});
+	});
 
 }
 
@@ -99,7 +119,7 @@ function fecharMsg(){
 	divMsg.display = 'block';
 	$("#msform").css("opacity", 1);
 }
-
+//borda vermelha em cada campo
 function invalidarCampo(campo){
 	campo.classList.add("error");
 }
@@ -114,7 +134,7 @@ function validarCampo(campo){
 $(".next").click(function(){
 	console.log("OPAAAA O/");
 
-//	if(animating) return false;
+	//	if(animating) return false;
 	animating = true;
 
 	current_fs = $(this).parent();
@@ -169,33 +189,33 @@ $(".previous").click(function(){
 	current_fs = $(this).parent();
 	previous_fs = $(this).parent().prev();
 
-		$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+	$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
-		//show the previous fieldset
-		previous_fs.show();
-		//hide the current fieldset with style
-		current_fs.animate({opacity: 0}, {
-			step: function(now, mx) {
-				//as the opacity of current_fs reduces to 0 - stored in "now"
-				//1. scale previous_fs from 80% to 100%
-				scale = 0.8 + (1 - now) * 0.2;
-				//2. take current_fs to the right(50%) - from 0%
-				left = ((1-now) * 50)+"%";
-				//3. increase opacity of previous_fs to 1 as it moves in
-				opacity = 1 - now;
-				current_fs.css({'left': left});
-				previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
-			},
-			duration: 800,
-			complete: function(){
-				current_fs.hide();
-				animating = false;
-			},
-			//this comes from the custom easing plugin
-			easing: 'easeInOutBack'
-		});
+	//show the previous fieldset
+	previous_fs.show();
+	//hide the current fieldset with style
+	current_fs.animate({opacity: 0}, {
+		step: function(now, mx) {
+			//as the opacity of current_fs reduces to 0 - stored in "now"
+			//1. scale previous_fs from 80% to 100%
+			scale = 0.8 + (1 - now) * 0.2;
+			//2. take current_fs to the right(50%) - from 0%
+			left = ((1-now) * 50)+"%";
+			//3. increase opacity of previous_fs to 1 as it moves in
+			opacity = 1 - now;
+			current_fs.css({'left': left});
+			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+		},
+		duration: 800,
+		complete: function(){
+			current_fs.hide();
+			animating = false;
+		},
+		//this comes from the custom easing plugin
+		easing: 'easeInOutBack'
+	});
 
-		currentTab--;
+	currentTab--;
 
 	//de-activate current step on progressbar
 
