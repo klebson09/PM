@@ -7,34 +7,17 @@ Orginal Page: http://thecodeplayer.com/walkthrough/jquery-multi-step-form-with-p
 var current_fs, next_fs, previous_fs; //fieldsets
 var left, opacity, scale; //fieldset properties which we will animate
 var animating;
-var currentTab=0; //flag to prevent quick multi-click glitches
+var currentTab=0;
+var msgs = new Array();//flag to prevent quick multi-click glitches
 //verifica cpf_cnpj se são validos ou não
-$('.cpf_cnpj').blur(function(){
-	// O CPF ou CNPJ
-	var cpf_cnpj = $(this).val();
-	// Testa a validação
-	if (valida_cpf_cnpj(cpf_cnpj) ){
-		//console.log("cpf_cnpj ok");
-	}else{
-		var msg_erro_cpf_cnpj = new Array();
-		if(cpf_cnpj == ''){
-			//alert("deu bronca aqui era pra exibir");
-			msg_erro_cpf_cnpj.push($(this).attr("placeholder")+" está vazio!");
-			exibirMensagemErro(msg_erro_cpf_cnpj);
-		}else{
-			//var erro_valida_cpf_cnpj = 'CPF ou CNPJ inválido!';
-			msg_erro_cpf_cnpj.push($(this).attr("placeholder")+" está inválido!");
-			//msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
-			exibirMensagemErro(msg_erro_cpf_cnpj);
-		}
-	}
-});
+
 function validarCamposEtapa(current_fs){
 	var valido = true;
-	var msgs = new Array();
 	var currentFieldset = current_fs.get(0);
 	var inputs = currentFieldset.getElementsByClassName("validar");
+	var inputsEmail = currentFieldset.getElementsByClassName("emailValidar");
 	var i = 0;
+	var j = 0;
 	for(i=0;i<inputs.length;i++){
 		if(!validarCampoEstaVazio(inputs[i])){
 			valido = false;
@@ -45,9 +28,26 @@ function validarCamposEtapa(current_fs){
 		}
 		console.log(inputs[i].name+" --> "+inputs[i].value);
 	}
+	window.alert("valido for"+valido);
+	//Validando se o usuário preencheu pelo menos um email
+	if(naoTemEmail(inputsEmail)){
+		if(valido == true){
+			valido = false;
+		}
+		msgs.push("É necessário informar pelo menos um email (Gmail ou Outlook)");
+	}
+		window.alert("valido naoTemEmail"+valido);
+
+	//Validando o email
+	if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
+		if(valido == true){
+			valido = false;
+		}
+	}
+	window.alert("valido validarEmail"+valido);
 
 	if(!valido){
-		exibirMensagemErro(msgs);
+		exibirMensagemErro();
 	}
 
 	return valido;
@@ -57,7 +57,89 @@ function validarCampoEstaVazio(input){
 	return input.value != '';
 }
 
-function exibirMensagemErro(mensagens){
+function naoTemEmail(inputsEmail){
+	return inputsEmail[0].value == '' && inputsEmail[1].value == '';
+}
+
+// Validar CPF
+$('.cpf_cnpj').blur(function(){
+	// O CPF ou CNPJ
+	var cpf_cnpj = $(this).val();
+	// Testa a validação
+	if (valida_cpf_cnpj(cpf_cnpj) ){
+		if($(this).hasClass("error")){
+			$(this).removeClass("error");
+		}
+	}else{
+		if(cpf_cnpj == ''){
+			//alert("deu bronca aqui era pra exibir");
+			msgs.push($(this).attr("placeholder")+" está vazio!");
+			exibirMensagemErro();
+		}else{
+			//var erro_valida_cpf_cnpj = 'CPF ou CNPJ inválido!';
+			msgs.push($(this).attr("placeholder")+" está inválido!");
+			//msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
+			exibirMensagemErro();
+		}
+
+		$(this).addClass("error");
+	}
+});
+
+//Validar email
+function validarEmail(field, dominioEsperado, validandoEtapa){
+
+	var usuario = field.value.substring(0, field.value.indexOf("@"));
+	var dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
+
+	if(usuario != '' && dominio != ''){
+		if ((usuario.length >=1) &&
+		(dominio.length >=3) &&
+		(usuario.search("@")==-1) &&
+		(dominio.search("@")==-1) &&
+		(usuario.search(" ")==-1) &&
+		(dominio.search(" ")==-1) &&
+		(dominio.search(".")!=-1) &&
+		(dominio.indexOf(".") >=1)&&
+		(dominio.lastIndexOf(".") < dominio.length - 1)) {
+			if(dominio != dominioEsperado){
+				msgs.push(field.getAttribute("name")+" deve ser do dominio "+dominioEsperado);
+			  field.classList.add('error');
+				if(validandoEtapa){
+					return false;
+				} else {
+					 exibirMensagemErro();
+				}
+			} else{
+				if(validandoEtapa){
+					return true;
+				}
+				if(field.classList.contains("error")){
+					field.classList.remove("error");
+				}
+			}
+		}
+		else{
+			msgs.push("E-mail inválido");
+			field.classList.add('error');
+			if(validandoEtapa){
+				return false;
+			} else {
+				exibirMensagemErro();
+			}
+		}
+	} else {
+		if(validandoEtapa){
+			return true;
+		}
+	}
+
+
+}
+
+//Validar se pelo menos um email está preenchido
+
+function exibirMensagemErro(){
 	var divMsg = document.getElementById("msg");
 	var ul = document.createElement("ul");
 	var msgBox = document.createElement("div");
@@ -69,9 +151,9 @@ function exibirMensagemErro(mensagens){
 
 	var j=0;
 	//Lista de erros
-	for(j=0;j<mensagens.length;j++){
+	for(j=0;j<msgs.length;j++){
 		var li = document.createElement("li");
-		var txt = document.createTextNode(mensagens[j]);
+		var txt = document.createTextNode(msgs[j]);
 		li.append(txt)
 		ul.append(li);
 	}
@@ -118,6 +200,7 @@ function fecharMsg(){
 	var divMsg = $("msg");
 	divMsg.display = 'block';
 	$("#msform").css("opacity", 1);
+	msgs = [];
 }
 //borda vermelha em cada campo
 function invalidarCampo(campo){
@@ -143,6 +226,7 @@ $(".next").click(function(){
 	console.log(next_fs);
 
 	var validado = validarCamposEtapa(current_fs);
+
 
 	if(validado){
 		console.log("Validado");
