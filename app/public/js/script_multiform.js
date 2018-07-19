@@ -18,6 +18,8 @@ function validarCamposEtapa(current_fs){
 	var inputsEmail = currentFieldset.getElementsByClassName("emailValidar");
 	var i = 0;
 	var j = 0;
+
+	//Validando se os campos obrigatórios estão vazios
 	for(i=0;i<inputs.length;i++){
 		if(!validarCampoEstaVazio(inputs[i])){
 			valido = false;
@@ -29,6 +31,7 @@ function validarCamposEtapa(current_fs){
 		console.log(inputs[i].name+" --> "+inputs[i].value);
 	}
 	window.alert("valido for"+valido);
+
 	//Validando se o usuário preencheu pelo menos um email
 	if(naoTemEmail(inputsEmail)){
 		if(valido == true){
@@ -44,7 +47,19 @@ function validarCamposEtapa(current_fs){
 			valido = false;
 		}
 	}
+
+	var cpf_cnpj = inputs[0];
+	window.alert("cpf_cnpj = "+cpf_cnpj.value);
+
+	if (!valida_cpf_cnpj(cpf_cnpj.value) ){
+		valido = false;
+		msgs.push(cpf_cnpj.getAttribute("placeholder")+" está inválido!");
+	}
+
 	window.alert("valido validarEmail"+valido);
+
+	//Validando o CPF
+
 
 	if(!valido){
 		exibirMensagemErro();
