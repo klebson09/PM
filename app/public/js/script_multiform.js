@@ -16,6 +16,9 @@ function validarCamposEtapa(current_fs){
 	var currentFieldset = current_fs.get(0);
 	var inputs = currentFieldset.getElementsByClassName("validar");
 	var inputsEmail = currentFieldset.getElementsByClassName("emailValidar");
+	var cpf_cnpj = inputs[0];
+	var senha = currentFieldset.getElementsByClassName("validarSenha");
+	var csenha = currentFieldset.getElementsByClassName("validarSenha");
 	var i = 0;
 	var j = 0;
 
@@ -32,33 +35,43 @@ function validarCamposEtapa(current_fs){
 	}
 	window.alert("valido for"+valido);
 
-	//Validando se o usuário preencheu pelo menos um email
-	if(naoTemEmail(inputsEmail)){
-		if(valido == true){
-			valido = false;
+	//Validando se o usuário preencheu pelo menos um email e se o email é valido
+	window.alert(inputsEmail)
+	window.alert(inputsEmail[0]+", "+inputsEmail[1])
+	if(inputsEmail[0] != undefined && inputsEmail[1] != undefined){
+		window.alert("Entrou")
+		if(naoTemEmail(inputsEmail)){
+			if(valido == true){
+				valido = false;
+			}
+			msgs.push("É necessário informar pelo menos um email (Gmail ou Outlook)");
 		}
-		msgs.push("É necessário informar pelo menos um email (Gmail ou Outlook)");
-	}
-		window.alert("valido naoTemEmail"+valido);
+			window.alert("valido naoTemEmail"+valido);
 
-	//Validando o email
-	if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
-		if(valido == true){
-			valido = false;
+		//Validando o email
+		if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
+			window.alert("entrou 2");
+			if(valido == true){
+				valido = false;
+			}
 		}
 	}
 
-	var cpf_cnpj = inputs[0];
-	window.alert("cpf_cnpj = "+cpf_cnpj.value);
-
-	if (!valida_cpf_cnpj(cpf_cnpj.value) ){
-		valido = false;
-		msgs.push(cpf_cnpj.getAttribute("placeholder")+" está inválido!");
+	//Validando CPF_CNPJ
+	if(cpf_cnpj != undefined){
+		if (!valida_cpf_cnpj(cpf_cnpj.value) ){
+			valido = false;
+			msgs.push(cpf_cnpj.getAttribute("placeholder")+" está inválido!");
+		}
 	}
 
-	window.alert("valido validarEmail"+valido);
-
-	//Validando o CPF
+	//Validando a Senha
+	if(senha != undefined && csenha != undefined){
+		if(senha.value != csenha.value){
+			valido = false;
+			msgs.push("Senha não corresponde ao valor da senha confirmada!");
+		}
+	}
 
 
 	if(!valido){
@@ -74,6 +87,10 @@ function validarCampoEstaVazio(input){
 
 function naoTemEmail(inputsEmail){
 	return inputsEmail[0].value == '' && inputsEmail[1].value == '';
+}
+
+function validarSenha(){
+
 }
 
 // Validar CPF
@@ -104,8 +121,28 @@ $('.cpf_cnpj').blur(function(){
 //Validar email
 function validarEmail(field, dominioEsperado, validandoEtapa){
 
+	window.alert("field "+field);
+	window.alert("dominioEsperado "+dominioEsperado);
+	window.alert("validandoEtapa "+validandoEtapa);
+
+
+
 	var usuario = field.value.substring(0, field.value.indexOf("@"));
 	var dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
+
+	window.alert("usuario "+usuario);
+	window.alert("dominio "+dominio);
+
+	if(usuario == ''){
+		msgs.push("E-mail inválido ("+field.getAttribute("placeholder")+")");
+		field.classList.add('error');
+		if(validandoEtapa){
+			return false;
+		} else {
+			exibirMensagemErro();
+			return;
+		}
+	}
 
 	if(usuario != '' && dominio != ''){
 		if ((usuario.length >=1) &&
@@ -117,7 +154,9 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 		(dominio.search(".")!=-1) &&
 		(dominio.indexOf(".") >=1)&&
 		(dominio.lastIndexOf(".") < dominio.length - 1)) {
+			window.alert("validacaoEmail 1 Ok ");
 			if(dominio != dominioEsperado){
+				window.alert("validacaoEmail 1 - DOMINIO NÃO CORRESPONDE ");
 				msgs.push(field.getAttribute("name")+" deve ser do dominio "+dominioEsperado);
 			  field.classList.add('error');
 				if(validandoEtapa){
@@ -126,6 +165,8 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 					 exibirMensagemErro();
 				}
 			} else{
+
+				window.alert("validacaoEmail 2 - ok");
 				if(validandoEtapa){
 					return true;
 				}
@@ -135,6 +176,7 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 			}
 		}
 		else{
+			window.alert("validacaoEmail - Email inválido ("+field.getAttribute("placeholder")+")");
 			msgs.push("E-mail inválido");
 			field.classList.add('error');
 			if(validandoEtapa){
