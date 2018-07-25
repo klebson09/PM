@@ -70,11 +70,11 @@
           <input type="text" class="form-control" max="14" id="celular" name="celular" placeholder="Celular"/>
         </div>
         <div class="form-group col-md-6">
-          <input  id="Hangouts" type="email" class="form-control tooltipStyle emailValidar" onblur="validarEmail(this, 'gmail.com', false)" maxlength="60" data-toggle="tooltip" data-placement="left" title="Deve ser um email do Gmail"  name="Hangouts" placeholder="Hangouts"/>
+          <input  id="hangouts" type="email" class="form-control tooltipStyle emailValidar" onblur="validarEmail(this, 'gmail.com', false)" maxlength="60" data-toggle="tooltip" data-placement="left" title="Deve ser um email do Gmail"  name="hangouts" placeholder="Hangouts"/>
         </div>
 
         <div class="form-group col-md-6">
-          <input id="Skype"  type="text" class="form-control tooltipStyle emailValidar" maxlength="60"  name="Skype"  placeholder="Skype" onblur="validarEmail(this, 'outlook.com', false)" data-toggle="tooltip" data-placement="right" title="Deve ser um email do Outlook" />
+          <input id="skype"  type="text" class="form-control tooltipStyle emailValidar" maxlength="60"  name="skype"  placeholder="Skype" onblur="validarEmail(this, 'outlook.com', false)" data-toggle="tooltip" data-placement="bottom" title="Deve ser um email do Outlook" />
         </div>
 
         <input type="button" name="proximo" class=" next action-button btn  btn-success" value="Próximo" align="center"/>
@@ -97,7 +97,7 @@
             <fieldset>
               <h2 class="fs-title">Conta</h2>
               <div class="form-group col-md-12 ">
-                <input type="text" class="form-control validar" name="email" placeholder="Email"  />
+                <input id="emailLabel" type="text" class="form-control validar" name="email" placeholder="Email" readonly="true" />
               </div>
               <!-- <div class="col-md-12 "> -->
               <div class="form-group col-md-6">

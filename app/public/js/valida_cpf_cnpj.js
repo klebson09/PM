@@ -99,6 +99,13 @@ function calc_digitos_posicoes( digitos, posicoes = 10, soma_digitos = 0 ) {
 */
 function valida_cpf( valor ) {
 
+    //Regex para validar se o valor é uma sequencia alfanumérica de digitos iguais
+    var regex = /^(\d)\1+$/;
+    var invalidoRegex =  regex.test(valor);
+    if(invalidoRegex){
+      return false;
+    }
+
     // Garante que o valor é uma string
     valor = valor.toString();
 
@@ -252,7 +259,7 @@ function formata_cpf_cnpj( valor ) {
 
         // Verifica se o CNPJ é válido
         if ( valida_cnpj( valor ) ) {
-        
+
             // Formata o CNPJ ##.###.###/####-##
             formatado  = valor.substr( 0,  2 ) + '.';
             formatado += valor.substr( 2,  3 ) + '.';

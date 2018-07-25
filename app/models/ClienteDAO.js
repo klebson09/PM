@@ -1,6 +1,6 @@
-var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
-var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, cpf_cnpj)";
-var sqlProjeto = "INSERT INTO projeto (idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade, mobile, web, desktop)";
+var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
+var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, cpf_cnpj, tipoPessoa)";
+//var sqlProjeto = "INSERT INTO projeto (idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade, mobile, web, desktop)";
 
 
 function ClienteDAO(connection){
@@ -16,7 +16,6 @@ ClienteDAO.prototype.incluirCliente = function(cliente, req, res){
   var telefone = cliente.telefone;
   var celular = cliente.celular;
   var hangouts = cliente.hangouts;
-  var gitHub = cliente.gitHub;
   var skype = cliente.skype;
   var email = cliente.email;
   var senha = cliente.senha;
@@ -46,28 +45,27 @@ ClienteDAO.prototype.incluirCliente = function(cliente, req, res){
   //provisorio
   var idContato = 1;
   var tipoUsuario = 'C';
-  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+cpf_cnpj+" "+tipoUsuario+" "+tipoPessoa+" "+mobile+" "
-  +web+" "+desktop );
+//  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+tipoUsuario+" "+cpf_cnpj+" "+tipoPessoa+");
 
-  sqlContato += "VALUES ('"+telefone+"', '"+celular+"', '"+hangouts+"', '"+skype+"',  '"+gitHub+"')";
+  sqlContato += "VALUES ('"+telefone+"', '"+celular+"', '"+hangouts+"', '"+skype+"')";
 
 
   this._connection.query(sqlContato, function (err, result) {
     if (err) throw err;
-    //console.log("insert ClienteDAO ok O/ -->>");
+    console.log("contato - "+result);
     var idContato = result.insertId;
-    sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"',  'C', '"+tipoPessoa+"', '"+cpf_cnpj+"')";
+    sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"',  'C', '"+cpf_cnpj+"', '"+tipoPessoa+"')";
 
     this._connection.query(sqlUsuario, function(err, result){
       if (err) throw err;
-      console.log("insert USUARIO ok O/ -->>");
+      /*console.log("insert USUARIO ok O/ -->>");
       var idUsuario = result.insertId;
       sqlProjeto += "VALUES ('"+idUsuario+"', '"+nomeProjeto+"', '"+areaAtuacao+"', '"+descrProjeto+"',  '"+descrProjetoModelarSistema+"', '"+mobile+"', '"+web+"', '"+desktop+"')";
 
       this._connection.query(sqlProjeto, function(err, result){
         if (err) throw err;
         console.log("insert PROJETO ok O/ -->>");
-      });
+      });*/
 
     });
     res.send("===>>insert ClienteDAO ok<<==");

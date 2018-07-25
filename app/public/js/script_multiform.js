@@ -33,24 +33,23 @@ function validarCamposEtapa(current_fs){
 		}
 		console.log(inputs[i].name+" --> "+inputs[i].value);
 	}
-	window.alert("valido for"+valido);
+
 
 	//Validando se o usuário preencheu pelo menos um email e se o email é valido
-	window.alert(inputsEmail)
-	window.alert(inputsEmail[0]+", "+inputsEmail[1])
+
 	if(inputsEmail[0] != undefined && inputsEmail[1] != undefined){
-		window.alert("Entrou")
+
 		if(naoTemEmail(inputsEmail)){
 			if(valido == true){
 				valido = false;
 			}
 			msgs.push("É necessário informar pelo menos um email (Gmail ou Outlook)");
 		}
-			window.alert("valido naoTemEmail"+valido);
+
 
 		//Validando o email
 		if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
-			window.alert("entrou 2");
+
 			if(valido == true){
 				valido = false;
 			}
@@ -64,15 +63,6 @@ function validarCamposEtapa(current_fs){
 			msgs.push(cpf_cnpj.getAttribute("placeholder")+" está inválido!");
 		}
 	}
-
-	//Validando a Senha
-	if(senha != undefined && csenha != undefined){
-		if(senha.value != csenha.value){
-			valido = false;
-			msgs.push("Senha não corresponde ao valor da senha confirmada!");
-		}
-	}
-
 
 	if(!valido){
 		exibirMensagemErro();
@@ -89,7 +79,16 @@ function naoTemEmail(inputsEmail){
 	return inputsEmail[0].value == '' && inputsEmail[1].value == '';
 }
 
-function validarSenha(){
+function validarSenha(senha, csenha){
+	//Validando a Senha
+	if(senha != undefined && csenha != undefined){
+		if(senha.value != csenha.value){
+			msgs.push("Senha não corresponde ao valor da senha confirmada!");
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 }
 
@@ -121,17 +120,8 @@ $('.cpf_cnpj').blur(function(){
 //Validar email
 function validarEmail(field, dominioEsperado, validandoEtapa){
 
-	window.alert("field "+field);
-	window.alert("dominioEsperado "+dominioEsperado);
-	window.alert("validandoEtapa "+validandoEtapa);
-
-
-
 	var usuario = field.value.substring(0, field.value.indexOf("@"));
 	var dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
-
-	window.alert("usuario "+usuario);
-	window.alert("dominio "+dominio);
 
 	if(usuario == ''){
 		msgs.push("E-mail inválido ("+field.getAttribute("placeholder")+")");
@@ -154,9 +144,7 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 		(dominio.search(".")!=-1) &&
 		(dominio.indexOf(".") >=1)&&
 		(dominio.lastIndexOf(".") < dominio.length - 1)) {
-			window.alert("validacaoEmail 1 Ok ");
 			if(dominio != dominioEsperado){
-				window.alert("validacaoEmail 1 - DOMINIO NÃO CORRESPONDE ");
 				msgs.push(field.getAttribute("name")+" deve ser do dominio "+dominioEsperado);
 			  field.classList.add('error');
 				if(validandoEtapa){
@@ -166,7 +154,9 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 				}
 			} else{
 
-				window.alert("validacaoEmail 2 - ok");
+				if(dominio == "gmail.com"){
+					document.getElementById("emailLabel").setAttribute("value",field.value);
+				}
 				if(validandoEtapa){
 					return true;
 				}
@@ -176,7 +166,7 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 			}
 		}
 		else{
-			window.alert("validacaoEmail - Email inválido ("+field.getAttribute("placeholder")+")");
+
 			msgs.push("E-mail inválido");
 			field.classList.add('error');
 			if(validandoEtapa){
@@ -367,10 +357,14 @@ $(".submit").click(function(){
 
 	current_fs = $(this).parent();
 
-	var validado = validarCamposEtapa(current_fs);
+	var senha = document.getElementById("senha")
+	var csenha = document.getElementById("csenha")
+
+	var validado = validarSenha(senha, csenha);
 
 	if(!validado){
 		console.log("preventDefault");
+		exibirMensagemErro();
 	} else {
 		$('#msform').submit();
 	}
@@ -383,5 +377,5 @@ function addMembro(){
 	var membro = document.getElementById("txtFieldAddMembroEq").value;
 
 
-	window.alert(membro);
+
 }
