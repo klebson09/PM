@@ -59,12 +59,25 @@ function validarCamposEtapa(current_fs){
 
 		//Validando o email
 		window.alert("validando Email 2");
-		if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
+
+		if(!(validarEmail(inputsEmail[0], "gmail.com", true))){
+			console.log("email gmail invalido")
+			if(valido == true){
+				valido = false;
+			}
+		} else if(!(validarEmail(inputsEmail[1], "outlook.com", true))){
+				console.log("email outlook invalido");
+				if(valido == true){
+					valido = false;
+				}
+		}
+
+	/*	if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
 
 			if(valido == true){
 				valido = false;
 			}
-		}
+		}*/
 	}
 
 	//Validando CPF
@@ -142,7 +155,11 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 	var usuario = field.value.substring(0, field.value.indexOf("@"));
 	var dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
 
+	console.log("usuario = "+usuario);
+	console.log("dominio = "+dominio);
+
 	if(usuario == ''){
+		console.log("usuario vazio");
 		msgs.push("E-mail inválido ("+field.getAttribute("placeholder")+")");
 		field.classList.add('error');
 		if(validandoEtapa){
@@ -154,6 +171,7 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 	}
 
 	if(usuario != '' && dominio != ''){
+		console.log("usuario e dominio não são vazios")
 		if ((usuario.length >=1) &&
 		(dominio.length >=3) &&
 		(usuario.search("@")==-1) &&
@@ -163,20 +181,25 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 		(dominio.search(".")!=-1) &&
 		(dominio.indexOf(".") >=1)&&
 		(dominio.lastIndexOf(".") < dominio.length - 1)) {
+			console.log("email validado, falta confirmar dominio")
 			if(dominio != dominioEsperado){
+				console.log("dominio não corresponde")
 				msgs.push(field.getAttribute("name")+" deve ser do dominio "+dominioEsperado);
 			  field.classList.add('error');
 				if(validandoEtapa){
+					console.log("dominio não corresponde: validando etapa")
 					return false;
 				} else {
+					console.log("dominio não corresponde: onblur")
 					 exibirMensagemErro();
 				}
 			} else{
-
+				console.log("dominio corresponde")
 				if(dominio == "gmail.com"){
 					document.getElementById("emailLabel").setAttribute("value",field.value);
 				}
 				if(validandoEtapa){
+					console.log("dominio corresponde:  validando etapa")
 					return true;
 				}
 				if(field.classList.contains("error")){
@@ -185,7 +208,7 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 			}
 		}
 		else{
-
+			console.log("email inválido")
 			msgs.push("E-mail inválido");
 			field.classList.add('error');
 			if(validandoEtapa){
@@ -195,7 +218,9 @@ function validarEmail(field, dominioEsperado, validandoEtapa){
 			}
 		}
 	} else {
+		console.log("email não é diferente de vazio")
 		if(validandoEtapa){
+			console.log("email não é diferente de vazio: validando etapa -> retorna true")
 			return true;
 		}
 	}

@@ -8,5 +8,5 @@ data de nascimento está sem placeholder ok
 botão Anterior não funciona ok
 validar senha ok
 Telefones não são obrigatórios, porem precisam ser válidos PENDENTE
-etapa esta progredindo com UM email invalido PENDENTE
+etapa esta progredindo com UM email invalido ok
 é preciso sinalizar os campos obrigatórios PENDENTE
