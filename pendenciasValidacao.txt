@@ -1,0 +1,12 @@
+2 Fieldset
+
+validar Turno 	OK
+validar Período OK
+placeholder de declaracaoMatricula retornan null OK
+Instituição de Ensino retorna mensagem "... Está inválido" OK
+data de nascimento está sem placeholder ok
+botão Anterior não funciona ok
+validar senha ok
+Telefones não são obrigatórios, porem precisam ser válidos PENDENTE
+etapa esta progredindo com UM email invalido PENDENTE
+é preciso sinalizar os campos obrigatórios PENDENTE

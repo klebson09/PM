@@ -39,7 +39,7 @@
                      <input type="text" class="form-control validar" name="nome" placeholder="Digite seu nome completo" />
                   </div>
                   <div class="form-group  col-md-3 ">
-                     <input type="date" class="form-control" name="dataNascimento" placeholder="Data de Nascimento" />
+                     <input type="text" class="form-control" name="dataNascimento" placeholder="Data de Nascimento" onfocus="tornarDate(this)" onblur="tornarText(this)" />
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="telefone" name="Telefone" placeholder="Telefone"/>
@@ -50,7 +50,7 @@
                   </div>
 
                   <div class="form-group col-md-4">
-                    <input type="email" class="form-control emailValidar"  id="Hangouts" name="Hangouts" placeholder="Hangouts" onblur="validarEmail(this, 'gmail.com', false)"/>
+                    <input type="email" class="form-control emailValidar"  id="Hangouts" name="Hangouts" placeholder="Hangouts" onblur="validarEmail(this, 'gmail.com', false)" />
                   </div>
                   <div class="form-group col-md-4">
                     <input type="text" class="form-control  emailValidar"   id="Skype" name="Skype" placeholder="Skype"  onblur="validarEmail(this, 'outlook.com', false)"/>
@@ -62,7 +62,7 @@
                <!-- </div> -->
             </fieldset>
             <fieldset>
-              <h2 class="fs-title">Dados Educacional</h2>
+              <h2 class="fs-title">Dados Educacionais</h2>
 
               <div class="form-group has-feedback col-md-9">
                 <input type="text" class="form-control validar" id="instituicaoEnsino" name="instituicaoEnsino" placeholder="Instituição de Ensino" />
@@ -74,7 +74,7 @@
                 <input type="text" class="form-control validar" id="curso" name="curso" placeholder="Curso"/>
               </div>
               <div class="form-group has-feedback col-md-3">
-                <select class="form-control" id="nivel" name="nivel">
+                <select class="form-control validarSelect validar" id="nivel" name="nivel" placeholder="Turno">
                	 <option value="">Turno</option>
                   <option value="Manha">Manhã</option>
                   <option value="Tarde">Tarde</option>
@@ -83,7 +83,7 @@
                 </select>
               </div>
               <div class="form-group has-feedback col-md-3">
-                <select class="form-control" id="periodo" name="nivperiodo">
+                <select class="form-control validarSelect validar" id="periodo" name="nivperiodo" placeholder="Período">
                	 <option value="">Período</option>
                   <option value="1">1°</option>
                   <option value="2">2°</option>
@@ -102,7 +102,7 @@
               <div class="col-md-12">
                 <div class="custom-file">
                   <span class="btn btn-default btn-bloc">Declaração de Matrícula (Em PDF ou JPG)</span>
-                  <input  type="file" class="custom-file-input btn btn-danger validar" id="customFile" name="DocDeclaracaoMatricula">
+                  <input  type="file" class="custom-file-input btn btn-danger validar" id="customFile" name="DocDeclaracaoMatricula" placeholder="Declaração de Mátricula (Em PDF ou JPG)">
                 </div>
             </div>
 
@@ -120,10 +120,10 @@
                </div>
                <!-- <div class="col-md-12 "> -->
                   <div class="form-group col-md-6">
-                     <input type="password" class="form-control" name="senha" placeholder="Senha" />
+                     <input  id="senha" type="password" class="form-control validar validarSenha" name="senha" placeholder="Senha" />
                   </div>
                   <div class="form-group col-md-6">
-                     <input type="password" class="form-control" name="csenha" placeholder="Confirme a Senha" />
+                     <input id="csenha" type="password" class="form-control validar validarSenha" name="csenha" placeholder="Confirme a Senha" />
                   </div>
                <!-- </div> -->
                <input type="button" name="Anterior" class="previous action-button   btn  btn-success" value="Anterior" />
@@ -156,6 +156,16 @@
         var $celular = $("#celular");
         $celular.mask('(00)00000-0000', {reverse: false});
       });
+
+      function tornarDate(dataNascimento){
+         dataNascimento.type = 'date';
+      }
+
+      function tornarText(dataNascimento){
+        if(!dataNascimento.value != ''){
+          dataNascimento.type = 'text';
+        }
+      }
       </script>
    </body>
 </html>

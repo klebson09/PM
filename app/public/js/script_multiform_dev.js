@@ -12,22 +12,31 @@ var msgs = new Array();//flag to prevent quick multi-click glitches
 //verifica cpf_cnpj se são validos ou não
 
 function validarCamposEtapa(current_fs){
+	window.alert("Está validando a etapa")
 	var valido = true;
 	var currentFieldset = current_fs.get(0);
 	var inputs = currentFieldset.getElementsByClassName("validar");
 	var inputsEmail = currentFieldset.getElementsByClassName("emailValidar");
-	var cpf_cnpj = inputs[0];
+	var cpf = currentFieldset.getElementsByClassName("cpf")[0];
+	window.alert("cpf = "+cpf);
 	var senha = currentFieldset.getElementsByClassName("validarSenha");
 	var csenha = currentFieldset.getElementsByClassName("validarSenha");
 	var i = 0;
 	var j = 0;
 
 	//Validando se os campos obrigatórios estão vazios
+
 	for(i=0;i<inputs.length;i++){
 		if(!validarCampoEstaVazio(inputs[i])){
 			valido = false;
 			invalidarCampo(inputs[i]);
-			msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
+			if(inputs[i].classList.contains("validarSelect")){
+				msgs.push("Selecione um "+inputs[i].getAttribute("placeholder"));
+				window.alert("validarCamposEtapa::for("+i+") >>> msg "+msgs[i]);
+			} else{
+				msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
+				window.alert("validarCamposEtapa::for("+i+") >>> msg "+msgs[i]);
+			}
 		} else {
 			validarCampo(inputs[i]);
 		}
@@ -36,11 +45,12 @@ function validarCamposEtapa(current_fs){
 
 
 	//Validando se o usuário preencheu pelo menos um email e se o email é valido
-
+  window.alert("validando Email 1");
 	if(inputsEmail[0] != undefined && inputsEmail[1] != undefined){
 
 		if(naoTemEmail(inputsEmail)){
 			if(valido == true){
+				console.log("validarCamposEtapa::validando Email >>>>>>> valido = false")
 				valido = false;
 			}
 			msgs.push("É necessário informar pelo menos um email (Gmail ou Outlook)");
@@ -48,6 +58,7 @@ function validarCamposEtapa(current_fs){
 
 
 		//Validando o email
+		window.alert("validando Email 2");
 		if(!validarEmail(inputsEmail[0], "gmail.com", true) && !validarEmail(inputsEmail[1], "outlook.com", true)){
 
 			if(valido == true){
@@ -56,11 +67,14 @@ function validarCamposEtapa(current_fs){
 		}
 	}
 
-	//Validando CPF_CNPJ
-	if(cpf_cnpj != undefined){
-		if (!valida_cpf_cnpj(cpf_cnpj.value) ){
+	//Validando CPF
+	window.alert("validando cpf");
+	if(cpf != undefined){
+		window.alert("cpf não é undefined!!!");
+		window.alert("cpf.value "+cpf.value);
+		if (!valida_cpf_cnpj(cpf.value) ){
 			valido = false;
-			msgs.push(cpf_cnpj.getAttribute("placeholder")+" está inválido!");
+			msgs.push(cpf.getAttribute("placeholder")+" está inválido!");
 		}
 	}
 
@@ -72,6 +86,8 @@ function validarCamposEtapa(current_fs){
 }
 
 function validarCampoEstaVazio(input){
+	window.alert("input = "+input.getAttribute("placeholder"));
+	window.alert("input value = "+input.value);
 	return input.value != '';
 }
 
@@ -82,7 +98,10 @@ function naoTemEmail(inputsEmail){
 function validarSenha(senha, csenha){
 	//Validando a Senha
 	if(senha != undefined && csenha != undefined){
-		if(senha.value != csenha.value){
+		if(senha.value == ''){
+			msgs.push("Senha está vazio");
+		}
+		else if(senha.value != csenha.value){
 			msgs.push("Senha não corresponde ao valor da senha confirmada!");
 			return false;
 		} else {
@@ -317,11 +336,15 @@ $(".next").click(function(){
 });
 
 $(".previous").click(function(){
+	console.log("animating "+animating)
 	if(animating) return false;
 	animating = true;
-
+  console.log("animating "+animating)
 	current_fs = $(this).parent();
 	previous_fs = $(this).parent().prev();
+
+	console.log("currentFieldset "+animating)
+	console.log("animating "+animating)
 
 	$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
