@@ -2,17 +2,17 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
  var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
  var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
 
- function TutorDAO(connection){	
+ function TutorDAO(connection){
    this._connection = connection();
    console.log("-> this._connection = "+this._connection);
  }
-  
+
  TutorDAO.prototype.incluirTutor = function(usuario, req, res){
 
    console.log("TUTOR DAO");
    console.log("Inserindo Contato...");
 
-   var cpf = usuario.cpf;
+   var cpf = usuario.cpf_cnpj;
    var nome = usuario.nome;
    var dataNascimento = usuario.dataNascimento;
    var telefone = usuario.Telefone;
@@ -30,7 +30,7 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
    //console.log("telefone = "+telefone+"\ncelular = "+celular+"\nhangouts = "+hangouts+"\nskype = "+skype+
    	//"\ngithub = "+gitHub);
 
-   sqlContato += "VALUES ('"+telefone+"', '"+celular+"', '"+hangouts+"', '"+skype+"',  '"+gitHub+"')";
+   sqlContato += "VALUES ('"+telefone+"', '"+celular+"', '"+hangouts+"', '"+skype+"')";
 
    this._connection.query(sqlContato, function (err, result) {
      if (err) throw err;
@@ -40,7 +40,7 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
      console.log(idContato);
 
      sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+dataNascimento+"', '"+cpf+"')";
-     
+
      this._connection.query(sqlUsuario, function(err,result){
      	if (err) throw err;
 
@@ -64,7 +64,7 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
    });
 
      }//
- 
+
 
  module.exports = function(){
    return TutorDAO;
