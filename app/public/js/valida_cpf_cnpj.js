@@ -7,7 +7,7 @@
 */
 function verifica_cpf_cnpj ( valor ) {
 
-    window.alert("verifica_cpf_cnpj:: valor >>>> "+valor);
+    //window.alert("verifica_cpf_cnpj:: valor >>>> "+valor);
 
     // Garante que o valor é uma string
     valor = valor.toString();

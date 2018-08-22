@@ -20,6 +20,9 @@
         <a href="../apresentacao/apresentacao.html"><b>SAGP</b></a> <!-- KL redireciona para a tela de apresentação inicial -->
       </div><!-- /.login-logo -->
       <div class="login-box-body">
+        <% if(mensagem>0){ %>
+          <h1><%= mensagem %></h1>
+        <% } %>
         <p class="login-box-msg">Página provisória de apresentação</p>
         <form action="/autenticar" method="post">
 

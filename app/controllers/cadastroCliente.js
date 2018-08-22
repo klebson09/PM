@@ -38,7 +38,13 @@ module.exports.inclCliente = function(application, req, res){
 	var connection = application.config.dbConnection;
 	var ClienteDAO = new application.app.models.ClienteDAO(connection);
 
-	ClienteDAO.incluirCliente(dadosFormLogin, req, res);
+	ClienteDAO.incluirCliente(dadosFormLogin, function(error, result){
+		if(error){
+			throw error;
+		} else{
+			res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"})
+		}
+	});
 
 	// res.send('tudo ok para criar a sessão');
 }
