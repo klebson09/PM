@@ -66,12 +66,25 @@ module.exports.autenticar = function(application, req, res){
 								if (result[0] == undefined || result[0] == null) {
 									console.log("Sem projetos associados/pendentes");
 
-									 notifModelarProj = '{ "mensagem":"Olá '+req.session.nomeUsuario+' seja bem vindo! Você ainda não tem um projeto modelado, por favor crie seu projeto", "link":"/modelarProjeto"}';
+									 notifModelarProj = '[{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}]';
 									 // notifModelarProj =  { mensagem: 'Olá '+req.session.nomeUsuario+' seja bem vindo! Você ainda não tem um projeto modelado, por favor crie seu projeto ',
 										// 								 				link: '/modelarProjeto'
 										// 								     };
 
 								 console.log(notifModelarProj);
+
+								 var notif = JSON.parse(notifModelarProj);
+
+								 console.log("notif "+notif);
+
+
+								 console.log("notificacao = "+notifModelarProj);
+
+									res.render("includes/blank", {
+										sessionNomeUsuario: req.session.nomeUsuario,
+										sessionNomeTipoUsuario: req.session.tipoUsuario,
+									 notificacao: notif
+								 });
 
 								}
 							}
@@ -80,13 +93,7 @@ module.exports.autenticar = function(application, req, res){
 
 				}
 
-				console.log("notificacao = "+notifModelarProj);
 
-        res.render("includes/blank", {
-          sessionNomeUsuario: req.session.nomeUsuario,
-          sessionNomeTipoUsuario: req.session.tipoUsuario,
-					notificacao: JSON.parse(notifModelarProj)
-				});
 
 
       } else {
