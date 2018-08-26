@@ -12,6 +12,15 @@ projetosDispDAO.prototype.projetosDisponiveis = function(req, callback){
     // this._connection.query(sql, [tituloWhere], function (err, result) {
     this._connection.query(sql, callback);
 }
+
+projetosDispDAO.prototype.verificarProjetosCliente = function(idUsuario, callback){
+  console.log("OBTER PROJETOS ASSOCIADOS AO CLIENTE");
+  var sql =  "SELECT * FROM projeto WHERE idContaUsuario ="+idUsuario;
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
+
 module.exports = function(){
   return projetosDispDAO;
 }
