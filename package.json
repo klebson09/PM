@@ -2,9 +2,11 @@
   "name": "marketplaceproject",
   "version": "1.0.0",
   "description": "Marketplace de Projetos - TCC",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app.js",
+    "deploy": "gcoud app deploy",
+    "test": "echo \"ERRO: no teste especified\" && exit 1"
   },
   "author": "Matheus Levi e Klebson Leonardo",
   "license": "ISC",

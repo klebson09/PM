@@ -66,7 +66,7 @@ module.exports.autenticar = function(application, req, res){
 								if (result[0] == undefined || result[0] == null) {
 									console.log("Sem projetos associados/pendentes");
 
-									 notifModelarProj = '[{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}, { "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"},{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}]';
+									 notifModelarProj = '[{ "mensagem":"Você precisa modelar um projeto", "link":"/modelarProjeto", "tipo":"fa-warning text-yellow"}]';
 									 // notifModelarProj =  { mensagem: 'Olá '+req.session.nomeUsuario+' seja bem vindo! Você ainda não tem um projeto modelado, por favor crie seu projeto ',
 										// 								 				link: '/modelarProjeto'
 										// 								     };
