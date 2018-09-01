@@ -12,10 +12,12 @@ module.exports.criarEqp = function(application, req, res){
       } else {
           console.log(JSON.stringify(resultado));
           console.log("Vai responder");
-          res.render("includes/criarEquipe", {
+          res.render("includes/criarEqp3", {
             sessionNomeUsuario: req.session.nomeUsuario,
             sessionNomeTipoUsuario: req.session.tipoUsuario,
-            data: JSON.stringify(resultado)
+            notificacao: req.session.notificacoes,
+            data: JSON.stringify(resultado),
+            layout: 'includes/layoutIncludes'
             });
       }
     });

@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AdminLTE 2 | Dashboard</title>
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+  <!-- Bootstrap 3.3.2 -->
+  <link href="tabulator-master/dist/css/tabulator.min.css" rel="stylesheet">
+  <link href="tabulator-master/dist/css/bootstrap/tabulator_bootstrap4.min.css" rel="stylesheet">
+  <link href="tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css" rel="stylesheet">
+</head>
+<body class="skin-green">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <!-- Right side column. Contains the navbar and content of the page -->
+    <div class="content-wrapper">
+
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+            <div class="box box-success">
+              <form id="msform" action="/criar_projeto" method="post" >
+                <!-- fieldsets -->
+                <fieldset>
+                  <!-- <div class="box box-success"> -->
+                  <h2 class="fs-title col-md-offset-1" id="tituloForm" style="padding-bottom: 20px;">  Modelar Projeto</h2>
+                  <!-- <h3 class="fs-subtitle">This is step 1</h3> -->
+
+                  <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="7" />
+                  <div class="form-group  col-md-12 ">
+                    <label for="tituloProj">Título do Projeto</label>
+                    <input type="text" id="tituloProj" class="form-control" name="tituloProjeto"  />
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="objetivoProj">Plataforma</label>
+                    <select class="form-control" name="plataforma" >
+                       <option value="4">Desktop</option>
+                       <option value="5">Mobile</option>
+                       <option value="6">Web</option>
+                       <option value="7">Multiplataforma</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="escopoProj">Descrição</label>
+                    <textarea class="form-control" name="descricaoProjeto" id="descricaoProjeto" rows="8" ></textarea>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="escopoNegativoProj">Finalidade</label>
+                    <textarea class="form-control" name="finalidade" id="finalidade" rows="8" ></textarea>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="interfacesOutrosSistemasProj">Área de atuação</label>
+                    <textarea class="form-control" name="areaAtuacao" id="areaAtuacao" rows="5" ></textarea>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <input type="submit" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Enviar" />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+</body>
+</html>

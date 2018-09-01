@@ -1,6 +1,6 @@
 var sqlContato = "INSERT INTO contato (telefone, celular)";
 var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, cpf_cnpj, tipoPessoa)";
-//var sqlProjeto = "INSERT INTO projeto (idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade, mobile, web, desktop)";
+
 
 
 function ClienteDAO(connection){
