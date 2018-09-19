@@ -40,6 +40,7 @@ module.exports.autenticar = function(application, req, res){
         req.session.nomeUsuario = result[0].nomeUsuario;
         req.session.email       = result[0].email;
         req.session.equipe      = result[0].equipe;
+				req.session.notificacoes = [{mensagem: "Nenhuma notificação", link:"#", tipo:"#" }];
 
 
         console.log(req.session.tipoUsuario);
@@ -66,7 +67,9 @@ module.exports.autenticar = function(application, req, res){
 								if (result[0] == undefined || result[0] == null) {
 									console.log("Sem projetos associados/pendentes");
 
-									 notifModelarProj = '[{ "mensagem":"Você precisa modelar um projeto", "link":"/modelar_projeto", "tipo":"fa-warning text-yellow"}]';
+									req.session.notificacoes = [];
+
+									 notifModelarProj = '{ "mensagem":"Você precisa modelar um projeto", "link":"/modelar_projeto", "tipo":"fa-warning text-yellow"}';
 
 
 									 // notifModelarProj =  { mensagem: 'Olá '+req.session.nomeUsuario+' seja bem vindo! Você ainda não tem um projeto modelado, por favor crie seu projeto ',
@@ -77,22 +80,25 @@ module.exports.autenticar = function(application, req, res){
 
 								 var notif = JSON.parse(notifModelarProj);
 
-								 req.session.notificacoes = notif;
+								 req.session.notificacoes.push(notif);
 
 								 console.log("notif "+notif);
 
 
 								 console.log("notificacao = "+notifModelarProj);
 
-									res.render("includes/content", {
-										sessionNomeUsuario: req.session.nomeUsuario,
-										sessionNomeTipoUsuario: req.session.tipoUsuario,
-									 	notificacao: req.session.notificacoes,
-										layout: 'includes/layoutIncludes'
 
-								 });
 
-								}
+							 }
+
+								res.render("includes/content", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									layout: 'includes/layoutIncludes'
+
+							 });
+
 							}
 
 					});

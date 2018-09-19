@@ -26,19 +26,35 @@ module.exports.criarProj = function(application, req, res){
 					console.log("+++++++++ PROJETO CADASTRADO COM SUCESSO ++++++");
 					//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
 
-					var notifProjetoSucesso = '[{ "mensagem":"Você criou o projeto '+dadosProjeto.tituloProjeto+'", "link":"#", "tipo":"fa-warning text-yellow"}]';
+					var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
+					var idProjeto = result.insertId;
 
-					var notif = JSON.parse(notifProjetoSucesso);
 
-					req.session.notificacoes = notif;
+					statusProjetoDAO.inicializarStatusProjeto(idProjeto, function(error, result){
 
-					res.render("includes/content", {
-						sessionNomeUsuario: req.session.nomeUsuario,
-						sessionNomeTipoUsuario: req.session.tipoUsuario,
-						notificacao: req.session.notificacoes,
-						layout: 'includes/layoutIncludes'
+							if(error){
+								throw error;
+							} else {
+								console.log("+++++++++ PROJETO INICIALIZADO COM SUCESSO ++++++");
+
+								var notifProjetoSucesso = '[{ "mensagem":"Você precisa disponibilizar o projeto '+dadosProjeto.tituloProjeto+'", "link":"#", "tipo":"fa-warning text-yellow"}]';
+
+								var notif = JSON.parse(notifProjetoSucesso);
+
+								req.session.notificacoes.push(notif);
+
+								res.render("includes/content", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									layout: 'includes/layoutIncludes'
+
+								});
+
+							}
 
 					});
+
 				}
 			});
 

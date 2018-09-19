@@ -9,7 +9,7 @@ projetosDispDAO.prototype.projetosDisponiveis = function(req, callback){
 
   console.log("************projetosDisponiveis***************");
 
-  var sql =  'SELECT * FROM projeto';
+  var sql =  'SELECT * FROM projeto INNER JOIN statusprojeto ON projeto.idProjeto = statusprojeto.idProjeto WHERE statusprojeto.disporProjeto = "2"';
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
     this._connection.query(sql, callback);
@@ -30,10 +30,11 @@ projetosDispDAO.prototype.criarProjeto = function(dadosProjeto, idUsuario, callb
   var descricao = dadosProjeto.descricaoProjeto;
   var finalidade = dadosProjeto.finalidade;
 
-  sqlProjeto +=  "VALUES ('"+idPlataforma+"', '"+idUsuario+"', '"+nomeProjeto+"', '"+areaAtuacao+"',  '"+descricao+"', '"+finalidade+"')";
+  sqlProjeto +=  " VALUES ('"+idPlataforma+"', '"+idUsuario+"', '"+nomeProjeto+"', '"+areaAtuacao+"',  '"+descricao+"', '"+finalidade+"')";
   console.log("sql = "+sqlProjeto);
   this._connection.query(sqlProjeto, callback);
 }
+
 
 
 module.exports = function(){

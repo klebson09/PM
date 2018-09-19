@@ -10,6 +10,10 @@ var bodyParser = require('body-parser');
 /*importar o módulo do mysql*/
 var mysql = require('mysql');
 
+/*importar o módulo nativo do EventEmitter*/
+const EventEmitter = require('events').EventEmitter;
+const myEventEmitter = new EventEmitter;
+
 /* importar o módulo do express-validator */
 var expressValidator = require('express-validator');
 
@@ -53,6 +57,7 @@ consign()
     .include('app/routes')
     .then('app/models')
     .then('app/controllers')
+    .then('app/util')
     .then('config/dbConnection.js')
     .into(app);
 

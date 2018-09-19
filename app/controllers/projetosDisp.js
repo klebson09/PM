@@ -25,7 +25,9 @@ module.exports.projDisp = function(application, req, res){
 				res.render("includes/projetosDisp", {
 					sessionNomeUsuario: req.session.nomeUsuario,
 					sessionNomeTipoUsuario: req.session.tipoUsuario,
-					data: result
+					notificacao: req.session.notificacoes,
+					data: result,
+					layout: 'includes/layoutIncludes'
 
 				});
 			}
