@@ -57,12 +57,21 @@ module.exports.candidatarse = function(application, req, res){
 			} else {
 
 				console.log(JSON.stringify(result));
+				console.log("proposta inserida com sucesso");
+
+				var	notifPropostaEnviada = JSON.parse('{ "mensagem":"A proposta de sua equipe será analisada pelo cliente", "link":"#", "tipo":"fa-warning text-yellow"}');
+
+
+				req.session.notificacoes.push(notifPropostaEnviada);
+
 				//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
 				//===>> IMPLEMENTAR UMA PAGINA INFORMANDO Q O A EQUIPE SE CANDIDATOU AO PROJETO
 				res.render("includes/projetosDisp", {
 					sessionNomeUsuario: req.session.nomeUsuario,
 					sessionNomeTipoUsuario: req.session.tipoUsuario,
-					data: result
+					data: result,
+					notificacao: req.session.notificacoes,
+					layout: 'includes/layoutIncludes'
 
 				});
 			}
