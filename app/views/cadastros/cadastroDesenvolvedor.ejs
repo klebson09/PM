@@ -39,7 +39,7 @@
                      <input type="text" class="form-control validar" name="nome" placeholder="Digite seu nome completo *" />
                   </div>
                   <div class="form-group  col-md-3 ">
-                     <input type="text" class="form-control" name="dataNascimento" placeholder="Data de Nascimento" onfocus="tornarDate(this)" onblur="tornarText(this)" />
+                     <input type="text" class="form-control validar" name="dataNascimento" placeholder="Data de Nascimento *" onfocus="tornarDate(this)" onblur="tornarText(this)" />
                   </div>
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="telefone" name="Telefone" placeholder="Telefone"/>
@@ -48,13 +48,15 @@
                   <div class="form-group col-md-6">
                     <input type="text" class="form-control" id="celular" name="celular" placeholder="Celular"/>
                   </div>
-
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-8">
+                    <input  id="email" type="email" class="form-control emailValidar"  maxlength="60"  data-placement="left" title="E-mail"  name="email" placeholder="E-mail *"/>
+                  </div>
+                  <!-- <div class="form-group col-md-4">
                     <input type="email" class="form-control emailValidar"  id="Hangouts" name="Hangouts" placeholder="Hangouts *" onblur="validarEmail(this, 'gmail.com', false)" />
                   </div>
                   <div class="form-group col-md-4">
                     <input type="text" class="form-control  emailValidar"   id="Skype" name="Skype" placeholder="Skype"  onblur="validarEmail(this, 'outlook.com', false)" />
-                  </div>
+                  </div> -->
                   <div class="form-group col-md-4">
                     <input type="text" class="form-control"   id="Github" name="GitHub" placeholder="GitHub"/>
                   </div>
@@ -65,16 +67,16 @@
               <h2 class="fs-title">Dados Educacionais</h2>
 
               <div class="form-group has-feedback col-md-9">
-                <input type="text" class="form-control validar" id="instituicaoEnsino" name="instituicaoEnsino" placeholder="Instituição de Ensino" />
+                <input type="text" class="form-control validar" id="instituicaoEnsino" name="instituicaoEnsino" placeholder="Instituição de Ensino *" />
               </div>
               <div class="form-group has-feedback col-md-3">
-                <input type="text" class="form-control validar" id="matricula" name="matricula" placeholder="Matrícula"/>
+                <input type="text" class="form-control validar" id="matricula" name="matricula" placeholder="Matrícula *"/>
               </div>
               <div class="form-group has-feedback col-md-6">
-                <input type="text" class="form-control validar" id="curso" name="curso" placeholder="Curso"/>
+                <input type="text" class="form-control validar" id="curso" name="curso" placeholder="Curso *"/>
               </div>
               <div class="form-group has-feedback col-md-3">
-                <select class="form-control validarSelect validar" id="nivel" name="nivel" placeholder="Turno">
+                <select class="form-control validarSelect validar" id="nivel" name="nivel" placeholder="Turno *">
                	 <option value="">Turno</option>
                   <option value="Manha">Manhã</option>
                   <option value="Tarde">Tarde</option>
@@ -83,7 +85,7 @@
                 </select>
               </div>
               <div class="form-group has-feedback col-md-3">
-                <select class="form-control validarSelect validar" id="periodo" name="nivperiodo" placeholder="Período">
+                <select class="form-control validarSelect validar" id="periodo" name="nivperiodo" placeholder="Período *">
                	 <option value="">Período</option>
                   <option value="1">1°</option>
                   <option value="2">2°</option>
@@ -101,7 +103,7 @@
               </div>
               <div class="col-md-12">
                 <div class="custom-file">
-                  <span class="btn btn-default btn-bloc">Declaração de Matrícula (Em PDF ou JPG)</span>
+                  <span class="btn btn-default btn-bloc">Declaração de Matrícula (Em PDF ou JPG) *</span>
                   <input  type="file" class="custom-file-input btn btn-danger validar" id="customFile" name="DocDeclaracaoMatricula" placeholder="Declaração de Mátricula (Em PDF ou JPG)">
                 </div>
             </div>
@@ -157,15 +159,15 @@
         $celular.mask('(00)00000-0000', {reverse: false});
       });
 
-      function tornarDate(dataNascimento){
-         dataNascimento.type = 'date';
-      }
+    function tornarDate(dataNascimento){
+        dataNascimento.type = 'date';
+     }
+     function tornarText(dataNascimento){
+       if(!dataNascimento.value != ''){
+         dataNascimento.type = 'text';
+       }
+     }
 
-      function tornarText(dataNascimento){
-        if(!dataNascimento.value != ''){
-          dataNascimento.type = 'text';
-        }
-      }
-      </script>
+    </script>
    </body>
 </html>

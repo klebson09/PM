@@ -48,12 +48,14 @@ module.exports.autenticar = function(application, req, res){
 
       }
 
+			var  notifModelarProj = null;
+
       if (req.session.autenticado) {
+				  console.log("AUTORIZADO");
+				if(req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T'){
 
-				var  notifModelarProj = null;
+				} else 	if(req.session.tipoUsuario == 'C'){
 
-        console.log("AUTORIZADO");
-				if(req.session.tipoUsuario == 'C'){
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
 					var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
@@ -91,13 +93,7 @@ module.exports.autenticar = function(application, req, res){
 
 							 }
 
-								res.render("includes/content", {
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									layout: 'includes/layoutIncludes'
 
-							 });
 
 							}
 
@@ -105,7 +101,13 @@ module.exports.autenticar = function(application, req, res){
 
 				}
 
+				res.render("includes/content", {
+					sessionNomeUsuario: req.session.nomeUsuario,
+					sessionNomeTipoUsuario: req.session.tipoUsuario,
+					notificacao: req.session.notificacoes,
+					layout: 'includes/layoutIncludes'
 
+			 });
 
 
       } else {

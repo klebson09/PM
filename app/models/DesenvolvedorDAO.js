@@ -7,7 +7,7 @@
    console.log("-> this._connection = "+this._connection);
  }
 
- DesenvolvedorDAO.prototype.incluirDev = function(usuario, req, res){
+ DesenvolvedorDAO.prototype.incluirDev = function(usuario, req, callback){
 
    console.log("DESENVOLVEDOR DAO");
    console.log("Inserindo Contato...");
@@ -53,15 +53,7 @@
 
 	     sqlDadosEducacionaisDev += "VALUES ('"+idUsuario+"', '"+matricula+"', '"+instituicaoEnsino+"', '"+curso+"',  '"+nivel+"',  '"+nivperiodo+"',  '"+docDeclaracaoMatricula+"')";
 
-	     this._connection.query(sqlDadosEducacionaisDev, function(err,result){
-
-	     	if (err) throw err;
-
-     			console.log("insert DADOS EDUCACIONAIS DESENVOLVEDOR ok O/ -->>");
-
-     			res.send("TUDO OK, DESENVOLVEDOR CADASTRADO");
-
-	     });
+	     this._connection.query(sqlDadosEducacionaisDev, callback);
      });
 
    });
