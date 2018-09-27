@@ -32,7 +32,7 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
       console.log("erro! verifique se vc já possui equipe ativa");
     }else{
       var idEquipe = result[0].idEquipe;
-      console.log("insertProposta"+insertProposta); 
+      console.log("insertProposta"+insertProposta);
       var insertProposta = 'INSERT INTO proposta(idProjeto, idEquipe, apresentacao, duvidas)';
       insertProposta += ' VALUES ("1", "'+idEquipe+'", "'+apresentacao+'","'+duvidas+'" )';
 
@@ -44,6 +44,30 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
 
 
 }
+
+propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
+
+  var sqlPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
+  this._connection.query(sqlPropostasProjeto, callback);
+
+}
+
+propostaDAO.prototype.enviarRespostaProp = function(req, callback){
+
+  var respostaMsg = req.body.respostaMsg;
+  var resposta = req.body.resposta;
+  var idProposta = req.body.idProposta;
+  var status = "Recusado";
+
+  if(resposta == "Aceito"){
+    status = "Aceito";
+  }
+
+  var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta = "+idProposta;
+  this._connection.query(updatePropostaSql, callback);
+
+}
+
 
 module.exports = function(){
   return propostaDAO;
