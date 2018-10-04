@@ -6,12 +6,12 @@ module.exports.listarPropostasProjeto = function(application, req, res){
   var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
   var projetosPropostas = [];
 
-  projetosDispDAO.projetosDisponiveis(req, function(error, result){
-    console.log("CALLBACK projetosDispDAO.projetosDisponiveis");
+  projetosDispDAO.verificarProjetosCliente(req.session.idContaUsuario, function(error, result){
+    console.log("CALLBACK projetosDispDAO.verificarProjetosCliente");
 
 
     if(error){
-      throw err;
+      throw error;
     } else {
       var i=0;
       var propostaDAO = new application.app.models.propostaDAO(connection);
@@ -19,10 +19,10 @@ module.exports.listarPropostasProjeto = function(application, req, res){
       console.log(JSON.stringify(result));
 
       for(i=0; i<result.length; i++){
-        var idProjeto = result[i][0];
-        var nomeProjeto = result[i][4];
+        var idProjeto = result[i].idProjeto;
+        var nomeProjeto = result[i].nomeProjeto;
         console.log("idProjeto = "+idProjeto);
-        var projeto = JSON.parse('{"idProjeto": "'+idProjeto+'", "nomeProjeto": "'+nomeProjeto+'"   "propostas": "null" }');
+        var projeto = JSON.parse('{"idProjeto": "'+idProjeto+'", "nomeProjeto": "'+nomeProjeto+'", "propostas": "null" }');
 
         propostaDAO.obterPropostasProjeto(idProjeto, function(error,result){
 
@@ -32,20 +32,27 @@ module.exports.listarPropostasProjeto = function(application, req, res){
             console.log("PROPOSTA(S) DO PROJETO RESGATADA(S) COM SUCESSO");
             console.log(JSON.stringify(result));
             projeto.propostas = result;
+            console.log("result = "+JSON.stringify(result)+"\n");
+            console.log("projeto.propostas = "+JSON.stringify(projeto.propostas)+"\n");
             projetosPropostas.push(projeto);
+
+            console.log("projetosPropostas = "+JSON.stringify(projetosPropostas));
+
+            res.render("includes/propostasEqp", {
+              sessionNomeUsuario: req.session.nomeUsuario,
+              sessionNomeTipoUsuario: req.session.tipoUsuario,
+              data: projetosPropostas,
+              notificacao: req.session.notificacoes,
+              layout: 'includes/layoutIncludes'
+            });
+
           }
 
         });
 
       }
 
-      res.render("includes/propostasEqp", {
-        sessionNomeUsuario: req.session.nomeUsuario,
-        sessionNomeTipoUsuario: req.session.tipoUsuario,
-        data: projetosPropostas,
-        notificacao: req.session.notificacoes,
-        layout: 'includes/layoutIncludes'
-      });
+
 
     }
   });

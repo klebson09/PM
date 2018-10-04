@@ -41,6 +41,8 @@ module.exports.criarProj = function(application, req, res){
 
 								var notif = JSON.parse(notifProjetoSucesso);
 
+								req.session.notificacoes = new Array();
+
 								req.session.notificacoes.push(notif);
 
 								res.render("includes/content", {

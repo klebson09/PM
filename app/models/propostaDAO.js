@@ -32,10 +32,9 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
       console.log("erro! verifique se vc já possui equipe ativa");
     }else{
       var idEquipe = result[0].idEquipe;
-      console.log("insertProposta"+insertProposta);
       var insertProposta = 'INSERT INTO proposta(idProjeto, idEquipe, apresentacao, duvidas)';
-      insertProposta += ' VALUES ("1", "'+idEquipe+'", "'+apresentacao+'","'+duvidas+'" )';
-
+      insertProposta += ' VALUES ("'+idProjeto+'", "'+idEquipe+'", "'+apresentacao+'","'+duvidas+'" )';
+      console.log("insertProposta"+insertProposta);
       this._connection.query(insertProposta, callback);
 
     }
@@ -48,6 +47,7 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
 propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
 
   var sqlPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
+  console.log("sqlPropostasProjeto = "+sqlPropostasProjeto);
   this._connection.query(sqlPropostasProjeto, callback);
 
 }

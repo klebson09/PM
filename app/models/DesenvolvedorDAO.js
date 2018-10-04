@@ -1,7 +1,3 @@
- var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
- var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
- var sqlDadosEducacionaisDev = "INSERT INTO dados_educacionais_desenvolvedor (idContaUsuario, matricula, instituicaoEnsino, curso, turno, periodo, declaracaoMatricula)";
-
  function DesenvolvedorDAO(connection){
    this._connection = connection();
    console.log("-> this._connection = "+this._connection);
@@ -32,7 +28,7 @@
 
    //console.log("telefone = "+telefone+"\ncelular = "+celular+"\nhangouts = "+hangouts+"\nskype = "+skype+
    	//"\ngithub = "+gitHub);
-
+   var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype, github)";
    sqlContato += "VALUES ('"+telefone+"', '"+celular+"', '"+hangouts+"', '"+skype+"',  '"+gitHub+"')";
 
    this._connection.query(sqlContato, function (err, result) {
@@ -42,6 +38,7 @@
      var idContato = result.insertId;
      console.log(idContato);
 
+      var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
      sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'D', 'F', '"+dataNascimento+"', '"+cpf+"')";
 
      this._connection.query(sqlUsuario, function(err,result){
@@ -51,6 +48,7 @@
 	     var idUsuario = result.insertId;
 	     console.log(idUsuario);
 
+       var sqlDadosEducacionaisDev = "INSERT INTO dados_educacionais_desenvolvedor (idContaUsuario, matricula, instituicaoEnsino, curso, turno, periodo, declaracaoMatricula)";
 	     sqlDadosEducacionaisDev += "VALUES ('"+idUsuario+"', '"+matricula+"', '"+instituicaoEnsino+"', '"+curso+"',  '"+nivel+"',  '"+nivperiodo+"',  '"+docDeclaracaoMatricula+"')";
 
 	     this._connection.query(sqlDadosEducacionaisDev, callback);

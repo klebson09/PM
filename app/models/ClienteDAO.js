@@ -1,7 +1,3 @@
-var sqlContato = "INSERT INTO contato (telefone, celular)";
-var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, cpf_cnpj, tipoPessoa)";
-
-
 
 function ClienteDAO(connection){
   this._connection = connection();
@@ -46,8 +42,8 @@ ClienteDAO.prototype.incluirCliente = function(cliente, callback){
   var idContato = 1;
   var tipoUsuario = 'C';
 //  console.log(idContato+" "+email+" "+senha+" "+nomeCliente+" "+tipoUsuario+" "+cpf_cnpj+" "+tipoPessoa+");
-
-  sqlContato += "VALUES ('"+telefone+"', '"+celular+"')";
+  var sqlContato = "INSERT INTO contato (telefone, celular)";
+  sqlContato += " VALUES ('"+telefone+"', '"+celular+"')";
 
   console.log(sqlContato);
 
@@ -56,7 +52,8 @@ ClienteDAO.prototype.incluirCliente = function(cliente, callback){
     if (err) throw err;
     console.log("contato - "+result);
     var idContato = result.insertId;
-    sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"',  'C', '"+cpf_cnpj+"', '"+tipoPessoa+"')";
+    var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, cpf_cnpj, tipoPessoa)";
+    sqlUsuario += " VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nomeCliente+"',  'C', '"+cpf_cnpj+"', '"+tipoPessoa+"')";
 
     this._connection.query(sqlUsuario, callback);
   });

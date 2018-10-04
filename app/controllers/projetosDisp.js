@@ -18,6 +18,8 @@ module.exports.projDisp = function(application, req, res){
 				throw err;
 			} else {
 
+				req.session.notificacoes = [];
+
 				console.log(JSON.stringify(result));
 				console.log("+++++++++ FIMMMM ++++++");
 				//res.render("includes/projetosDisp", { data: JSON.stringify(res) });

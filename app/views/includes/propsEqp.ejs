@@ -62,11 +62,13 @@
                        <th>Aprovar/Recusar</th>
                        <!-- <th style="width: 40px">Função</th> -->
                      </tr>
+                     <% for(var i=0; i < data.length; i++){ %>
+                     <% var proposta = data[i].propostas[0] %>
                      <tr>
-                       <td>Equipe alfa</td>
-                       <td>Atuamos no desenvolvimento mobile Android nativo</td>
-                       <td>Gostariamos de saber qual o prao estimado para conclusão do projeto</td>
-                       <td><span>-----</span></td>
+                       <td><%=proposta.nomeEquipe %></td>
+                       <td><%=proposta.apresentacao %></td>
+                       <td><%=proposta.duvidas %></td>
+                       <td><span><%= proposta.feedback %></span></td>
                        <td>
                          <button type="button" class="btn btn-successo btn-sm"  value=">" onclick="" >Aprovar</button>
                          <button type="button" class="btn btn-danger btn-sm"  value=">" onclick="" >Recusar</button>
@@ -74,16 +76,7 @@
                        </td>
                        <!-- <td><span class="badge bg-red">Tutor</span></td> -->
                      </tr>
-                     <tr>
-                       <td>Klebson Leonardo Santana</td>
-                       <td>klebsonleornardo@recife.ifpe.edu.br</td>
-                       <td><span class="badge bg-blue">Dev</span></td>
-                     </tr>
-                    <tr>
-                       <td>Matheus Levi Barouh dos Santos</td>
-                       <td>matheuslevi@recife.ifpe.edu.br</td>
-                       <td><span class="badge bg-blue">Dev</span></td>
-                     </tr>
+                     <% } %>
                    </tbody></table>
                  </div>
                  <!-- /.box-body -->
@@ -101,15 +94,3 @@
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 <!-- <script src="plugins/jQuery/jQuery-2.1.3.min.js"></script> -->
-<script>
-
-if(<%= notificacao[0].mensagem == 'Você precisa modelar um projeto' %>){
-  $(window).on('load',function(){
-    $('#myModal').modal('show');
-    document.getElementById("notificacaoMensagemTitle").innerHTML = "Alerta!";
-    document.getElementById("notificacaoMensagemBody").innerHTML = "Você precisa modelar um projeto.";
-  });
-}else{
-  console.log("ñ tem notificação");
-}
-</script>
