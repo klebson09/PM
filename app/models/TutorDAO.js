@@ -1,7 +1,3 @@
-var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
- var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, dataNascimento, cpf_cnpj)";
- var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
-
  function TutorDAO(connection){
    this._connection = connection();
    console.log("-> this._connection = "+this._connection);
@@ -9,13 +5,16 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
 
  TutorDAO.prototype.incluirTutor = function(usuario, req, res){
 
+   var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
+    var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, cpf_cnpj)";
+    var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
+
    console.log("TUTOR DAO");
    console.log("Inserindo Contato...");
 
    var cpf = usuario.cpf_cnpj;
    var nome = usuario.nome;
-   var dataNascimento = usuario.dataNascimento;
-   var telefone = usuario.Telefone;
+   var telefone = usuario.telefone;
    var celular = usuario.celular;
    var hangouts = usuario.Hangouts;
    var skype = usuario.Skype;
@@ -39,7 +38,7 @@ var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
      var idContato = result.insertId;
      console.log(idContato);
 
-     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+dataNascimento+"', '"+cpf+"')";
+     sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+cpf+"')";
 
      this._connection.query(sqlUsuario, function(err,result){
      	if (err) throw err;
