@@ -5,7 +5,7 @@ function propostaDAO(connection){
 
 propostaDAO.prototype.insertProposta = function(res, req, callback){
   //-----------------------verifica membro eqp ------------------
-  var statusEqp  = "Livre";  //console.log(" ***************ops************ "+ JSON.stringify(req.body.idContaUsuario) );
+  var statusEqp  = "Aberto";  //console.log(" ***************ops************ "+ JSON.stringify(req.body.idContaUsuario) );
   var idContaUs = req.session.idContaUsuario;
   console.log("idContaUs @@@@@"+idContaUs);
   var apresentacao = req.body.apresentacao;
