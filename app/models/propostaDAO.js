@@ -55,15 +55,16 @@ propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
 propostaDAO.prototype.enviarRespostaProp = function(req, callback){
 
   var respostaMsg = req.body.respostaMsg;
-  var resposta = req.body.resposta;
+//  var resposta = req.body.resposta;
   var idProposta = req.body.idProposta;
   var status = "Recusado";
-
+  console.log("@@respostaMsg==>"+respostaMsg+"resposta==>"+resposta+"idProposta==>"+idProposta);
   if(resposta == "Aceito"){
     status = "Aceito";
   }
 
   var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta = "+idProposta;
+  console.log("@@updatePropostaSql@@"+updatePropostaSql);
   this._connection.query(updatePropostaSql, callback);
 
 }
