@@ -10,15 +10,29 @@ module.exports.criarEqp = function(application, req, res){
       if(erro){
         throw erro;
       } else {
-          console.log(JSON.stringify(resultado));
-          console.log("Vai responder");
-          res.render("includes/criarEqp3", {
-            sessionNomeUsuario: req.session.nomeUsuario,
-            sessionNomeTipoUsuario: req.session.tipoUsuario,
-            notificacao: req.session.notificacoes,
-            data: JSON.stringify(resultado),
-            layout: 'includes/layoutIncludes'
-            });
+        var listaDesenvolvedores = resultado;
+        console.log("resultado DEV = "+JSON.stringify(resultado)+"\n");
+        console.log("desenvolvedores = "+JSON.stringify(listaDesenvolvedores)+"\n");
+        var listaTutores = "";
+        UsuarioDAO.obterTutores(function(erro, resultado){
+          if(erro){
+            throw erro;
+          } else {
+            listaTutores = resultado;
+            console.log("resultado TUT = "+JSON.stringify(resultado)+"\n");
+            console.log("tutores = "+JSON.stringify(listaTutores)+"\n");
+            console.log("desenvolvedores DEV DPS= "+JSON.stringify(listaDesenvolvedores)+"\n");
+            console.log("Vai responder");
+            res.render("includes/criarEqp3", {
+              sessionNomeUsuario: req.session.nomeUsuario,
+              sessionNomeTipoUsuario: req.session.tipoUsuario,
+              notificacao: req.session.notificacoes,
+              data: JSON.stringify(listaDesenvolvedores),
+              tutores: JSON.stringify(listaTutores),
+              layout: 'includes/layoutIncludes'
+              });
+          }
+        })
       }
     });
 
