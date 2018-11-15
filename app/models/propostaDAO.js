@@ -46,29 +46,40 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
 
 propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
 
-  var sqlPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
+  var sqlPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
   console.log("sqlPropostasProjeto = "+sqlPropostasProjeto);
   this._connection.query(sqlPropostasProjeto, callback);
 
 }
 
 propostaDAO.prototype.enviarRespostaProp = function(req, callback){
-
   var respostaMsg = req.body.respostaMsg;
 //  var resposta = req.body.resposta;
   var idProposta = req.body.idProposta;
-  var status = "Recusado";
-  console.log("@@respostaMsg==>"+respostaMsg+"resposta==>"+resposta+"idProposta==>"+idProposta);
-  if(resposta == "Aceito"){
-    status = "Aceito";
-  }
+  // var status = "Recusado";
+  console.log("@@enviarRespostaProp==>"+respostaMsg+"idProposta==>"+idProposta);
+  // if(resposta == "Aceito"){
+  //   status = "Aceito";
+  // }
 
-  var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta = "+idProposta;
-  console.log("@@updatePropostaSql@@"+updatePropostaSql);
+  // var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta ='"+idProposta+"')";
+  var updatePropostaSql = "UPDATE `proposta` SET `feedback` = '"+respostaMsg+"' WHERE (`idProposta` ='"+idProposta+"')";
+  console.log("@@enviarRespostaProp@@"+updatePropostaSql);
   this._connection.query(updatePropostaSql, callback);
-
 }
 
+propostaDAO.prototype.aprovarProp = function(req, callback){
+  var status = req.body.status;
+//  var resposta = req.body.resposta;
+  var idProposta = req.body.idProposta;
+  // var status = "Recusado";
+  console.log("@@status==>"+status+"idProposta==>"+idProposta);
+
+  // var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta ='"+idProposta+"')";
+  var updatePropostaSql = "UPDATE `proposta` SET `status` = '"+status+"' WHERE (`idProposta` ='"+idProposta+"')";
+  console.log("@@updatePropostaSql@@"+updatePropostaSql);
+  this._connection.query(updatePropostaSql, callback);
+}
 
 module.exports = function(){
   return propostaDAO;

@@ -20,12 +20,6 @@
                    <div class="form-group col-md-12">
                     <textarea class="form-control" name="descrEquipe" id="descrEquipe" rows="3" placeholder="Descrição"></textarea>
                   </div>
-                  <select class="form-group col-md-12" name="tutor" >
-                     <% for(var i=0; i < tutores.length; i++){ %>
-                     <% var tutor = tutores[i] %>
-                     <option value="<%= tutor.idContaUsuario %>"><%= tutor.nomeUsuario %></option>
-                      <% } %>
-                  </select>
                   <div class="form-group  col-md-12 ">
 
                     <div class="demo">
@@ -78,8 +72,6 @@
         </div>
         <!-- /.col -->
       </div>
-
-
                  <div class="form-group col-md-12">
                   <input type="submit" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Cadastrar"  />
                 </div>

@@ -21,7 +21,7 @@ module.exports.listarPropostasProjeto = function(application, req, res){
       for(i=0; i<result.length; i++){
         var idProjeto = result[i].idProjeto;
         var nomeProjeto = result[i].nomeProjeto;
-        console.log("idProjeto = "+idProjeto);
+        console.log("%%%%%%%%%%%%%%% idProjeto = "+idProjeto);
         var projeto = JSON.parse('{"idProjeto": "'+idProjeto+'", "nomeProjeto": "'+nomeProjeto+'", "propostas": "null" }');
 
         propostaDAO.obterPropostasProjeto(idProjeto, function(error,result){
@@ -60,7 +60,7 @@ module.exports.listarPropostasProjeto = function(application, req, res){
 }
 
 module.exports.enviarRespostaProposta = function(application, req, res){
-
+  console.log("===req.body==>>>"+req.body);
   var connection = application.config.dbConnection;
   var propostaDAO = new application.app.models.propostaDAO(connection);
 
@@ -70,12 +70,22 @@ module.exports.enviarRespostaProposta = function(application, req, res){
       throw error;
     } else {
       console.log("RESPOSTA ENVIADA COM SUCESSO!");
-
       res.send("RESPOSTA ENVIADA COM SUCESSO!");
-
     }
-
   });
+}
+module.exports.aprovarProposta = function(application, req, res){
+  var connection = application.config.dbConnection;
+  var propostaDAO = new application.app.models.propostaDAO(connection);
+  console.log("==@@@@@@@@@@@2req  "+JSON.stringify(req.body));
+  console.log("IDPROJETOOOOOOO!!!!@@@"+res.idProjeto);
+  propostaDAO.aprovarProp(req, function(error, result){
 
-
+    if(error){
+      throw error;
+    } else {
+      console.log("RESPOSTA ENVIADA COM SUCESSO!");
+      res.send("RESPOSTA ENVIADA COM SUCESSO!");
+    }
+  });
 }
