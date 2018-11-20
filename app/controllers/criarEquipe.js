@@ -53,7 +53,7 @@ module.exports.cadastrarEquipe = function(application, req, res){
     var EquipeDAO = new application.app.models.EquipeDAO(connection);
 
 
-    EquipeDAO.cadEquipe(equipe, function(erro, resultado){
+    EquipeDAO.cadEquipe(equipe, req.session.idContaUsuario ,function(erro, resultado){
       if(erro){
         throw erro;
       } else {
