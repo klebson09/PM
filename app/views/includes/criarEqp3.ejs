@@ -85,9 +85,9 @@
             $.each(objSelecionados, function(key,value){
                     if(value.tipoUsuario == "T"){
                       temTutor = true;
-                      $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-blue">Tutor</span></td></td></tr>');
+                      $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td></tr>');
                     }else{
-                      $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td><td><span class="badge bg-red">Dev</span></td></td></tr>');
+                      $("#tabelaMembrosCorpo").append('<tr><td>'+value.name+'</td><td>'+value.email+'</td></tr>');
                     }
             });
           } else {
@@ -103,7 +103,7 @@
             tabelaMembrosCorpo.removeChild(tabelaMembrosCorpo.lastChild);
           }
 
-          $("#tabelaMembrosCorpo").append('<tr><th>Nome</th><th>Email</th><th style="width: 40px">Função</th></tr>');
+          $("#tabelaMembrosCorpo").append('<tr><th>Nome</th><th>Email</th></tr>');
 
         }
 
