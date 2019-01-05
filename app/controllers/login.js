@@ -53,7 +53,13 @@ module.exports.autenticar = function(application, req, res){
       if (req.session.autenticado) {
 				  console.log("AUTORIZADO");
 				if(req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T'){
+					res.render("includes/content", {
+					 sessionNomeUsuario: req.session.nomeUsuario,
+					 sessionNomeTipoUsuario: req.session.tipoUsuario,
+					 notificacao: req.session.notificacoes,
+					 layout: 'includes/layoutIncludes'
 
+				});
 				} else 	if(req.session.tipoUsuario == 'C'){
 
 					console.log("Verificando se o usuário cliente tem um projeto associado");
@@ -89,9 +95,25 @@ module.exports.autenticar = function(application, req, res){
 
 								 console.log("notificacao = "+notifModelarProj);
 
+								 res.render("includes/content", {
+				 					sessionNomeUsuario: req.session.nomeUsuario,
+				 					sessionNomeTipoUsuario: req.session.tipoUsuario,
+				 					notificacao: req.session.notificacoes,
+				 					layout: 'includes/layoutIncludes'
+
+				 			 });
 
 
-							 }
+
+						 } else{
+							 res.render("includes/content", {
+								sessionNomeUsuario: req.session.nomeUsuario,
+								sessionNomeTipoUsuario: req.session.tipoUsuario,
+								notificacao: req.session.notificacoes,
+								layout: 'includes/layoutIncludes'
+
+						 });
+						 }
 
 
 
@@ -101,13 +123,7 @@ module.exports.autenticar = function(application, req, res){
 
 				}
 
-				res.render("includes/content", {
-					sessionNomeUsuario: req.session.nomeUsuario,
-					sessionNomeTipoUsuario: req.session.tipoUsuario,
-					notificacao: req.session.notificacoes,
-					layout: 'includes/layoutIncludes'
 
-			 });
 
 
       } else {

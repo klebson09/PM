@@ -23,16 +23,17 @@
                   <div class="form-group  col-md-12 ">
 
                     <div class="demo">
-                      <select  name="membrosEquipe" multiple  >
-                        <option value="1">1</option>
-                         <option value="2">2</option>
-                         <option value="3">3</option>
-                         <option value="4">4</option>
-                         <option value="5">5</option>
-                         <option value="6" >6</option>
-                         <option value="7" >7</option>
-                         <option value="8">8</option>
-                         <option value="9">9</option>
+                      <select  name="membrosEquipe" multiple style="width: 50px; -webkit-appearance:menulist;" >
+
+                      </select>
+                    </div>
+					<% var tutores = dataTutor %>
+                    <div class="demoTutor">
+                      <select  name="tutores" class="minimal" style="-webkit-appearance:menulist; width:100%; margin-top:20px; padding: 6px 25px 5px 5px; border-radius: 4px;">
+                         <option value="0" selected>Tutor</option>
+                         <% for(var i=0; i<tutores.length; i++){ %>
+                         <option value="<%= tutores[i].idContaUsuario  %>"><%= tutores[i].nomeUsuario %></option>
+                         <% } %>
                       </select>
                     </div>
                   	<!-- <div class="col-md-10 sem-padding-esq" > -->

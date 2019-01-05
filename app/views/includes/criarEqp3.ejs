@@ -1,6 +1,11 @@
 <html>
 <head>
   <link rel="stylesheet" href="multipleselect/jquery.dropdown.css">
+  <style>
+      .dropdown-display-label:after, .dropdown-display:after{
+        display: none;
+      }
+  </style>
 </head>
 <body>
 
@@ -54,7 +59,9 @@
 
 
         function tratarJSON(){
-          var resultado = <%- data %>
+
+          var resultado =  <%- dataDEV %>;
+         
           var jsonTratado = [];
 
           var i=0;
@@ -123,7 +130,7 @@
   limitCount: Infinity,
 
   // search field
-  input: '<input type="text" maxLength="40" placeholder="Selecione">',
+  input: '<input type="text" maxLength="40" placeholder="Desenvolvedores">',
 
   // dynamic data here
   data: obj,
@@ -154,15 +161,7 @@
         var j=0;
         for(j=0; j<idsSelecionados.length; j++){
           if(obj[i].id == idsSelecionados[j]){
-            console.log("temTutor"+temTutor);
-            if(temTutor){
-
-              console.log("temTutor dentro do IF"+temTutor);
-              $('#myModal').modal('show');
-              retirarMembro(obj[i].id);
-            }else{
             objSelecionados.push(obj[i]);
-          }
           }
         }
       }

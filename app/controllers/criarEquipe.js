@@ -4,21 +4,34 @@ module.exports.criarEqp = function(application, req, res){
     console.log("criarEqp");
     var connection = application.config.dbConnection;
     var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
+    var resultadoDEV = [];
+    var resultadoTutor = [];
 
-    UsuarioDAO.obterMembrosEquipe(function(erro, resultado){
+    UsuarioDAO.obterMembrosEquipe(function(erro, resultadoD){
       console.log("callback obter membros equipe");
       if(erro){
         throw erro;
       } else {
-          console.log(JSON.stringify(resultado));
-          console.log("Vai responder");
-          res.render("includes/criarEqp3", {
-            sessionNomeUsuario: req.session.nomeUsuario,
-            sessionNomeTipoUsuario: req.session.tipoUsuario,
-            notificacao: req.session.notificacoes,
-            data: JSON.stringify(resultado),
-            layout: 'includes/layoutIncludes'
-            });
+          console.log("DEVs - "+JSON.stringify(resultadoD));
+          resultadoDEV = resultadoD;
+          console.log("Vai pegar o tutor");
+          UsuarioDAO.obterTutores(function(erro,resultadoT){
+              if(erro){
+                throw error;
+              } else {
+                console.log("Tutores - "+JSON.stringify(resultadoT));
+                resultadoTutor = resultadoT;
+                console.log("Vai responder");
+                res.render("includes/criarEqp3", {
+                  sessionNomeUsuario: req.session.nomeUsuario,
+                  sessionNomeTipoUsuario: req.session.tipoUsuario,
+                  notificacao: req.session.notificacoes,
+                  dataDEV: JSON.stringify(resultadoDEV),
+                  dataTutor: resultadoTutor,
+                  layout: 'includes/layoutIncludes'
+                  });
+              }
+          })
       }
     });
 
