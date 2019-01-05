@@ -12,7 +12,7 @@ EquipeDAO.prototype.cadEquipe = function(equipe, idAdmEqp ,callback){
     var nomeEquipe = equipe.nomeEquipe;
     var descrEquipe = equipe.descrEquipe;
     var idAdmEquipe = idAdmEqp;
-    var idTutor = equipe.idTutor;
+    var idTutor = equipe.tutor;
 
     sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idAdmEquipe+"', '"+idTutor+"' )";
 
