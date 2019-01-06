@@ -1,9 +1,11 @@
 module.exports.termoDeAbertura = function(application, req, res){
 
 	        res.render("includes/termoAbertura", {
-						sessionNomeUsuario: req.session.nomeUsuario,
-            sessionNomeTipoUsuario: req.session.tipoUsuario,
-					});
+	        	sessionNomeUsuario: req.session.nomeUsuario,
+            	sessionNomeTipoUsuario: req.session.tipoUsuario,
+            	notificacao: req.session.notificacoes,
+				layout: 'includes/layoutIncludes'
+				});
 }
 
 module.exports.criarTermoDeAbertura = function(application, req, res){
