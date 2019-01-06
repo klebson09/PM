@@ -405,6 +405,13 @@ border: 2px solid black;
 		/*CSS counters to number the steps*/
 		counter-reset: step;
 	}
+	.progressbarCliente{
+		margin-left: 85px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
 	#progressbar li {
 		list-style-type: none;
 		color: black;
@@ -418,6 +425,13 @@ border: 2px solid black;
 }
 @media screen and (max-width: 400px) {
 	.progressbarDesenvolvedor{
+		margin-left: 50px;
+		margin-bottom: 30px;
+		overflow: hidden;
+		/*CSS counters to number the steps*/
+		counter-reset: step;
+	}
+	.progressbarCliente{
 		margin-left: 50px;
 		margin-bottom: 30px;
 		overflow: hidden;
