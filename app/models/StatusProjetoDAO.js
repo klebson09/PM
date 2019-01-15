@@ -1,6 +1,6 @@
 var sqlIniciarStatus = "INSERT INTO statusprojeto (idProjeto, modelarProjeto, disporProjeto) ";
 var sqlAtualizarStatus = "UPDATE statusprojeto SET";
-var sqlSelectStatusProjeto = "SELECT * FROM statusprojeto WHERE "
+var sqlSelectStatusProjeto = "SELECT * FROM statusprojeto WHERE ";
 
 //var sqlProjeto = "INSERT INTO projeto (idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade, mobile, web, desktop)";
 
@@ -19,6 +19,14 @@ StatusProjetoDAO.prototype.inicializarStatusProjeto = function(idProjeto, callba
 
   sqlIniciarStatus += "VALUES ('"+idProjeto+"', '2', '2')";
   console.log("sqlIniciarStatus = "+sqlIniciarStatus);
+  this._connection.query(sqlIniciarStatus, callback);
+}
+
+
+StatusProjetoDAO.prototype.selecionarStatusProjeto = function(idProjeto, callback){
+
+  sqlSelectStatusProjeto += "idProjeto = 3";
+  console.log("sqlSelecionarStatusProjeto = "+sqlIniciarStatus);
   this._connection.query(sqlIniciarStatus, callback);
 }
 
