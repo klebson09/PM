@@ -17,18 +17,18 @@ module.exports.viewTimeLine = function(application, req, res){
 
 module.exports.listTimeLineClient = function(application, req, res){
 	//var entregaveis = JSON.parse(req.body.entregaveis);
-	console.log(req.body);
+	console.log("timeline req.body  = "+req.body);
 	//console.log("Entregaveis:\n\n"+JSON.stringify(entregaveis));
 
   	var connection = application.config.dbConnection;
 	var timeLine = req.body;
-	var statusProjetoDAO = new application.app.models.timeLineDAO(connection);
+	var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
 
-	statusProjetoDAO.selecionarStatusProjetoTimeLine(req, function(erro, result){
+	statusProjetoDAO.selecionarStatusProjeto(req, function(erro, result){
 				if(erro){
 					throw erro;
 				} else {
-					console.log("SELECT DA TABELA selecionarStatusProjetoTimeLine");
+					console.log("SELECT DA TABELA selecionarStatusProjeto");
 					req.session.notificacoes = [];
 
 					console.log(JSON.stringify(result));

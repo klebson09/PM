@@ -25,9 +25,9 @@ StatusProjetoDAO.prototype.inicializarStatusProjeto = function(idProjeto, callba
 
 StatusProjetoDAO.prototype.selecionarStatusProjeto = function(idProjeto, callback){
 
-  sqlSelectStatusProjeto += "idProjeto = 3";
-  console.log("sqlSelecionarStatusProjeto = "+sqlIniciarStatus);
-  this._connection.query(sqlIniciarStatus, callback);
+  sqlSelectStatusProjeto += "idProjeto = "+idProjeto;
+  console.log("sqlSelecionarStatusProjeto = "+sqlSelectStatusProjeto);
+  this._connection.query(sqlSelectStatusProjeto, callback);
 }
 
 module.exports = function(){
