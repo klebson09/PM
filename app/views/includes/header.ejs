@@ -192,11 +192,11 @@
                 <li class="user-header">
                   <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
                   <p>
-                    <%= sessionNomeUsuario %> -   <% if (sessionNomeTipoUsuario == 1){ %>
+                    <%= sessionNomeUsuario %> -   <% if (sessionNomeTipoUsuario == 'C'){ %>
                       Cliente
-                      <% } else if(sessionNomeTipoUsuario == 2) { %>
+                      <% } else if(sessionNomeTipoUsuario == 'D') { %>
                         Desenvolvedor
-                        <% } else if(sessionNomeTipoUsuario == 3) { %>
+                        <% } else if(sessionNomeTipoUsuario == 'T') { %>
                           Tutor
                           <% } else { %>
                             Error

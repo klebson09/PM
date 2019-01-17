@@ -1,3 +1,11 @@
+<% var dev = [{"icon":"fa fa-code","texto":"Novos Projetos","link":"/projeto_disp"},{"icon":"fa fa-search","texto":"Buscar Equipes","link":"/buscar_eqp"},{"icon":"fa fa-group","texto":"Criar Equipe","link":"/criar_equipe"},{"icon":"fa fa-calendar","texto":"Projetos em andamento","link":"/projetos_andamento"}];
+
+var cli = [{"icon":"fa fa-edit","texto":"Modelar Projeto","link":"/modelar_projeto"}, {"icon":"fa fa-envelope","texto":"Propostas das Equipes","link":"/propostas_projeto"},{"icon":"fa fa-edit","texto":"Termos de Abertura","link":"/termo_abertura"}];
+
+var tut = [{"icon":"fa fa-envelope","texto":"Visualizar Convites","link":"/convites_tutor"},{"icon":"fa fa-calendar","texto":"Visualizar Projetos","link":"/projeto_disp"}]; 
+
+var menuUsr = []; %>
+
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
   <!-- sidebar: style can be found in sidebar.less -->
@@ -11,12 +19,15 @@
         <p><%= sessionNomeUsuario %></p>
 
         <a href="#"><i class="fa fa-circle text-success"></i>
-          <% if (sessionNomeTipoUsuario == 1){ %>
+          <% if (sessionNomeTipoUsuario == 'C'){ %>
             Cliente
-          <% } else if(sessionNomeTipoUsuario == 2) { %>
+            <% menuUsr = cli; %>
+          <% } else if(sessionNomeTipoUsuario == 'D') { %>
             Desenvolvedor
-          <% } else if(sessionNomeTipoUsuario == 3) { %>
+            <% menuUsr = dev; %>
+          <% } else if(sessionNomeTipoUsuario == 'T') { %>
             Tutor
+             <% menuUsr = tut; %>
           <% } else { %>
             Error
           <% } %>
@@ -24,31 +35,17 @@
       </div>
     </div>
     <!-- search form -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search..."/>
-        <span class="input-group-btn">
-          <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-        </span>
-      </div>
-    </form>
+    
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
-      <li class="header">MAIN NAVIGATION</li>
-            <li><a href="/includes"><i class="fa fa-book"></i> Index</a></li>
-      <li class="active treeview">
-        <a href="#">
-          <i class="fa fa-dashboard"></i> <span>Cadastros</span> <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <!-- <li><a href="/cadastro_cliente"><i class="fa fa-circle-o"></i> Cadastro Cliente</a></li>
-          <li><a href="/cadastro_desenvolvedor"><i class="fa fa-circle-o"></i> Cadastro Desenvolvedor</a></li>
-          <li class="active"><a href="/cadastro_tutor"><i class="fa fa-circle-o"></i> Cadastro Tutor</a></li> -->
-          <li><a href="/criar_equipe"><i class="fa fa-circle-o"></i> Cadastro Equipe</a></li>
-        </ul>
-      </li>
-      <!-- <li class="treeview">
+      <li class="header">MENU PRINCIPAL</li>
+        <li><a href="/content"><i class="fa fa-clock-o"></i>Linha do Tempo</a></li>
+        <% for(var i=0; i< menuUsr.length; i++){ %>
+        <li><a href="<%- menuUsr[i].link  %>"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+        <% }%>
+
+            <!-- <li class="treeview">
         <a href="#">
           <i class="fa fa-files-o"></i>
           <span>Layout Options</span>
@@ -61,7 +58,7 @@
           <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
         </ul>
       </li> -->
-      <li>
+      <!--<li>
         <a href="/login">
           <i class="fa fa-th"></i> <span>Login</span> <small class="label pull-right bg-green">new</small>
         </a>
@@ -71,7 +68,7 @@
       <li class="header">LABELS</li>
       <li><a href="/projeto_disp"><i class="fa fa-circle-o text-danger"></i> Projetos Disponibilizados</a></li>
       <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Warning</a></li>
-      <li><a href="#"><i class="fa fa-circle-o text-info"></i> Information</a></li>
+      <li><a href="#"><i class="fa fa-circle-o text-info"></i> Information</a></li>-->
     </ul>
   </section>
   <!-- /.sidebar -->
