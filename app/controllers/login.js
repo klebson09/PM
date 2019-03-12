@@ -84,9 +84,9 @@ module.exports.autenticar = function(application, req, res) {
 							if (result[0] == undefined || result[0] == null) {
 								console.log("Sem projetos associados/pendentes");
 
-								var timelineAnalisador = new application.app.models.timeLineAnalisador();
+								var timeLineAnalisador = new application.app.models.timeLineAnalisador();
 								
-								timelineAnalisador.processaMensagemCliente(null,function(msgs){
+								timeLineAnalisador.processaMensagemCliente(null, req.session, function(msgs){
 									
 									res.render("includes/timeLine", {
 										sessionNomeUsuario: req.session.nomeUsuario,
@@ -96,25 +96,16 @@ module.exports.autenticar = function(application, req, res) {
 										layout: 'includes/layoutIncludes'
 
 									});
-
-									
-									
 								});
-								
-
-								
-
-
 							} else {
-								
-								
-								
-								res.render("includes/content", {
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									layout: 'includes/layoutIncludes'
-
+								timeLineAnalisador.processaMensagemCliente(result,function(msgs){
+									res.render("includes/timeLine", {
+										sessionNomeUsuario: req.session.nomeUsuario,
+										sessionNomeTipoUsuario: req.session.tipoUsuario,
+										notificacao: req.session.notificacoes,
+										data: msgs,
+										layout: 'includes/layoutIncludes'
+									});
 								});
 							}
 
