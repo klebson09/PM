@@ -69,7 +69,7 @@ module.exports.candidatarse = function(application, req, res){
 				//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
 				//===>> IMPLEMENTAR UMA PAGINA INFORMANDO Q O A EQUIPE SE CANDIDATOU AO PROJETO
 				res.render("includes/projetosDisp", {
-					sessionNomeUsuario: req.session.nomeUsuario,
+					sessionNomeUsuario: req.session.nomeUsuario, 
 					sessionNomeTipoUsuario: req.session.tipoUsuario,
 					data: result,
 					notificacao: req.session.notificacoes,

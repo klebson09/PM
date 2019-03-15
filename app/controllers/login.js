@@ -45,17 +45,27 @@ module.exports.autenticar = function(application, req, res) {
 				req.session.nomeUsuario = result[0].nomeUsuario;
 				req.session.email = result[0].email;
 				req.session.equipe = result[0].equipe;
+				req.session.dataCadastro = new Date(result[0].dataCadastro);
+				req.session.dataCadastroExtenso =  "";
+				req.session.horaCadastroExtenso =  "";
 				req.session.notificacoes = [{
 					mensagem: "Nenhuma notificação",
 					link: "#",
 					tipo: "#"
 				}];
+				req.session.msgsTimeline = [];
 
 
-				console.log(req.session.tipoUsuario);
-				console.log(req.session.nomeUsuario);
+				
 
 			}
+
+			console.log("tipoUsuario = "+req.session.tipoUsuario);
+			console.log("nomeUsuario = "+req.session.nomeUsuario);
+			console.log("dataCadastroJS = "+req.session.dataCadastro);
+			console.log("dataCadastroDATA = "+req.session.dataCadastro.getDate());
+			console.log("dataCadastroMES = "+req.session.dataCadastro.getMonth());
+			console.log("dataCadastroANO = "+req.session.dataCadastro.getFullYear());
 
 			var notifModelarProj = null;
 
@@ -80,36 +90,56 @@ module.exports.autenticar = function(application, req, res) {
 						if (error) {
 							throw error;
 						} else {
+							var timeLineAnalisador = new application.app.models.timeLineAnalisador();
 							console.log(JSON.stringify(result));
 							if (result[0] == undefined || result[0] == null) {
 								console.log("Sem projetos associados/pendentes");
 
-								var timeLineAnalisador = new application.app.models.timeLineAnalisador();
 								
-								timeLineAnalisador.processaMensagemCliente(null, req.session, function(msgs){
+								
+								timeLineAnalisador.processaMensagemCliente(null, req.session, null, function(msgs){
 									
+									req.session.msgsTimeline = msgs;
+
 									res.render("includes/timeLine", {
 										sessionNomeUsuario: req.session.nomeUsuario,
 										sessionNomeTipoUsuario: req.session.tipoUsuario,
 										notificacao: req.session.notificacoes,
-										data: msgs,
+										data: req.session.msgsTimeline,
 										layout: 'includes/layoutIncludes'
 
 									});
 								});
 							} else {
-								timeLineAnalisador.processaMensagemCliente(result,function(msgs){
-									res.render("includes/timeLine", {
-										sessionNomeUsuario: req.session.nomeUsuario,
-										sessionNomeTipoUsuario: req.session.tipoUsuario,
-										notificacao: req.session.notificacoes,
-										data: msgs,
-										layout: 'includes/layoutIncludes'
-									});
-								});
+								
+								console.log("Com projetos. Consultando o status do projeto...");
+
+								console.log("result"+JSON.stringify(result));
+
+								var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
+
+								statusProjetoDAO.selecionarStatusProjeto(result[0].idProjeto, function(erro, resultado){
+									if(erro){
+										throw erro;
+									} else {
+
+										timeLineAnalisador.processaMensagemCliente(resultado[0], req.session, result[0], function(msgs){
+											
+											req.session.msgsTimeline = msgs;
+
+											res.render("includes/timeLine", {
+												sessionNomeUsuario: req.session.nomeUsuario,
+												sessionNomeTipoUsuario: req.session.tipoUsuario,
+												notificacao: req.session.notificacoes,
+												data: req.session.msgsTimeline,
+												layout: 'includes/layoutIncludes'
+											});
+										});	
+									}
+
+								})
+								
 							}
-
-
 
 						}
 

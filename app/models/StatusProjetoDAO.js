@@ -1,6 +1,5 @@
-var sqlIniciarStatus = "INSERT INTO statusprojeto (idProjeto, modelarProjeto, disporProjeto) ";
-var sqlAtualizarStatus = "UPDATE statusprojeto SET";
-var sqlSelectStatusProjeto = "SELECT * FROM statusprojeto WHERE ";
+
+
 
 //var sqlProjeto = "INSERT INTO projeto (idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade, mobile, web, desktop)";
 
@@ -9,23 +8,26 @@ function StatusProjetoDAO(connection){
 }
 
 StatusProjetoDAO.prototype.atualizarStatus = function(idProjeto, campoStatus, status, callback){
-
+  var sqlAtualizarStatus = "UPDATE statusprojeto SET";
   sqlAtualizarStatus += " "+campoStatus+" VALUES("+status+") WHERE idProjeto = "+idProjeto;
   console.log("sqlAtualizarStatus = "+sqlAtualizarStatus);
   this._connection.query(sqlAtualizarStatus, callback);
 }
 
 StatusProjetoDAO.prototype.inicializarStatusProjeto = function(idProjeto, callback){
-
-  sqlIniciarStatus += "VALUES ('"+idProjeto+"', '2', '2')";
+  var sqlIniciarStatus = "INSERT INTO statusprojeto (idProjeto, modelarProjeto, dataModelarProjeto) ";
+  var dataModelarProjeto = new Date();
+  console.log("dataModelarProjeto.getTime()"+dataModelarProjeto.getTime());
+  dataModelarProjeto.setTime( dataModelarProjeto.getTime() - new Date().getTimezoneOffset()*60*1000 );
+  var dataModelarProjetoString = dataModelarProjeto.toISOString().slice(0, 19).replace('T', ' ');
+  sqlIniciarStatus += "VALUES ('"+idProjeto+"', '2', '"+dataModelarProjetoString+"')";
   console.log("sqlIniciarStatus = "+sqlIniciarStatus);
   this._connection.query(sqlIniciarStatus, callback);
 }
 
 
 StatusProjetoDAO.prototype.selecionarStatusProjeto = function(idProjeto, callback){
-
-  sqlSelectStatusProjeto += "idProjeto = "+idProjeto;
+  var sqlSelectStatusProjeto = "SELECT * FROM statusprojeto WHERE idProjeto = "+idProjeto;
   console.log("sqlSelecionarStatusProjeto = "+sqlSelectStatusProjeto);
   this._connection.query(sqlSelectStatusProjeto, callback);
 }
