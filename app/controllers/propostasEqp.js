@@ -78,7 +78,7 @@ module.exports.aprovarProposta = function(application, req, res){
   var connection = application.config.dbConnection;
   var propostaDAO = new application.app.models.propostaDAO(connection);
   console.log("==@@@@@@@@@@@2req  "+JSON.stringify(req.body));
-  console.log("IDPROJETOOOOOOO!!!!@@@"+res.idProjeto);
+  console.log("IDPROJETOOOOOOO!!!!@@@"+req.body.idProjeto);
   propostaDAO.aprovarProp(req, function(error, result){
 
     if(error){
@@ -86,6 +86,50 @@ module.exports.aprovarProposta = function(application, req, res){
     } else {
       console.log("RESPOSTA ENVIADA COM SUCESSO!");
       res.send("RESPOSTA ENVIADA COM SUCESSO!");
+      var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
+      if(req.body.status == "Recusado"){
+        propostaDAO.verificarPropostasProjeto(req.body.idProjeto, function(error, result){
+
+          if(error){
+            throw error;
+          } else {
+            if(result[0] == undefined || result[0] == null){
+              console.log("Não possui mais propostas pendentes, atualizando o status do projeto...");
+
+              statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "1", function(error, result){
+                
+                if(error){
+                  throw error;
+                } else {
+                  console.log("NÃO TEM MAIS PROPOSTAS DISPONIVEIS");
+                }
+
+                //RETORNAR NOTIFICAÇÃO - NÃO TEM MAIS PROPOSTAS DISPONIVEIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+              });
+  
+            }
+          }
+
+        });
+      } else{
+
+        console.log("PROPOSTA APROVADA ");
+
+        statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "2", function(error, result){
+                
+                if(error){
+                  throw error;
+                } else {
+                  console.log("NÃO TEM MAIS PROPOSTAS DISPONIVEIS");
+                }
+
+                //RETORNAR NOTIFICAÇÃO - NÃO TEM MAIS PROPOSTAS DISPONIVEIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+              });
+                    //RETORNAR NOTIFICAÇÃO - PROPOSTA APROVADA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      }
     }
   });
 }
+

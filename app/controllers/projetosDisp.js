@@ -59,22 +59,33 @@ module.exports.candidatarse = function(application, req, res){
 			} else {
 
 				console.log(JSON.stringify(result));
-				console.log("proposta inserida com sucesso");
+				console.log("proposta inserida com sucesso. Atualizando status do projeto...");
 
-				var	notifPropostaEnviada = JSON.parse('{ "mensagem":"A proposta de sua equipe será analisada pelo cliente", "link":"#", "tipo":"fa-warning text-yellow"}');
+				var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
+
+				statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "3", function(error, result){
+					if(error){
+						throw error;
+					} else{
+						console.log("Status do projeto atualizado com sucesso");
 
 
-				req.session.notificacoes.push(notifPropostaEnviada);
+						var	notifPropostaEnviada = JSON.parse('{ "mensagem":"A proposta de sua equipe será analisada pelo cliente", "link":"#", "tipo":"fa-warning text-yellow"}');
 
-				//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
-				//===>> IMPLEMENTAR UMA PAGINA INFORMANDO Q O A EQUIPE SE CANDIDATOU AO PROJETO
-				res.render("includes/projetosDisp", {
-					sessionNomeUsuario: req.session.nomeUsuario, 
-					sessionNomeTipoUsuario: req.session.tipoUsuario,
-					data: result,
-					notificacao: req.session.notificacoes,
-					layout: 'includes/layoutIncludes'
 
+						req.session.notificacoes.push(notifPropostaEnviada);
+
+						//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
+						//===>> IMPLEMENTAR UMA PAGINA INFORMANDO Q O A EQUIPE SE CANDIDATOU AO PROJETO
+						res.render("includes/projetosDisp", {
+							sessionNomeUsuario: req.session.nomeUsuario, 
+							sessionNomeTipoUsuario: req.session.tipoUsuario,
+							data: result,
+							notificacao: req.session.notificacoes,
+							layout: 'includes/layoutIncludes'
+						});
+
+					}
 				});
 			}
 		});

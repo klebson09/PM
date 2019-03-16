@@ -19,8 +19,8 @@ module.exports = function(){
 
 
 var msgsCliente = [{"title":"Project Marketplace: Boas Vindas!","msg":"Olá <b><usr></b> seja bem vindo ao portal, aqui você terá a possibilidade de transformar sua ideia em realidade.Varias equipes com conhecimento diverso poderão trabalhar em seu projeto.Você deve MODELAR seu projeto com informação suficiente para que os desenvolvedores tenham uma boa visão do sistema que deverão desenvolver. <b><a href='/modelar_projeto'>Clique aqui para Modelar o projeto</a></b>","icon":"fa fa-envelope bg-blue","date":"","time":""},
-				   {"title":"Project Marketplace: Parabéns, você modelou o seu projeto <proj>","msg":" Bom trabalho, você descreveu o projeto <b><proj></b> e agora ele encontra-se disponível para equipes de desenvolvedores candidate-se para o projeto.Você vai receber notificações por email e por aqui no portal informando se alguma equipe ficou interessado por seu projeto.","icon":"fa fa-envelope bg-blue","date":"","time":""},
-				   {"title":"Project Marketplace: Propostas Recebidas pelo Projeto <proj>","msg":"Tenho boas notícias você recebeu alguma proposta. Verifique todas as propostas clicando aqui <a href='/propostas_projeto'>VISUALIZAR PROPOSTA(S)</a> e tome as devidas ações.","icon":"fa fa-envelope bg-blue","date":"","time":""},
+				   {"title":"Project Marketplace: [<proj>] Parabéns, você modelou o seu projeto <proj>","msg":" Bom trabalho, você descreveu o projeto <b><proj></b> e agora ele encontra-se disponível para equipes de desenvolvedores candidate-se para o projeto.Você vai receber notificações por email e por aqui no portal informando se alguma equipe ficou interessado por seu projeto.","icon":"fa fa-envelope bg-blue","date":"","time":""},
+				   {"title":"Project Marketplace: [<proj>] Propostas Recebidas","msg":"Boas notícias, você recebeu alguma proposta do projeto <b><proj></b>. Verifique todas as propostas clicando em <b><a href='/propostas_projeto'>VISUALIZAR PROPOSTA(S)</a></b>.","icon":"fa fa-envelope bg-blue","date":"","time":""},
 				   {"title":"Project Marketplace: [<proj>] Desenvolvimento","msg":"Muito bem, agora a brincadeira vai ficar seria, a equipe de desenvolvimento vai entrar em contato por email para esclarecer alguma eventual dúvida, eles estão trabalhando no desenvolvimento de um documento com as principais funcionalidades do sistema, o <b>TERMO DE ABERTURA</b>","icon":"fa fa-envelope bg-blue","date":"","time":""}
 				  ]
 
@@ -58,19 +58,21 @@ function trataMsgsUsuarioCadastrado(msg, nomeUsuario,  statusProjeto){
 
 }
 
-function trataMsgsProjeto(projeto){
-	msgsCliente[1].title = msgsCliente[1].title.replace("<proj>", projeto.nomeProjeto);
-	msgsCliente[1].msg = msgsCliente[1].msg.replace("<proj>", projeto.nomeProjeto);
+//Substituição do template <proj> pelo nome do projeto
+function trataMsgsProjeto(projeto, indiceMsg){
+	msgsCliente[indiceMsg].title = msgsCliente[indiceMsg].title.replace("<proj>", projeto.nomeProjeto);
+	msgsCliente[indiceMsg].msg = msgsCliente[indiceMsg].msg.replace("<proj>", projeto.nomeProjeto);
 	//var msgsClienteCopy = sgsCliente[0];
 
 	//var str = "Visit Microsoft!";
 	//var res = str.replace("Microsoft", "W3Schools");   
-	console.log("msgsCliente[0] "+msgsCliente[0]);
+	console.log("msgsCliente[0] "+msgsCliente[indiceMsg]);
 
-	return msgsCliente[1];
+	return msgsCliente[indiceMsg];
 
 }
 
+//Tratar a data do cadastro do usuário
 function tratarDataCadastro(session){
 	var date = "";
 	var time = "";
@@ -95,15 +97,16 @@ function tratarDataCadastro(session){
 
 }
 
-function tratarDataStatus(statusProjeto){
+//Tratar a data do status do projeto
+function tratarDataStatus(statusProjeto, indiceMsg, campoData){
 
-	var dataModelarProjeto = new Date(statusProjeto.dataModelarProjeto);
+	var dataStatus = new Date(statusProjeto[campoData]);
 
 	var date = "";
 	var time = "";
  
-	msgsCliente[1].date = dataModelarProjeto.getDate()+" de "+meses[dataModelarProjeto.getMonth()]+" de "+dataModelarProjeto.getFullYear();
-	msgsCliente[1].time = (dataModelarProjeto.getHours()<10?'0':'') + dataModelarProjeto.getHours()+":"+(dataModelarProjeto.getMinutes()<10?'0':'') + dataModelarProjeto.getMinutes();
+	msgsCliente[indiceMsg].date = dataStatus.getDate()+" de "+meses[dataStatus.getMonth()]+" de "+dataStatus.getFullYear();
+	msgsCliente[indiceMsg].time = (dataStatus.getHours()<10?'0':'') + dataStatus.getHours()+":"+(dataStatus.getMinutes()<10?'0':'') + dataStatus.getMinutes();
 }
 
 
@@ -119,13 +122,19 @@ timeLineAnalisador.prototype.processaMensagemCliente = function(statusProjeto, s
 	if(statusProjeto != null){
 		indMsg=1;
 		trataMsgsUsuarioCadastrado(msgsCliente[0], session.nomeUsuario, statusProjeto) 
-		tratarDataStatus(statusProjeto);
-		trataMsgsProjeto(projeto);
+		tratarDataStatus(statusProjeto, 1, "dataModelarProjeto");
+		trataMsgsProjeto(projeto, 1);
 		if(statusProjeto.statusProposta != 1){
 			if(statusProjeto.statusProposta == 3){ //Propostas pendentes de análise
 				indMsg = 2;
-			}else{ //Proposta Aceita
-				//Em desenvolvimento...
+				tratarDataStatus(statusProjeto, 2, "dataStatusProposta");	
+				trataMsgsProjeto(projeto, 2);
+			}else{ 
+				if(statusProjeto.statusProposta == 2){ //Proposta Aceita
+					indMsg = 3;
+					tratarDataStatus(statusProjeto, 3, "dataStatusProposta");
+					trataMsgsProjeto(projeto, 3);
+				}
 			}
 		}
 	}	

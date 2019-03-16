@@ -7,14 +7,13 @@ function EquipeDAO(connection){
 EquipeDAO.prototype.cadEquipe = function(equipe, idAdmEqp ,callback){
     console.log("INSERT cadastrarEquipe");
 
-    var sqlInsertEquipe = "INSERT INTO equipe (nomeEquipe, descricao, idAdmEquipe, idTutor)";
+    var sqlInsertEquipe = "INSERT INTO equipe (nomeEquipe, descricao, idTutor)";
 
     var nomeEquipe = equipe.nomeEquipe;
     var descrEquipe = equipe.descrEquipe;
-    var idAdmEquipe = idAdmEqp;
     var idTutor = equipe.tutor;
 
-    sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idAdmEquipe+"', '"+idTutor+"' )";
+    sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idTutor+"' )";
 
     this._connection.query(sqlInsertEquipe, callback)
 }

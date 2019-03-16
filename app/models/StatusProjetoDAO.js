@@ -9,7 +9,11 @@ function StatusProjetoDAO(connection){
 
 StatusProjetoDAO.prototype.atualizarStatus = function(idProjeto, campoStatus, status, callback){
   var sqlAtualizarStatus = "UPDATE statusprojeto SET";
-  sqlAtualizarStatus += " "+campoStatus+" VALUES("+status+") WHERE idProjeto = "+idProjeto;
+  var dataPropostaProjeto = new Date();
+  console.log("dataPropostaProjeto.getTime()"+dataPropostaProjeto.getTime());
+  dataPropostaProjeto.setTime( dataPropostaProjeto.getTime() - new Date().getTimezoneOffset()*60*1000 );
+  var dataPropostaProjetoString = dataPropostaProjeto.toISOString().slice(0, 19).replace('T', ' ');
+  sqlAtualizarStatus += " "+campoStatus+" =  '"+status+"', dataStatusProposta = '"+dataPropostaProjetoString+"' WHERE idProjeto = "+idProjeto;
   console.log("sqlAtualizarStatus = "+sqlAtualizarStatus);
   this._connection.query(sqlAtualizarStatus, callback);
 }
@@ -22,7 +26,7 @@ StatusProjetoDAO.prototype.inicializarStatusProjeto = function(idProjeto, callba
   var dataModelarProjetoString = dataModelarProjeto.toISOString().slice(0, 19).replace('T', ' ');
   sqlIniciarStatus += "VALUES ('"+idProjeto+"', '2', '"+dataModelarProjetoString+"')";
   console.log("sqlIniciarStatus = "+sqlIniciarStatus);
-  this._connection.query(sqlIniciarStatus, callback);
+  this._connection.query(sqlIniciarStatus, callback); 
 }
 
 

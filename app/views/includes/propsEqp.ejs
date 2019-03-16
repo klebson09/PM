@@ -78,14 +78,14 @@
                      %>
                      <% var proposta = data[i].propostas[x] %>
                      <tr>
-                       <td><%=proposta.nomeEquipe %></td>
+                       <td><%=proposta.nomeEquipe %></td>      
                        <td><%=proposta.apresentacao %></td>
                        <td><%=proposta.duvidas %></td>
                        <td><span><%= proposta.feedback %></span></td>
                        <td>
                          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" value="<%=proposta.idProposta;%>" onclick="btnIdProposta(this.value)" data-target="#myModal">Responder</button>
-                         <button type="button" class="btn btn-success btn-sm" value="" onclick="btnAprovar(<%=proposta.idProposta;%>)" >Aprovar</button>
-                         <button type="button" class="btn btn-danger btn-sm"  value="" onclick="btnRecusar(<%=proposta.idProposta;%>)" >Recusar</button>
+                         <button type="button" class="btn btn-success btn-sm" value="" onclick="btnAprovar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>)" >Aprovar</button>
+                         <button type="button" class="btn btn-danger btn-sm"  value="" onclick="btnRecusar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>)" >Recusar</button>
                        </td>
                        <!-- <td><span class="badge bg-red">Tutor</span></td> -->
                      </tr>
@@ -117,16 +117,16 @@
     console.log("O/ btnIdProposta "+value);
       document.getElementById("idProposta").setAttribute('value',value);
   }
-  function btnRecusar(e) {
+  function btnRecusar(e,f) {
     console.log("O/ btnRecusar ");
-    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado" } );;
+    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado", idProjeto: f } );
   }
-  function btnAprovar(e) {
+  function btnAprovar(e,f) {
     //  alert(value);
       // document.getElementById("idProposta").setAttribute('value',value);
       console.log("O/ btnAprovar "+e);
       // console.log("O/ btnAprovar "+evtId.target.id);
-      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovado" } );
+      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovado", idProjeto: f } );
 
   }
 </script>

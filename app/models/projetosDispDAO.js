@@ -9,7 +9,7 @@ projetosDispDAO.prototype.projetosDisponiveis = function(req, callback){
 
   console.log("************projetosDisponiveis***************");
 
-  var sql =  'SELECT * FROM projeto INNER JOIN statusprojeto ON projeto.idProjeto = statusprojeto.idProjeto WHERE statusprojeto.disporProjeto = "2"';
+  var sql =  'SELECT * FROM projeto INNER JOIN statusprojeto ON projeto.idProjeto = statusprojeto.idProjeto WHERE statusprojeto.statusProposta = "1"';
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
     this._connection.query(sql, callback);

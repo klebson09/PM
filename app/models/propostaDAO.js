@@ -1,4 +1,4 @@
-function propostaDAO(connection){
+  function propostaDAO(connection){
   this._connection = connection();
 }
 
@@ -46,9 +46,17 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
 
 propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
 
-  var sqlPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
+  var sqlPropostasProjeto = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
   console.log("sqlPropostasProjeto = "+sqlPropostasProjeto);
   this._connection.query(sqlPropostasProjeto, callback);
+
+}
+
+propostaDAO.prototype.verificarPropostasProjeto = function(idProjeto, callback){
+
+  var sqlVerificarPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aberta" AND proposta.status = "Aprovada"';
+  console.log("sqlPropostasProjeto = "+sqlVerificarPropostasProjeto);
+  this._connection.query(sqlVerificarPropostasProjeto, callback);
 
 }
 
@@ -70,7 +78,7 @@ propostaDAO.prototype.enviarRespostaProp = function(req, callback){
 
 propostaDAO.prototype.aprovarProp = function(req, callback){
   var status = req.body.status;
-//  var resposta = req.body.resposta;
+//  var resposta = req.body.resposta;DSSDA
   var idProposta = req.body.idProposta;
   // var status = "Recusado";
   console.log("@@status==>"+status+"idProposta==>"+idProposta);
