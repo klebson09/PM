@@ -83,75 +83,25 @@ module.exports.autenticar = function(application, req, res) {
 
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
-					var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
+					var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+					var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
+					var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
 
-					ProjetosDispDAO.verificarProjetosCliente(req.session.idContaUsuario, function(error, result) {
+					timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
+						req.session.msgsTimeline = msgs;
 
-						if (error) {
-							throw error;
-						} else {
-							var timeLineAnalisador = new application.app.models.timeLineAnalisador();
-							console.log(JSON.stringify(result));
-							if (result[0] == undefined || result[0] == null) {
-								console.log("Sem projetos associados/pendentes");
-
-								
-								
-								timeLineAnalisador.processaMensagemCliente(null, req.session, null, function(msgs){
-									
-									req.session.msgsTimeline = msgs;
-
-									res.render("includes/timeLine", {
-										sessionNomeUsuario: req.session.nomeUsuario,
-										sessionNomeTipoUsuario: req.session.tipoUsuario,
-										notificacao: req.session.notificacoes,
-										data: req.session.msgsTimeline,
-										layout: 'includes/layoutIncludes'
-
-									});
-								});
-							} else {
-								
-								console.log("Com projetos. Consultando o status do projeto...");
-
-								console.log("result"+JSON.stringify(result));
-
-								var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
-
-								statusProjetoDAO.selecionarStatusProjeto(result[0].idProjeto, function(erro, resultado){
-									if(erro){
-										throw erro;
-									} else {
-
-										timeLineAnalisador.processaMensagemCliente(resultado[0], req.session, result[0], function(msgs){
-											
-											req.session.msgsTimeline = msgs;
-
-											res.render("includes/timeLine", {
-												sessionNomeUsuario: req.session.nomeUsuario,
-												sessionNomeTipoUsuario: req.session.tipoUsuario,
-												notificacao: req.session.notificacoes,
-												data: req.session.msgsTimeline,
-												layout: 'includes/layoutIncludes'
-											});
-										});	
-									}
-
-								})
-								
-							}
-
-						}
-
-					});
+						res.render("includes/timeLine", {
+							sessionNomeUsuario: req.session.nomeUsuario,
+							sessionNomeTipoUsuario: req.session.tipoUsuario,
+							notificacao: req.session.notificacoes,
+							data: req.session.msgsTimeline,
+							layout: 'includes/layoutIncludes'
+						});
+					});	
 
 				}
 
-
-
-
-			} else {
-
+			}else {
 				console.log("NEGADO");
 				console.log("************* ");
 				var erros = {

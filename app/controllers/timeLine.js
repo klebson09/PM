@@ -51,3 +51,7 @@ module.exports.listTimeLineClient = function(application, req, res){
 			});
 
 }
+
+module.exports.atualizaStatus = function function_name(argument) {
+	// body...
+}

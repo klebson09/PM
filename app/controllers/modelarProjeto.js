@@ -47,7 +47,7 @@ module.exports.criarProj = function(application, req, res){
 
 							req.session.notificacoes.push(notif);
 
-							var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
+							var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection); // da linha 50 até
 
 							ProjetosDispDAO.verificarProjetosCliente(req.session.idContaUsuario, function(error, result) {
 								if (error) {

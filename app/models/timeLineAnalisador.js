@@ -4,6 +4,10 @@
 3 - ?
 
 */
+function timeLineAnalisador(connection){
+ this._connection = connection();
+}
+
 module.exports = function(){
   this.getstatusProjeto = function(connection, callback){
     //busca no banco de dados
@@ -42,9 +46,7 @@ var meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agos
   this._connection = connection();
 }*/
 
-function timeLineAnalisador(){
- 
-}
+
 
 function trataMsgsUsuarioCadastrado(msg, nomeUsuario,  statusProjeto){
 	msgsCliente[0].msg = msgsCliente[0].msg.replace("<usr>", nomeUsuario);
@@ -110,9 +112,7 @@ function tratarDataStatus(statusProjeto, indiceMsg, campoData){
 }
 
 
-
-timeLineAnalisador.prototype.processaMensagemCliente = function(statusProjeto, session, projeto, callback){
-
+function processarMensagemCliente(statusProjeto, session, projeto){
 	var msgs = [];
 	console.log(" ===>> statusProjeto "+JSON.stringify(statusProjeto));
 	console.log(" ===>> session.dataCadastro "+session.dataCadastro);
@@ -142,12 +142,60 @@ timeLineAnalisador.prototype.processaMensagemCliente = function(statusProjeto, s
 
 	for (var i=indMsg; i>= 0; i--){
 		msgs.push(msgsCliente[i]);
-	}	
+	}		
 
-	callback(msgs);
+	return msgs;
 
 }
 
+
+
+timeLineAnalisador.prototype.processaMensagemCliente = function(statusProjeto, session, projeto, callback){
+
+	
+
+	callback(processarMensagemCliente(statusProjeto, session, projeto) );
+
+}
+
+// atualizar a sessão toda vez que é atualizado a tabela status projeto 
+timeLineAnalisador.prototype.atualizarTimeLine = function(session, projetosDispDAO, statusProjetoDAO, callback){ 					
+
+	//var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
+
+	projetosDispDAO.verificarProjetosCliente(session.idContaUsuario, function(error, result) {
+
+		if (error) {
+			throw error;
+		} else {
+
+			//var timeLineAnalisador = new application.app.models.timeLineAnalisador();
+			console.log(JSON.stringify(result));
+			console.log("result//////////////"+JSON.stringify(result));
+
+			if (result[0] == undefined || result[0] == null) {
+				timeLineAnalisador.processaMensagemCliente(null, req.session, null, function(msgs){
+					callback(msgs);
+
+				});
+			}else {
+				//var statusProjetoDAO = new application.app.models.StatusProjetoDAO();
+
+				statusProjetoDAO.selecionarStatusProjeto(result[0].idProjeto, function(erro, resultado){
+					if(erro){
+						throw erro;
+					} else {
+						
+						callback(processarMensagemCliente(resultado[0], session, result[0]) );
+					}
+
+				});
+			}			
+			
+		}		
+	});	
+
+}
 
 timeLineAnalisador.prototype.processaMensagemDev = function(statusProjeto, callback){
 
