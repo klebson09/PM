@@ -28,7 +28,9 @@ module.exports.criarProj = function(application, req, res){
 					console.log("+++++++++ PROJETO CADASTRADO COM SUCESSO ++++++");
 					//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
 
-					var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
+					var statusProjetoDAO 	= new application.app.models.StatusProjetoDAO(connection);
+					var projetosDispDAO		= new application.app.models.projetosDispDAO(connection);
+					var timeLineAnalisador 	= new application.app.models.timeLineAnalisador(connection);
 					var idProjeto = result.insertId;
 
 
@@ -47,53 +49,22 @@ module.exports.criarProj = function(application, req, res){
 
 							req.session.notificacoes.push(notif);
 
-							var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection); // da linha 50 até
-
-							ProjetosDispDAO.verificarProjetosCliente(req.session.idContaUsuario, function(error, result) {
-								if (error) {
-									throw error;
-								} else {
-									var timeLineAnalisador = new application.app.models.timeLineAnalisador();
-									console.log(JSON.stringify(result));
-									console.log("result//////////////"+JSON.stringify(result));
-
-									statusProjetoDAO.selecionarStatusProjeto(result[0].idProjeto, function(erro, resultado){
-										if(erro){
-											throw erro;
-										} else {
-
-											timeLineAnalisador.processaMensagemCliente(resultado[0], req.session, result[0], function(msgs){
-											
-											req.session.msgsTimeline = msgs;
-
-											res.render("includes/timeLine", {
-												sessionNomeUsuario: req.session.nomeUsuario,
-												sessionNomeTipoUsuario: req.session.tipoUsuario,
-												notificacao: req.session.notificacoes,
-												data: req.session.msgsTimeline,
-												layout: 'includes/layoutIncludes'
-											});
-										});	
-									}
-
-								})
-								
-						}		
-					});	
-
-								/*res.render("includes/content", {
+							timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
+								req.session.msgsTimeline = msgs;
+								res.render("includes/timeLine", {
 									sessionNomeUsuario: req.session.nomeUsuario,
 									sessionNomeTipoUsuario: req.session.tipoUsuario,
 									notificacao: req.session.notificacoes,
+									data: req.session.msgsTimeline,
 									layout: 'includes/layoutIncludes'
+								});
 
-								});*/
+							});	
+						}		
+					});									
 
 				}
 
 			});
-
-		}
-	});
 
 }
