@@ -72,7 +72,7 @@ module.exports.enviarRespostaProposta = function(application, req, res){
   });
 }
 module.exports.aprovarProposta = function(application, req, res){
-  var connection = application.config.dbConnection;
+ var connection = application.config.dbConnection;
   var propostaDAO = new application.app.models.propostaDAO(connection);
   console.log("==@@@@@@@@@@@2req  "+JSON.stringify(req.body));
   console.log("IDPROJETOOOOOOO!!!!@@@"+req.body.idProjeto);
@@ -82,10 +82,10 @@ module.exports.aprovarProposta = function(application, req, res){
       throw error;
     } else {
       console.log("RESPOSTA ENVIADA COM SUCESSO!");
-      res.send("RESPOSTA ENVIADA COM SUCESSO!");
+      //res.send("RESPOSTA ENVIADA COM SUCESSO!");
       var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
       if(req.body.status == "Recusado"){
-        propostaDAO.verificarPropostasProjeto(req.body.idProjeto, function(error, result){
+           propostaDAO.verificarPropostasProjeto(req.body.idProjeto, function(error, result){
 
           if(error){
             throw error;
@@ -93,7 +93,7 @@ module.exports.aprovarProposta = function(application, req, res){
             if(result[0] == undefined || result[0] == null){
               console.log("Não possui mais propostas pendentes, atualizando o status do projeto...");
 
-              statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "1", function(error, result){
+              statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "dataStatusPropostaRecebido" , "1", function(error, result){
 
                   if(error){
                     throw error;
@@ -115,38 +115,42 @@ module.exports.aprovarProposta = function(application, req, res){
                     });
                   }
 
-                }
+                });
     
               }
+              
           }
 
         });
       } else{
 
         console.log("PROPOSTA APROVADA ");
-        statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "1", function(error, result){
+        statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "dataStatusPropostaAprovada" ,"2", function(error, result){
 
           if(error){
             throw error;
           } else {
-            console.log("NÃO TEM MAIS PROPOSTAS DISPONIVEIS");
+            console.log("PROPOSTA APROVADA ");
             var projetosDispDAO   = new application.app.models.projetosDispDAO(connection);
             var timeLineAnalisador  = new application.app.models.timeLineAnalisador(connection);
 
             timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
 
               req.session.msgsTimeline = msgs;
-              res.render("includes/timeLine", {
+              
+              res.send("2");
+
+              /*res.render("includes/timeLine", {
                 sessionNomeUsuario: req.session.nomeUsuario,
                 sessionNomeTipoUsuario: req.session.tipoUsuario,
                 notificacao: req.session.notificacoes,
                 data: req.session.msgsTimeline,
                 layout: 'includes/layoutIncludes'
-              });
+              });*/
             });
           }
 
-        }
+        });
 
         
 

@@ -102,6 +102,8 @@ function tratarDataCadastro(session){
 //Tratar a data do status do projeto
 function tratarDataStatus(statusProjeto, indiceMsg, campoData){
 
+	console.log("tratarDataStatus:"+JSON.stringify(statusProjeto));
+
 	var dataStatus = new Date(statusProjeto[campoData]);
 
 	var date = "";
@@ -127,12 +129,13 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 		if(statusProjeto.statusProposta != 1){
 			if(statusProjeto.statusProposta == 3){ //Propostas pendentes de análise
 				indMsg = 2;
-				tratarDataStatus(statusProjeto, 2, "dataStatusProposta");	
+				tratarDataStatus(statusProjeto, 2, "dataStatusPropostaRecebido");
 				trataMsgsProjeto(projeto, 2);
 			}else{ 
 				if(statusProjeto.statusProposta == 2){ //Proposta Aceita
 					indMsg = 3;
-					tratarDataStatus(statusProjeto, 3, "dataStatusProposta");
+					tratarDataStatus(statusProjeto, 2, "dataStatusPropostaRecebido");
+					tratarDataStatus(statusProjeto, 3, "dataStatusPropostaAprovada");
 					trataMsgsProjeto(projeto, 3);
 				}
 			}

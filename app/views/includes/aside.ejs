@@ -40,7 +40,7 @@ var menuUsr = []; %>
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <li class="header">MENU PRINCIPAL</li>
-        <li><a href="/content"><i class="fa fa-clock-o"></i>Linha do Tempo</a></li>
+        <li><a href="/homeTimeLine"><i class="fa fa-clock-o"></i>Linha do Tempo</a></li>
         <% for(var i=0; i< menuUsr.length; i++){ %>
         <li><a href="<%- menuUsr[i].link  %>"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
         <% }%>

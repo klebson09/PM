@@ -63,7 +63,7 @@ module.exports.candidatarse = function(application, req, res){
 
 				var statusProjetoDAO =  new application.app.models.StatusProjetoDAO(connection);
 
-				statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "3", function(error, result){
+				statusProjetoDAO.atualizarStatus(req.body.idProjeto, "statusProposta", "dataStatusPropostaRecebido" , "3", function(error, result){
 					if(error){
 						throw error;
 					} else{

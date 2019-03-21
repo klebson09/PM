@@ -126,7 +126,20 @@
       // document.getElementById("idProposta").setAttribute('value',value);
       console.log("O/ btnAprovar "+e);
       // console.log("O/ btnAprovar "+evtId.target.id);
-      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovado", idProjeto: f } );
+      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovado", idProjeto: f }, function(data){
+
+        console.log("data = "+data);
+
+        if(data == "2"){
+          alert("PROPOSTA APROVADA COM SUCESSO");
+          window.location.replace("/homeTimeLine");
+        } else if(data == "3"){
+          alert("PROPOSTA RECUSADA COM SUCESSO");
+        } else {
+          alert("VOCÊ NÃO TEM MAIS PROPOSTAS PARA ESSE PROJETO");
+        }
+
+      } );
 
   }
 </script>

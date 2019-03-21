@@ -14,6 +14,18 @@ module.exports.viewTimeLine = function(application, req, res){
 	}
 }
 
+module.exports.exibirTimeLine = function(application, req, res){
+
+	console.log("exibirTimeLine");
+
+	res.render("includes/timeLine", {
+		sessionNomeUsuario: req.session.nomeUsuario,
+		sessionNomeTipoUsuario: req.session.tipoUsuario,
+		notificacao: req.session.notificacoes,
+		data: req.session.msgsTimeline,
+		layout: 'includes/layoutIncludes'
+	});
+}
 
 module.exports.listTimeLineClient = function(application, req, res){
 	//var entregaveis = JSON.parse(req.body.entregaveis);
@@ -24,7 +36,7 @@ module.exports.listTimeLineClient = function(application, req, res){
 	var timeLine = req.body;
 	var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
 
-	statusProjetoDAO.selecionarStatusProjeto(req, function(erro, result){
+	statusProjetoDAO.selecionarStatusProjeto(req.session.idProjeto, function(erro, result){
 				if(erro){
 					throw erro;
 				} else {
@@ -39,7 +51,7 @@ module.exports.listTimeLineClient = function(application, req, res){
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
 						notificacao: req.session.notificacoes,
-						data: result,
+						data: req.session.notificacoes,
 						layout: 'includes/layoutIncludes'
 
 					});
