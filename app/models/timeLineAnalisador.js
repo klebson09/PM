@@ -28,11 +28,11 @@ var msgsCliente = [{"title":"Project Marketplace: Boas Vindas!","msg":"Olá <b><
 				   {"title":"Project Marketplace: [<proj>] Desenvolvimento","msg":"Muito bem, agora a brincadeira vai ficar seria, a equipe de desenvolvimento vai entrar em contato por email para esclarecer alguma eventual dúvida, eles estão trabalhando no desenvolvimento de um documento com as principais funcionalidades do sistema, o <b>TERMO DE ABERTURA</b>","icon":"fa fa-envelope bg-blue","date":"","time":""}
 				  ]
 
-var msgsDev = [{"msg":"Olá <usr> seja bem vindo ao portal, aqui você terá a possibilidade de transformar sua ideia em realidade.Varias equipes com conhecimento diverso poderão trabalhar em seu projeto.Você deve MODELAR seu projeto com informação suficiente para que os desenvolvedores tenham uma boa visão do sistema que deverão desenvolver. <a href='/modelarProjeto'>Clique aqui para Modelar o projeto"},
-			   {"msg":" Bom trabalho, você descreveu o projeto e agora ele encontra-se disponível para equipes de desenvolvedores candidate-se para o projeto.Você vai receber notificações por email e por aqui no portal informando se alguma equipe ficou interessado por seu projeto."},
-			   {"msg":"Tenho boas notícias você recebeu alguma proposta.Verifique todas as propostas clicando aqui <a href='/propostas_projeto'>VISUALIZAR PROPOSTA(S)</a> e tome as devidas ações."},
-			   {"msg":"Muito bem, agora a brincadeira vai ficar seria, a equipe de desenvolvimento vai entrar em contato por email para esclarecer alguma eventual dúvida, eles estão trabalhando no desenvolvimento de um documento com as principais funcionalidades do sistema, o <b>TERMO DE ABERTURA</b>"}
-			  ]
+var msgsDev = [{"title":"Project Marketplace: Boas Vindas!","msg":"Olá <b><usr></b> seja bem vindo ao portal, aqui você terá a oportunidade de aplicar seu conhecimento em desenvolvimento de software e alavancar de vez sua carreira. Nenhum homem é uma ilha, então, você precisa fazer parte de uma equipe, clique em <b><a href='/criar_equipe'>CRIAR EQUIPE</a></b> para iniciar suas atividades nesse sistema","icon":"fa fa-envelope bg-blue","date":"","time":""},
+				   {"title":"Project Marketplace: Parabéns, você pertence a equipe <eqp>, partiu projeto","msg":" Você é participante de uma equipe, agora você tem muitas oportunidades para mostrar o seu potencial. Muitos clientes precisam da sua ajuda, clique em <b><a href='/projeto_disp'>PROJETOS DISPONIVEIS</a></b> e faça uma proposta para um cliente, convença-o de que é capaz de solucionar os seus problemas","icon":"fa fa-envelope bg-blue","date":"","time":""},
+				   {"title":"Project Marketplace: Proposta Enviada para o projeto <proj>","msg":"A proposta de sua equipe para o projeto <proj> foi enviada para analise do cliente, a qualquer momento o cliente pode aceitar sua proposta","icon":"fa fa-envelope bg-blue","date":"","time":""},
+				   {"title":"Project Marketplace: Cliente aprovou sua proposta para o projeto <proj>","msg":"Boas noticias, o cliente aceitou a proposta inicial de sua equipe para desenvolver o projeto <proj>, vocês devem negociar todos os termos e formaliza-los no Termo de Abertura. Clique em <b><a href='/termo_abertura'>TERMO DE ABERTURA</a></b> para redigir o termo de abertura para a analise posterior do cliente","icon":"fa fa-envelope bg-blue","date":"","time":""}
+				  ]
 
 var msgsTutor = [{"msg":"Olá <usr> seja bem vindo ao portal, aqui você terá a possibilidade de transformar sua ideia em realidade.Varias equipes com conhecimento diverso poderão trabalhar em seu projeto.Você deve MODELAR seu projeto com informação suficiente para que os desenvolvedores tenham uma boa visão do sistema que deverão desenvolver. <a href='/modelarProjeto'>Clique aqui para Modelar o projeto"},
 				 {"msg":" Bom trabalho, você descreveu o projeto e agora ele encontra-se disponível para equipes de desenvolvedores candidate-se para o projeto.Você vai receber notificações por email e por aqui no portal informando se alguma equipe ficou interessado por seu projeto."},
@@ -75,7 +75,7 @@ function trataMsgsProjeto(projeto, indiceMsg){
 }
 
 //Tratar a data do cadastro do usuário
-function tratarDataCadastro(session){
+function tratarDataCadastro(session, tipoUsuario){
 	var date = "";
 	var time = "";
 	var dataCadastro = session.dataCadastro;
@@ -84,14 +84,26 @@ function tratarDataCadastro(session){
 		console.log("dataCadastro "+dataCadastro);
 		console.log(Object.keys(dataCadastro));
 
-		msgsCliente[0].date = dataCadastro.getDate()+" de "+meses[dataCadastro.getMonth()]+" de "+dataCadastro.getFullYear();
-		msgsCliente[0].time = (dataCadastro.getHours()<10?'0':'') + dataCadastro.getHours()+":"+(dataCadastro.getMinutes()<10?'0':'') + dataCadastro.getMinutes();
+		if(tipoUsuario == "C"){
+			msgsCliente[0].date = dataCadastro.getDate()+" de "+meses[dataCadastro.getMonth()]+" de "+dataCadastro.getFullYear();
+			msgsCliente[0].time = (dataCadastro.getHours()<10?'0':'') + dataCadastro.getHours()+":"+(dataCadastro.getMinutes()<10?'0':'') + dataCadastro.getMinutes();	
 
-		console.log("msgsCliente[0].date "+msgsCliente[0].date);
-		console.log("msgsCliente[0].time "+msgsCliente[0].time);
+			console.log("msgsCliente[0].date "+msgsCliente[0].date);
+			console.log("msgsCliente[0].time "+msgsCliente[0].time);
 
-		session.dataCadastroExtenso = msgsCliente[0].date;
-		session.horaCadastroExtenso = msgsCliente[0].time;
+			session.dataCadastroExtenso = msgsCliente[0].date;
+			session.horaCadastroExtenso = msgsCliente[0].time;
+		} else {
+			msgsDev[0].date = dataCadastro.getDate()+" de "+meses[dataCadastro.getMonth()]+" de "+dataCadastro.getFullYear();
+			msgsDev[0].time = (dataCadastro.getHours()<10?'0':'') + dataCadastro.getHours()+":"+(dataCadastro.getMinutes()<10?'0':'') + dataCadastro.getMinutes();	
+
+			console.log("msgsDev[0].date "+msgsDev[0].date);
+			console.log("msgsDev[0].time "+msgsDev[0].time);
+
+			session.dataCadastroExtenso = msgsDev[0].date;
+			session.horaCadastroExtenso = msgsDev[0].time;
+		}
+		
 	} else{
 		msgsCliente[0].date = session.dataCadastroExtenso;
 		msgsCliente[0].time = session.horaCadastroExtenso;
@@ -119,7 +131,7 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 	console.log(" ===>> statusProjeto "+JSON.stringify(statusProjeto));
 	console.log(" ===>> session.dataCadastro "+session.dataCadastro);
 	console.log(" ===>> projeto "+JSON.stringify(projeto));
-	tratarDataCadastro(session);
+	tratarDataCadastro(session, "C");
 	var indMsg=0;
 	if(statusProjeto != null){
 		indMsg=1;
@@ -151,18 +163,27 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 
 }
 
+function processarMensagemDev(equipe, session){
 
+	var msgs = [];
+	var indMsg=0;
 
-timeLineAnalisador.prototype.processaMensagemCliente = function(statusProjeto, session, projeto, callback){
+	tratarDataCadastro(session, "D");
 
-	
+	if(equipe != null && equipe != undefined){
+		//A implementar...
+	}
 
-	callback(processarMensagemCliente(statusProjeto, session, projeto) );
+	for (var i=indMsg; i>= 0; i--){
+		msgs.push(msgsDev[i]);
+	}		
 
+	return msgs;
 }
 
+
 // atualizar a sessão toda vez que é atualizado a tabela status projeto 
-timeLineAnalisador.prototype.atualizarTimeLine = function(session, projetosDispDAO, statusProjetoDAO, callback){ 					
+timeLineAnalisador.prototype.atualizarTimeLineCliente = function(session, projetosDispDAO, statusProjetoDAO, callback){  					
 
 	//var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
 
@@ -177,10 +198,9 @@ timeLineAnalisador.prototype.atualizarTimeLine = function(session, projetosDispD
 			console.log("result//////////////"+JSON.stringify(result));
 
 			if (result[0] == undefined || result[0] == null) {
-				timeLineAnalisador.processaMensagemCliente(null, req.session, null, function(msgs){
-					callback(msgs);
 
-				});
+				callback(processarMensagemCliente(null, session, null));
+				
 			}else {
 				//var statusProjetoDAO = new application.app.models.StatusProjetoDAO();
 
@@ -200,9 +220,36 @@ timeLineAnalisador.prototype.atualizarTimeLine = function(session, projetosDispD
 
 }
 
-timeLineAnalisador.prototype.processaMensagemDev = function(statusProjeto, callback){
+timeLineAnalisador.prototype.atualizarTimeLineDev = function(session, equipeDAO, propostasDAO, statusProjetoDAO, callback){  					
+
+	//var ProjetosDispDAO = new application.app.models.projetosDispDAO(connection);
+	console.log("atualizarTimeLineDev:INICIO");
+
+
+	equipeDAO.verificarUsuarioVinculadoEquipe(session.idContaUsuario, function(error, result) {
+		console.log("atualizarTimeLineDev:equipeDAO.verificarUsuarioVinculadoEquipe");
+
+		if(error){
+			console.log("atualizarTimeLineDev:erro");
+			throw error;
+		} else {
+			if (result[0] == undefined || result[0] == null) {
+				console.log("Desenvolvedor não está vinculado a uma equipe");
+
+				/*timeLineAnalisador.processaMensagemDev(result, function(msgs){
+					callback(msgs);
+				});*/
+				callback(processarMensagemDev(result, session));
+				
+			}
+		}	
+
+	});	
 
 }
+
+
+
 
 timeLineAnalisador.prototype.processaMensagemTutor = function(statusProjeto, callback){
 

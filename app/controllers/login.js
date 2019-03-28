@@ -69,25 +69,47 @@ module.exports.autenticar = function(application, req, res) {
 
 			var notifModelarProj = null;
 
+			var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+			var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
+			var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+			var equipeDAO = new application.app.models.EquipeDAO(connection);
+			var propostasDAO = new application.app.models.propostaDAO(connection);
+
 			if (req.session.autenticado) {
 				console.log("AUTORIZADO");
 				if (req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T') {
-					res.render("includes/content", {
+					
+					console.log("Verificando se o usuário desenvolvedor está vinculado a uma equipe");
+
+					timeLineAnalisador.atualizarTimeLineDev(req.session, equipeDAO, propostasDAO, statusProjetoDAO, function(msgs){
+
+						req.session.msgsTimeline = msgs;
+
+						res.render("includes/timeLine", {
+							sessionNomeUsuario: req.session.nomeUsuario,
+							sessionNomeTipoUsuario: req.session.tipoUsuario,
+							notificacao: req.session.notificacoes,
+							data: req.session.msgsTimeline,
+							layout: 'includes/layoutIncludes'
+						});
+
+					});
+
+
+
+
+					/*res.render("includes/content", {
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
 						notificacao: req.session.notificacoes,
 						layout: 'includes/layoutIncludes'
 
-					});
+					});*/
 				} else if (req.session.tipoUsuario == 'C') {
 
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
-					var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
-					var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
-					var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
-
-					timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
+					timeLineAnalisador.atualizarTimeLineCliente(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
 						req.session.msgsTimeline = msgs;
 
 						res.render("includes/timeLine", {

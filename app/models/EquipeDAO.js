@@ -1,4 +1,5 @@
 var sqlValidarEquipeTutor = "SELECT * FROM membrosequipe INNER JOIN conta_usuario ON membrosequipe.conta_usuario_idContaUsuario = conta_usuario.idContaUsuario INNER JOIN equipe ON  membrosequipe.equipe_idEquipe = equipe.idEquipe";
+var sqlVerificarUsuarioVinculadoEquipe = "SELECT * FROM membrosEquipe WHERE conta_usuario_idContaUsuario = ";
 
 function EquipeDAO(connection){
   this._connection = connection();
@@ -43,6 +44,12 @@ EquipeDAO.prototype.validarEquipeTutor = function(idEquipe, callback){
    sqlValidarEquipeTutor += " WHERE conta_usuario.tipoUsuario = 'T' AND membrosEquipe.equipe_idEquipe ='"+idEquipe+"' AND equipe.status = 'Ativo'";
    this._connection.query(sqlValidarEquipeTutor, callback);
 }
+
+EquipeDAO.prototype.verificarUsuarioVinculadoEquipe = function(idContaUsuario, callback){
+  var sqlVerificarUsuarioVinculadoEquipe = "SELECT * FROM membrosEquipe WHERE conta_usuario_idContaUsuario = "+idContaUsuario;;
+   this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
+}
+//
 
 module.exports = function(){
   return EquipeDAO;
