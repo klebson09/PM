@@ -46,7 +46,7 @@ EquipeDAO.prototype.validarEquipeTutor = function(idEquipe, callback){
 }
 
 EquipeDAO.prototype.verificarUsuarioVinculadoEquipe = function(idContaUsuario, callback){
-  var sqlVerificarUsuarioVinculadoEquipe = "SELECT * FROM membrosEquipe WHERE conta_usuario_idContaUsuario = "+idContaUsuario;;
+  var sqlVerificarUsuarioVinculadoEquipe = "SELECT me.*, eq.* FROM membrosEquipe me INNER JOIN equipe eq ON me.equipe_IdEquipe = eq.idEquipe WHERE me.conta_usuario_idContaUsuario = "+idContaUsuario;;
    this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
 }
 //

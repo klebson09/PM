@@ -36,6 +36,12 @@ StatusProjetoDAO.prototype.selecionarStatusProjeto = function(idProjeto, callbac
   this._connection.query(sqlSelectStatusProjeto, callback);
 }
 
+StatusProjetoDAO.prototype.verificarStatusTermoAbertura = function(idProjeto, callback){
+  var sqlVerificarStatusTermoAbertura = "SELECT * FROM statusprojeto WHERE idProjeto = "+idProjeto+ "AND termoAbertura = 2";
+  console.log("sqlVerificarStatusTermoAbertura = "+sqlVerificarStatusTermoAbertura);
+  this._connection.query(sqlVerificarStatusTermoAbertura, callback);
+}
+
 module.exports = function(){
   return StatusProjetoDAO;
 }

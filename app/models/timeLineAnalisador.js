@@ -61,9 +61,18 @@ function trataMsgsUsuarioCadastrado(msg, nomeUsuario,  statusProjeto){
 }
 
 //Substituição do template <proj> pelo nome do projeto
-function trataMsgsProjeto(projeto, indiceMsg){
-	msgsCliente[indiceMsg].title = msgsCliente[indiceMsg].title.replace("<proj>", projeto.nomeProjeto);
-	msgsCliente[indiceMsg].msg = msgsCliente[indiceMsg].msg.replace("<proj>", projeto.nomeProjeto);
+function tratarMsgs(objeto, indiceMsg, tipoCampo){
+
+	console.log("objeto = "+JSON.stringify(objeto));
+
+	if(tipoCampo == "P"){
+		msgsCliente[indiceMsg].title = msgsCliente[indiceMsg].title.replace("<proj>", objeto.nomeProjeto);
+		msgsCliente[indiceMsg].msg = msgsCliente[indiceMsg].msg.replace("<proj>", objeto.nomeProjeto);	
+	} else if(tipoCampo == "D"){
+		msgsDev[indiceMsg].title = msgsDev[indiceMsg].title.replace("<eqp>", objeto[0].nomeEquipe);
+		msgsDev[indiceMsg].msg = msgsDev[indiceMsg].msg.replace("<eqp>", objeto[0].nomeEquipe);	
+	}
+	
 	//var msgsClienteCopy = sgsCliente[0];
 
 	//var str = "Visit Microsoft!";
@@ -125,6 +134,25 @@ function tratarDataStatus(statusProjeto, indiceMsg, campoData){
 	msgsCliente[indiceMsg].time = (dataStatus.getHours()<10?'0':'') + dataStatus.getHours()+":"+(dataStatus.getMinutes()<10?'0':'') + dataStatus.getMinutes();
 }
 
+function tratarDataEquipe(equipe, indiceMsg){
+
+	console.log("tratarDataEquipe:INICIO");
+
+	console.log(JSON.stringify(equipe));
+
+	var dataEquipe = new Date(equipe[0].dataCriacaoEquipe);
+
+	console.log("dataEquipe: "+dataEquipe);
+
+	msgsDev[indiceMsg].date = dataEquipe.getDate()+" de "+meses[dataEquipe.getMonth()]+" de "+dataEquipe.getFullYear();
+	msgsDev[indiceMsg].time = (dataEquipe.getHours()<10?'0':'') + dataEquipe.getHours()+":"+(dataEquipe.getMinutes()<10?'0':'') + dataEquipe.getMinutes();
+
+
+	console.log("tratarDataEquipe:FIM");
+
+
+}
+
 
 function processarMensagemCliente(statusProjeto, session, projeto){
 	var msgs = [];
@@ -137,18 +165,18 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 		indMsg=1;
 		trataMsgsUsuarioCadastrado(msgsCliente[0], session.nomeUsuario, statusProjeto) 
 		tratarDataStatus(statusProjeto, 1, "dataModelarProjeto");
-		trataMsgsProjeto(projeto, 1);
+		tratarMsgs(projeto, 1, 'P');
 		if(statusProjeto.statusProposta != 1){
 			if(statusProjeto.statusProposta == 3){ //Propostas pendentes de análise
 				indMsg = 2;
 				tratarDataStatus(statusProjeto, 2, "dataStatusPropostaRecebido");
-				trataMsgsProjeto(projeto, 2);
+				tratarMsgs(projeto, 2, 'P');
 			}else{ 
 				if(statusProjeto.statusProposta == 2){ //Proposta Aceita
 					indMsg = 3;
 					tratarDataStatus(statusProjeto, 2, "dataStatusPropostaRecebido");
 					tratarDataStatus(statusProjeto, 3, "dataStatusPropostaAprovada");
-					trataMsgsProjeto(projeto, 3);
+					tratarMsgs(projeto, 3, 'P');
 				}
 			}
 		}
@@ -163,7 +191,7 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 
 }
 
-function processarMensagemDev(equipe, session){
+function processarMensagemDev(equipe, proposta, propostasAprovadas, session){
 
 	var msgs = [];
 	var indMsg=0;
@@ -171,7 +199,9 @@ function processarMensagemDev(equipe, session){
 	tratarDataCadastro(session, "D");
 
 	if(equipe != null && equipe != undefined){
-		//A implementar...
+		tratarDataEquipe(equipe, 1);
+		tratarMsgs(equipe, 1, "D");
+		indMsg = 1;
 	}
 
 	for (var i=indMsg; i>= 0; i--){
@@ -226,21 +256,66 @@ timeLineAnalisador.prototype.atualizarTimeLineDev = function(session, equipeDAO,
 	console.log("atualizarTimeLineDev:INICIO");
 
 
-	equipeDAO.verificarUsuarioVinculadoEquipe(session.idContaUsuario, function(error, result) {
+	equipeDAO.verificarUsuarioVinculadoEquipe(session.idContaUsuario, function(error, resultEquipe) {
 		console.log("atualizarTimeLineDev:equipeDAO.verificarUsuarioVinculadoEquipe");
 
 		if(error){
 			console.log("atualizarTimeLineDev:erro");
 			throw error;
 		} else {
-			if (result[0] == undefined || result[0] == null) {
-				console.log("Desenvolvedor não está vinculado a uma equipe");
+			if (resultEquipe[0] == undefined || resultEquipe[0] == null) {
+				callback(processarMensagemDev(resultEquipe, null,  session));	
+			} else {
+				propostasDAO.obterPropostasEquipe(resultEquipe[0].idEquipe, function(error, resultProposta){
 
-				/*timeLineAnalisador.processaMensagemDev(result, function(msgs){
-					callback(msgs);
-				});*/
-				callback(processarMensagemDev(result, session));
-				
+						if(error){
+							throw error;
+						} else {
+							if (resultProposta[0] != undefined || resultProposta[0] != null) {
+								console.log("Equipe submeteu propostas");
+
+								var propostasAprovadas = [];
+
+								for(var i=0; i<resultProposta.length; i++){
+									propostasDAO.verificarPropostasProjetoAprovada(resultProposta[i].idProjeto, function(error, resultPropostaAprov){
+										if(error){
+											throw error;
+										} else {
+											if(resultPropostaAprov[0] != undefined || resultPropostaAprov[0] != null){
+												propostasAprovadas.push(resultPropostaAprov);
+											}
+										}
+									});
+								}
+
+								if(propostasAprovadas.length > 0){
+									console.log("Equipe teve algumas de suas propostas aprovadas pelo cliente");
+
+									for(var j=0; j<propostasAprovadas.length; j++){
+										statusProjetoDAO.verificarStatusTermoAbertura(propostasAprovadas[i].idProjeto, function(error, resultTermoAbertura){
+											if(error){
+												throw error;
+											} else {
+												if(resultTermoAbertura != undefined || resultTermoAbertura != null){
+													console.log("Termo de abertura aprovado, equipe está vinculada ao projeto, que está em processo de desenvolvimento");
+													callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
+												}	
+											}
+										});
+									}
+									
+								} else {
+									callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
+								}
+
+							} else{
+								console.log("Equipe não fez nenhuma proposta")
+								callback(processarMensagemDev(resultEquipe, resultProposta, null,  session));
+							}
+						}
+
+					});
+
 			}
 		}	
 

@@ -3,6 +3,12 @@
 }
 
 
+propostaDAO.prototype.obterPropostasEquipe = function(idEquipe, callback){
+  var sqlPropostasEquipe = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idEquipe = '+idEquipe;
+  console.log("sqlPropostasEquipe = "+sqlPropostasEquipe);
+  this._connection.query(sqlPropostasEquipe, callback);
+}
+
 propostaDAO.prototype.insertProposta = function(res, req, callback){
   //-----------------------verifica membro eqp ------------------
   var statusEqp  = "Aberto";  //console.log(" ***************ops************ "+ JSON.stringify(req.body.idContaUsuario) );
@@ -57,6 +63,14 @@ propostaDAO.prototype.verificarPropostasProjeto = function(idProjeto, callback){
   var sqlVerificarPropostasProjeto = 'SELECT proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aberta" AND proposta.status = "Aprovada"';
   console.log("sqlPropostasProjeto = "+sqlVerificarPropostasProjeto);
   this._connection.query(sqlVerificarPropostasProjeto, callback);
+
+}
+
+propostaDAO.prototype.verificarPropostasProjetoAprovada = function(idProjeto, callback){
+
+  var sqlVerificarPropostasProjetoAprovada = 'SELECT proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aprovada"';
+  console.log("sqlVerificarPropostasProjetoAprovada = "+sqlVerificarPropostasProjetoAprovada);
+  this._connection.query(sqlVerificarPropostasProjetoAprovada, callback);
 
 }
 
