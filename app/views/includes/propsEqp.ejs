@@ -126,7 +126,7 @@
       // document.getElementById("idProposta").setAttribute('value',value);
       console.log("O/ btnAprovar "+e);
       // console.log("O/ btnAprovar "+evtId.target.id);
-      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovado", idProjeto: f }, function(data){
+      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovada", idProjeto: f }, function(data){
 
         console.log("data = "+data);
 

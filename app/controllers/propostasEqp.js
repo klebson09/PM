@@ -102,7 +102,7 @@ module.exports.aprovarProposta = function(application, req, res){
                     var projetosDispDAO   = new application.app.models.projetosDispDAO(connection);
                     var timeLineAnalisador  = new application.app.models.timeLineAnalisador(connection);
 
-                    timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
+                    timeLineAnalisador.atualizarTimeLineCliente(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
 
                       req.session.msgsTimeline = msgs;
                       res.render("includes/timeLine", {
@@ -134,7 +134,7 @@ module.exports.aprovarProposta = function(application, req, res){
             var projetosDispDAO   = new application.app.models.projetosDispDAO(connection);
             var timeLineAnalisador  = new application.app.models.timeLineAnalisador(connection);
 
-            timeLineAnalisador.atualizarTimeLine(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
+            timeLineAnalisador.atualizarTimeLineCliente(req.session, projetosDispDAO, statusProjetoDAO, function(msgs){
 
               req.session.msgsTimeline = msgs;
               

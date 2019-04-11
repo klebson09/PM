@@ -60,6 +60,12 @@ function trataMsgsUsuarioCadastrado(msg, nomeUsuario,  statusProjeto){
 
 }
 
+function tratarMsgsProposta(nomeProjeto, indiceMsg){
+	msgsDev[indiceMsg].title = msgsDev[indiceMsg].title.replace("<proj>", nomeProjeto);
+	msgsDev[indiceMsg].msg = msgsDev[indiceMsg].msg.replace("<proj>", nomeProjeto);	
+}
+
+
 //Substituição do template <proj> pelo nome do projeto
 function tratarMsgs(objeto, indiceMsg, tipoCampo){
 
@@ -153,6 +159,25 @@ function tratarDataEquipe(equipe, indiceMsg){
 
 }
 
+function tratarDataProposta(proposta, indiceMsg){
+
+	console.log("tratarDataProposta:INICIO");
+
+	console.log(JSON.stringify(proposta));
+
+	var dataProposta = new Date(proposta[0].dataProposta);
+
+	console.log("dataProposta: "+dataProposta);
+
+	msgsDev[indiceMsg].date = dataProposta.getDate()+" de "+meses[dataProposta.getMonth()]+" de "+dataProposta.getFullYear();
+	msgsDev[indiceMsg].time = (dataProposta.getHours()<10?'0':'') + dataProposta.getHours()+":"+(dataProposta.getMinutes()<10?'0':'') + dataProposta.getMinutes();
+
+
+	console.log("tratarDataProposta:FIM");
+
+
+}
+
 
 function processarMensagemCliente(statusProjeto, session, projeto){
 	var msgs = [];
@@ -193,15 +218,40 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 
 function processarMensagemDev(equipe, proposta, propostasAprovadas, session){
 
+	console.log("equipe = "+JSON.stringify(equipe));
+	console.log("Proposta = "+JSON.stringify(proposta));
+	console.log("propostasAprovadas = "+JSON.stringify(propostasAprovadas));
+	console.log("session = "+JSON.stringify(session));
+
+
+
 	var msgs = [];
 	var indMsg=0;
 
 	tratarDataCadastro(session, "D");
 
-	if(equipe != null && equipe != undefined){
+	if(equipe != null && equipe != undefined && equipe.length > 0){
+		console.log("TEM EQUIPE");
 		tratarDataEquipe(equipe, 1);
 		tratarMsgs(equipe, 1, "D");
-		indMsg = 1;
+		if(proposta != null && proposta != undefined && proposta.length > 0){
+			console.log("TEM PROPOSTA");
+			if(propostasAprovadas != null && propostasAprovadas != undefined && propostasAprovadas.length > 0){
+				console.log("PROPOSTA(S) APROVADA");
+				indMsg = 3;
+				tratarMsgsProposta(propostasAprovadas[0].nomeProjeto, indMsg);
+
+			} else{
+				console.log("NENHUMA PROPOSTA APROVADA");
+				indMsg = 2;	
+				tratarDataProposta(proposta, indMsg);
+				tratarMsgsProposta(proposta[0].nomeProjeto, indMsg);
+			}
+		}else{
+			console.log("NENHUMA PROPOSTA");
+			indMsg = 1;	
+		}
+		
 	}
 
 	for (var i=indMsg; i>= 0; i--){
@@ -272,41 +322,53 @@ timeLineAnalisador.prototype.atualizarTimeLineDev = function(session, equipeDAO,
 							throw error;
 						} else {
 							if (resultProposta[0] != undefined || resultProposta[0] != null) {
+								
 								console.log("Equipe submeteu propostas");
+								console.log("resultProposta = "+JSON.stringify(resultProposta));
+								console.log("resultProposta.length = "+resultProposta.length);
 
 								var propostasAprovadas = [];
 
 								for(var i=0; i<resultProposta.length; i++){
 									propostasDAO.verificarPropostasProjetoAprovada(resultProposta[i].idProjeto, function(error, resultPropostaAprov){
+										console.log("i = "+i);
+										console.log("resultPropostaAprov = "+JSON.stringify(resultPropostaAprov));
 										if(error){
 											throw error;
 										} else {
+											console.log("@@@@@@Verificando se as propostas foram aprovadas");
+											console.log("resultPropostaAprov[0] = "+JSON.stringify(resultPropostaAprov[0]));
+											console.log(resultPropostaAprov[0] != undefined || resultPropostaAprov[0] != null);
 											if(resultPropostaAprov[0] != undefined || resultPropostaAprov[0] != null){
-												propostasAprovadas.push(resultPropostaAprov);
+												console.log("APROVADA");
+												propostasAprovadas.push(resultPropostaAprov[0]);
+
+												console.log("propostasAprovadas.length = "+propostasAprovadas.length);	
+												
+												console.log("Equipe teve algumas de suas propostas aprovadas pelo cliente");
+
+												for(var j=0; j<propostasAprovadas.length; j++){
+													console.log("propostasAprovadas[j] = "+JSON.stringify(propostasAprovadas[j]));
+													statusProjetoDAO.verificarStatusTermoAbertura(propostasAprovadas[j].idProjeto, function(error, resultTermoAbertura){
+													if(error){
+														throw error;
+													} else {
+														if(resultTermoAbertura != undefined || resultTermoAbertura != null){
+															console.log("Termo de abertura aprovado, equipe está vinculada ao projeto, que está em processo de desenvolvimento");
+															callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
+														}	
+															}
+													});
+												}
+												
+											} else {
+												console.log("Equipe não teve qualquer proposta aprovada pelo cliente");
+												callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));
 											}
 										}
 									});
 								}
 
-								if(propostasAprovadas.length > 0){
-									console.log("Equipe teve algumas de suas propostas aprovadas pelo cliente");
-
-									for(var j=0; j<propostasAprovadas.length; j++){
-										statusProjetoDAO.verificarStatusTermoAbertura(propostasAprovadas[i].idProjeto, function(error, resultTermoAbertura){
-											if(error){
-												throw error;
-											} else {
-												if(resultTermoAbertura != undefined || resultTermoAbertura != null){
-													console.log("Termo de abertura aprovado, equipe está vinculada ao projeto, que está em processo de desenvolvimento");
-													callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
-												}	
-											}
-										});
-									}
-									
-								} else {
-									callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
-								}
 
 							} else{
 								console.log("Equipe não fez nenhuma proposta")

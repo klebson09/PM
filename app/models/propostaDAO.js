@@ -4,7 +4,7 @@
 
 
 propostaDAO.prototype.obterPropostasEquipe = function(idEquipe, callback){
-  var sqlPropostasEquipe = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idEquipe = '+idEquipe;
+  var sqlPropostasEquipe = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback, proposta.dataProposta, projeto.nomeProjeto FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe INNER JOIN projeto ON proposta.idProjeto = projeto.idProjeto WHERE proposta.idEquipe = '+idEquipe;
   console.log("sqlPropostasEquipe = "+sqlPropostasEquipe);
   this._connection.query(sqlPropostasEquipe, callback);
 }
@@ -68,7 +68,7 @@ propostaDAO.prototype.verificarPropostasProjeto = function(idProjeto, callback){
 
 propostaDAO.prototype.verificarPropostasProjetoAprovada = function(idProjeto, callback){
 
-  var sqlVerificarPropostasProjetoAprovada = 'SELECT proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aprovada"';
+  var sqlVerificarPropostasProjetoAprovada = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aprovada"';
   console.log("sqlVerificarPropostasProjetoAprovada = "+sqlVerificarPropostasProjetoAprovada);
   this._connection.query(sqlVerificarPropostasProjetoAprovada, callback);
 
