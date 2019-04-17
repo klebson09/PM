@@ -68,7 +68,7 @@ propostaDAO.prototype.verificarPropostasProjeto = function(idProjeto, callback){
 
 propostaDAO.prototype.verificarPropostasProjetoAprovada = function(idProjeto, callback){
 
-  var sqlVerificarPropostasProjetoAprovada = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aprovada"';
+  var sqlVerificarPropostasProjetoAprovada = 'SELECT projeto.nomeProjeto, proposta.idProjeto, proposta.idProposta, proposta.idEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback, statusprojeto.dataStatusPropostaAprovada FROM proposta INNER JOIN statusprojeto ON proposta.idProjeto = statusprojeto.idProjeto INNER JOIN projeto ON proposta.idProjeto = projeto.idProjeto WHERE proposta.idProjeto = "'+idProjeto+'" AND proposta.status = "Aprovada"';
   console.log("sqlVerificarPropostasProjetoAprovada = "+sqlVerificarPropostasProjetoAprovada);
   this._connection.query(sqlVerificarPropostasProjetoAprovada, callback);
 
@@ -102,6 +102,9 @@ propostaDAO.prototype.aprovarProp = function(req, callback){
   console.log("@@updatePropostaSql@@"+updatePropostaSql);
   this._connection.query(updatePropostaSql, callback);
 }
+
+
+
 
 module.exports = function(){
   return propostaDAO;

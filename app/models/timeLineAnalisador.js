@@ -159,13 +159,11 @@ function tratarDataEquipe(equipe, indiceMsg){
 
 }
 
-function tratarDataProposta(proposta, indiceMsg){
+function tratarDataProposta(data, indiceMsg){
 
 	console.log("tratarDataProposta:INICIO");
 
-	console.log(JSON.stringify(proposta));
-
-	var dataProposta = new Date(proposta[0].dataProposta);
+	var dataProposta = new Date(data);
 
 	console.log("dataProposta: "+dataProposta);
 
@@ -216,7 +214,7 @@ function processarMensagemCliente(statusProjeto, session, projeto){
 
 }
 
-function processarMensagemDev(equipe, proposta, propostasAprovadas, session){
+function processarMensagemDev(equipe, proposta, propostasAprovadas, statusProjeto, session){
 
 	console.log("equipe = "+JSON.stringify(equipe));
 	console.log("Proposta = "+JSON.stringify(proposta));
@@ -239,13 +237,17 @@ function processarMensagemDev(equipe, proposta, propostasAprovadas, session){
 			if(propostasAprovadas != null && propostasAprovadas != undefined && propostasAprovadas.length > 0){
 				console.log("PROPOSTA(S) APROVADA");
 				indMsg = 3;
+				console.log(JSON.stringify(propostasAprovadas));
 				tratarMsgsProposta(propostasAprovadas[0].nomeProjeto, indMsg);
+				tratarMsgsProposta(propostasAprovadas[0].nomeProjeto, indMsg-1);
+				tratarDataProposta(proposta[0].dataProposta, indMsg-1);
+				tratarDataProposta(statusProjeto[0].dataStatusPropostaAprovada, indMsg);
 
 			} else{
 				console.log("NENHUMA PROPOSTA APROVADA");
 				indMsg = 2;	
-				tratarDataProposta(proposta, indMsg);
 				tratarMsgsProposta(proposta[0].nomeProjeto, indMsg);
+				tratarDataProposta(proposta[0].dataProposta, indMsg);
 			}
 		}else{
 			console.log("NENHUMA PROPOSTA");
@@ -314,7 +316,7 @@ timeLineAnalisador.prototype.atualizarTimeLineDev = function(session, equipeDAO,
 			throw error;
 		} else {
 			if (resultEquipe[0] == undefined || resultEquipe[0] == null) {
-				callback(processarMensagemDev(resultEquipe, null,  session));	
+				callback(processarMensagemDev(resultEquipe, null,  null, null, session));	
 			} else {
 				propostasDAO.obterPropostasEquipe(resultEquipe[0].idEquipe, function(error, resultProposta){
 
@@ -347,32 +349,41 @@ timeLineAnalisador.prototype.atualizarTimeLineDev = function(session, equipeDAO,
 												
 												console.log("Equipe teve algumas de suas propostas aprovadas pelo cliente");
 
+												var nenhumTermoAberturaAprovado = true;
+
 												for(var j=0; j<propostasAprovadas.length; j++){
 													console.log("propostasAprovadas[j] = "+JSON.stringify(propostasAprovadas[j]));
 													statusProjetoDAO.verificarStatusTermoAbertura(propostasAprovadas[j].idProjeto, function(error, resultTermoAbertura){
 													if(error){
 														throw error;
 													} else {
-														if(resultTermoAbertura != undefined || resultTermoAbertura != null){
+														console.log("resultTermoAbertura = "+resultTermoAbertura);
+														console.log("resultTermoAbertura JSON= "+JSON.stringify(resultTermoAbertura));
+														if(resultTermoAbertura[0] != undefined || resultTermoAbertura[0] != null){
+															nenhumTermoAberturaAprovado = false;
 															console.log("Termo de abertura aprovado, equipe está vinculada ao projeto, que está em processo de desenvolvimento");
-															callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));	
-														}	
-															}
-													});
-												}
-												
-											} else {
-												console.log("Equipe não teve qualquer proposta aprovada pelo cliente");
-												callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas ,session));
+															callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas,resultPropostaAprov,session));	
+														} 
+													}
+												});
 											}
-										}
-									});
+
+											if(nenhumTermoAberturaAprovado){
+													callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas,resultPropostaAprov,session));	
+											}
+												
+										} else {
+												console.log("Equipe não teve qualquer proposta aprovada pelo cliente");
+												callback(processarMensagemDev(resultEquipe, resultProposta, propostasAprovadas, null ,session));
+									}
 								}
+							});
+						}
 
 
 							} else{
 								console.log("Equipe não fez nenhuma proposta")
-								callback(processarMensagemDev(resultEquipe, resultProposta, null,  session));
+								callback(processarMensagemDev(resultEquipe, resultProposta, null,  null, session));
 							}
 						}
 
@@ -402,3 +413,7 @@ module.exports = function(){
 [{"idStatusProjeto":1,"idProjeto":3,"modelarProjeto":2,"disporProjeto":2,"vincularEquipe":1,"criarTermoAbertura":1,"aprovarTermoAbertura":1,"desenvolverProjeto":1,"encerrar":1}]
 
 */
+
+
+
+
