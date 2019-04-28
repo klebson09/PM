@@ -54,10 +54,6 @@ module.exports.autenticar = function(application, req, res) {
 					tipo: "#"
 				}];
 				req.session.msgsTimeline = [];
-
-
-				
-
 			}
 
 			console.log("tipoUsuario = "+req.session.tipoUsuario);
@@ -95,10 +91,6 @@ module.exports.autenticar = function(application, req, res) {
 						});
 
 					});
-
-
-
-
 					/*res.render("includes/content", {
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
@@ -107,7 +99,6 @@ module.exports.autenticar = function(application, req, res) {
 
 					});*/
 				} else if (req.session.tipoUsuario == 'C') {
-
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
 

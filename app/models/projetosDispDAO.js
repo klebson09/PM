@@ -16,7 +16,7 @@ projetosDispDAO.prototype.projetosDisponiveis = function(req, callback){
 }
 
 projetosDispDAO.prototype.verificarProjetosCliente = function(idUsuario, callback){
-  console.log("OBTER PROJETOS ASSOCIADOS AO CLIENTE");
+  console.log("projetosDispDAO: verificarProjetosCliente - OBTER PROJETOS ASSOCIADOS AO CLIENTE");
   var sql =  "SELECT * FROM projeto WHERE idContaUsuario ="+idUsuario;
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
@@ -34,6 +34,14 @@ projetosDispDAO.prototype.criarProjeto = function(dadosProjeto, idUsuario, callb
   console.log("sql = "+sqlProjeto);
   this._connection.query(sqlProjeto, callback);
 }
+
+projetosDispDAO.prototype.consultarProjeto = function(idProjeto, callback){
+  console.log("projetosDispDAO: consultarProjeto - ");
+  var sql = "SELECT * FROM pm.projeto WHERE idProjeto = "+idProjeto;
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
 
 
 

@@ -20,9 +20,25 @@ TimelineDAO.prototype.timelineIncluirCliente = function(cliente, callback){
 
 TimelineDAO.prototype.timelineObterMsgs = function(idContaUsuario, callback){
 	console.log("TimelineDAO:timelineObterMsgs - INICIO cliente "+idContaUsuario);
-	var sql = "SELECT * FROM pm.timeline_msg WHERE idContaUsuario = "+idContaUsuario;
+	var sql = "SELECT * FROM pm.timeline_msg WHERE idContaUsuario = "+idContaUsuario+" ORDER BY dataHora DESC";
 	console.log("TimelineDAO:timelineObterMsgs ====>> sql "+sql);
 	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineCriarProjeto = function(projeto, callback){
+	console.log("TimelineDAO:timelineCriarProjeto - INICIO modelarProjeto "+projeto);
+	var idContaUsuario = projeto.idContaUsuario;
+	var proj = projeto.nomeProjeto;
+	var titulo = "Parabéns, você modelou o projeto";
+	var msg = "Bom trabalho, você descreveu o projeto <b>"+proj+"</b> e agora ele encontra-se disponível para equipes de desenvolvedores candidate-se para o projeto.Você vai receber notificações por email e por aqui no portal informando se alguma equipe ficou interessado por seu projeto.";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineIncluirCliente ====>> sql "+sql);
+	this._connection.query(sql, callback);
+
+
 }
 
 module.exports = function(){

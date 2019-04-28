@@ -1,0 +1,16 @@
+<option value="1">Desktop</option>
+<option value="2">Mobile</option>
+<option value="3">Web</option>
+<option value="4">Multiplataforma</option>
+
+
+Desktop
+Mobile
+Web
+Multiplataforma
+
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Desktop');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Mobile');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Web');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Multiplataforma');
+
