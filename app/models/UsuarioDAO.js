@@ -26,6 +26,12 @@ UsuarioDAO.prototype.obterTutores = function(callback){
   this._connection.query(sql, callback);
 }
 
+UsuarioDAO.prototype.obterContaUsuario = function(idContaUsuario, callback){
+  console.log("UsuarioDAO:obterContaUsuario INICIO")
+  var sql = "SELECT * FROM pm.conta_usuario WHERE idContaUsuario = "+idContaUsuario;
+  this._connection.query(sql, callback);
+}
+
 module.exports = function(){
   return UsuarioDAO;
 }

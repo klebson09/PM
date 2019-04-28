@@ -3,7 +3,7 @@ module.exports.cadCliente = function(application, req, res){
 }
 
 module.exports.inclCliente = function(application, req, res){
-	console.log("CONTROLLER INCLUIR CLIENTE");
+	console.log("cadastroCliente:inclCliente - INICIO");
 	// var dadosFormLogin = "0";
 	var dadosFormLogin = req.body;
 
@@ -34,17 +34,34 @@ module.exports.inclCliente = function(application, req, res){
 	if(erros){
 		res.render("cadastros/cadastroCliente", {validacao:erros});
 		return;
-	}*/
+	}
+	*/
 	var connection = application.config.dbConnection;
-	var ClienteDAO = new application.app.models.ClienteDAO(connection);
+	var clienteDAO = new application.app.models.ClienteDAO(connection);
 
-	ClienteDAO.incluirCliente(dadosFormLogin, function(error, result){
+	clienteDAO.incluirCliente(dadosFormLogin, function(error, resultIncluirCliente){		
 		if(error){
 			throw error;
 		} else{
-			res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"})
+			var usuarioDAO = new application.app.models.UsuarioDAO(connection);
+			var timelineDAO = new application.app.models.TimelineDAO(connection);
+			usuarioDAO.obterContaUsuario(resultIncluirCliente.insertId, function(error, resultObterContaUsuario){
+				if(error){
+					throw error;
+				}else{
+					console.log("cadastroCliente:inclCliente resultObterContaUsuario"+ JSON.stringify(resultObterContaUsuario));
+					timelineDAO.timelineIncluirCliente(resultObterContaUsuario[0], function(error, resultTimelineIncluirCliente){			
+						if(error){
+							throw error;
+						}else{
+							res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"});
+						}
+					});
+
+				}
+			
+			});
 		}
 	});
-
 	// res.send('tudo ok para criar a sessão');
 }

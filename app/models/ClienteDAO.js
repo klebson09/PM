@@ -59,6 +59,7 @@ ClienteDAO.prototype.incluirCliente = function(cliente, callback){
   });
 }
 
+
 module.exports = function(){
   return ClienteDAO;
 }

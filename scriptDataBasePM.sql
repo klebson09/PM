@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `pm`.`conta_usuario` (
   `tipoPessoa` VARCHAR(3) NULL,
   `dataNascimento` DATE NULL,
   PRIMARY KEY (`idContaUsuario`),
-  INDEX `fk_conta_usuario_contato1_idx` (`idContato` ASC) VISIBLE,
+  INDEX `fk_conta_usuario_contato1_idx` (`idContato` ASC) ,
   CONSTRAINT `fk_conta_usuario_contato1`
     FOREIGN KEY (`idContato`)
     REFERENCES `pm`.`contato` (`idContato`)
@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS `pm`.`equipe` (
   `idTutor` INT(11) NOT NULL,
   `statusVinculoTutor` VARCHAR(45) NOT NULL DEFAULT 'Aberto',
   PRIMARY KEY (`idEquipe`),
-  INDEX `fk_equipe_conta_usuario1_idx` (`idAdmEquipe` ASC) VISIBLE,
-  INDEX `fk_equipe_conta_usuario2_idx` (`idTutor` ASC) VISIBLE,
+  INDEX `fk_equipe_conta_usuario1_idx` (`idAdmEquipe` ASC) ,
+  INDEX `fk_equipe_conta_usuario2_idx` (`idTutor` ASC) ,
   CONSTRAINT `fk_equipe_conta_usuario1`
     FOREIGN KEY (`idAdmEquipe`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
@@ -132,9 +132,9 @@ CREATE TABLE IF NOT EXISTS `pm`.`projeto` (
   `finalidade` VARCHAR(1000) NULL DEFAULT NULL,
   `status` VARCHAR(45) NULL DEFAULT 'Modelado',
   PRIMARY KEY (`idProjeto`),
-  INDEX `fk_projeto_plataforma1_idx` (`idPlataforma` ASC) VISIBLE,
-  INDEX `fk_projeto_conta_usuario1_idx` (`idContaUsuario` ASC) VISIBLE,
-  INDEX `fk_projeto_equipe1_idx` (`idEquipe` ASC) VISIBLE,
+  INDEX `fk_projeto_plataforma1_idx` (`idPlataforma` ASC) ,
+  INDEX `fk_projeto_conta_usuario1_idx` (`idContaUsuario` ASC) ,
+  INDEX `fk_projeto_equipe1_idx` (`idEquipe` ASC) ,
   CONSTRAINT `fk_projeto_conta_usuario1`
     FOREIGN KEY (`idContaUsuario`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
@@ -170,8 +170,8 @@ CREATE TABLE IF NOT EXISTS `pm`.`proposta` (
   `duvidas` VARCHAR(2000) NULL,
   `feedback` VARCHAR(2000) NULL,
   PRIMARY KEY (`idProposta`),
-  INDEX `fk_proposta_projeto_idx` (`idProjeto` ASC) VISIBLE,
-  INDEX `fk_proposta_equipe1_idx` (`idEquipe` ASC) VISIBLE,
+  INDEX `fk_proposta_projeto_idx` (`idProjeto` ASC) ,
+  INDEX `fk_proposta_equipe1_idx` (`idEquipe` ASC) ,
   CONSTRAINT `fk_proposta_projeto`
     FOREIGN KEY (`idProjeto`)
     REFERENCES `pm`.`projeto` (`idProjeto`)
@@ -186,20 +186,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `pm`.`timelineMsg`
+-- Table `pm`.`timeline_msg`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `pm`.`timelineMsg` ;
+DROP TABLE IF EXISTS `pm`.`timeline_msg` ;
 
-CREATE TABLE IF NOT EXISTS `pm`.`timelineMsg` (
-  `idTimelineMsgs` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `pm`.`timeline_msg` (
+  `idtimeline_msgs` INT NOT NULL AUTO_INCREMENT,
   `idContaUsuario` INT(11) NOT NULL,
   `tituloMensagem` VARCHAR(500) NULL,
   `mensagem` VARCHAR(4000) NOT NULL,
   `dataHora` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `icon` VARCHAR(500) NULL,
-  PRIMARY KEY (`idTimelineMsgs`),
-  INDEX `fk_timelineMsgs_conta_usuario1_idx` (`idContaUsuario` ASC) VISIBLE,
-  CONSTRAINT `fk_timelineMsgs_conta_usuario1`
+  PRIMARY KEY (`idtimeline_msgs`),
+  INDEX `fk_timeline_msgs_conta_usuario1_idx` (`idContaUsuario` ASC) ,
+  CONSTRAINT `fk_timeline_msgs_conta_usuario1`
     FOREIGN KEY (`idContaUsuario`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
     ON DELETE NO ACTION
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `pm`.`dados_educacionais_desenvolvedor` (
   `periodo` INT(11) NOT NULL,
   `declaracaoMatricula` LONGBLOB NOT NULL,
   PRIMARY KEY (`idDadosEducacionaisDesenvolvedor`),
-  INDEX `fk_dados_educacionais_desenvolvedor_conta_usuario1_idx` (`idContaUsuario` ASC) VISIBLE,
+  INDEX `fk_dados_educacionais_desenvolvedor_conta_usuario1_idx` (`idContaUsuario` ASC) ,
   CONSTRAINT `fk_dados_educacionais_desenvolvedor_conta_usuario1`
     FOREIGN KEY (`idContaUsuario`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `pm`.`dados_educacionais_tutor` (
   `formacaoAcademica` VARCHAR(100) NOT NULL,
   `cargo` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`idDadosEducacionaisTutor`),
-  INDEX `fk_dados_educacionais_tutor_conta_usuario1_idx` (`idContaUsuario` ASC) VISIBLE,
+  INDEX `fk_dados_educacionais_tutor_conta_usuario1_idx` (`idContaUsuario` ASC) ,
   CONSTRAINT `fk_dados_educacionais_tutor_conta_usuario1`
     FOREIGN KEY (`idContaUsuario`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
@@ -266,8 +266,8 @@ CREATE TABLE IF NOT EXISTS `pm`.`membrosequipe` (
   `conta_usuario_idContaUsuario` INT(11) NOT NULL,
   `equipe_idEquipe` INT(11) NOT NULL,
   PRIMARY KEY (`idMembrosEquipe`),
-  INDEX `fk_conta_usuario_has_equipe_equipe1_idx` (`equipe_idEquipe` ASC) VISIBLE,
-  INDEX `fk_conta_usuario_has_equipe_conta_usuario1_idx` (`conta_usuario_idContaUsuario` ASC) VISIBLE,
+  INDEX `fk_conta_usuario_has_equipe_equipe1_idx` (`equipe_idEquipe` ASC) ,
+  INDEX `fk_conta_usuario_has_equipe_conta_usuario1_idx` (`conta_usuario_idContaUsuario` ASC) ,
   CONSTRAINT `fk_conta_usuario_has_equipe_conta_usuario1`
     FOREIGN KEY (`conta_usuario_idContaUsuario`)
     REFERENCES `pm`.`conta_usuario` (`idContaUsuario`)
@@ -296,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `pm`.`checkpoint` (
   `status` VARCHAR(45) NULL DEFAULT NULL,
   `observacoes` VARCHAR(2000) NULL,
   PRIMARY KEY (`idCheckpoint`),
-  INDEX `fk_checkpoint_projeto1_idx` (`idProjeto` ASC) VISIBLE,
+  INDEX `fk_checkpoint_projeto1_idx` (`idProjeto` ASC) ,
   CONSTRAINT `fk_checkpoint_projeto1`
     FOREIGN KEY (`idProjeto`)
     REFERENCES `pm`.`projeto` (`idProjeto`)
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `pm`.`termo_abertura` (
   `orcamento` DOUBLE NULL DEFAULT NULL,
   `restricoes` VARCHAR(1000) NULL DEFAULT NULL,
   PRIMARY KEY (`idTermoAbertura`),
-  INDEX `fk_termo_abertura_projeto1_idx` (`idProjeto` ASC) VISIBLE,
+  INDEX `fk_termo_abertura_projeto1_idx` (`idProjeto` ASC) ,
   CONSTRAINT `fk_termo_abertura_projeto1`
     FOREIGN KEY (`idProjeto`)
     REFERENCES `pm`.`projeto` (`idProjeto`)
