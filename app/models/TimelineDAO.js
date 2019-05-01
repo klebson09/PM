@@ -9,7 +9,7 @@ TimelineDAO.prototype.timelineIncluirCliente = function(cliente, callback){
 	var usr = cliente.nomeUsuario;
 	var titulo = "Bem Vindo!";
 	var href = "/modelar_projeto";
-	var msg = "Olá "+usr+" seja bem vindo ao portal, aqui você terá a possibilidade de transformar sua ideia em realidade. Varias equipes com conhecimento diverso poderão trabalhar em seu projeto.Você deve MODELAR seu projeto com informações suficiente para que os desenvolvedores tenham uma boa visão do sistema que deverão desenvolver. <b><a href="+href+">Clique aqui para Modelar o projeto</a></b>";
+	var msg = "Olá <b>"+usr+"</b> seja bem vindo ao portal, aqui você terá a possibilidade de transformar sua ideia em realidade. Varias equipes com conhecimento diverso poderão trabalhar em seu projeto.Você deve MODELAR seu projeto com informações suficiente para que os desenvolvedores tenham uma boa visão do sistema que deverão desenvolver. <b><a href="+href+">Clique aqui para Modelar o projeto</a></b>";
 	var icon = "fa fa-envelope bg-blue";
 
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
@@ -37,9 +37,34 @@ TimelineDAO.prototype.timelineCriarProjeto = function(projeto, callback){
 	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineIncluirCliente ====>> sql "+sql);
 	this._connection.query(sql, callback);
-
-
 }
+
+
+/*--------------------- DESENVOLVEDOR --------------------- */
+
+TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
+	console.log("TimelineDAO:timelineIncluirDev - INICIO desenvolvedor "+JSON.stringify(desenvolvedor) );
+	var idContaUsuario = desenvolvedor.idContaUsuario;
+	var nomeDesenvolvedor = desenvolvedor.nomeUsuario;	
+	var titulo = "Boas Vindas!";
+	var href = "/criar_equipe";
+	var msg = "Olá <b>"+nomeDesenvolvedor+"</b> seja bem vindo ao portal, aqui você terá a oportunidade de aplicar seu conhecimento em desenvolvimento de software e alavancar de vez sua carreira. Nenhum homem é uma ilha, então, você precisa fazer parte de uma equipe, clique em <b><a href="+href+">CRIAR EQUIPE</a></b> para iniciar suas atividades nesse sistema.";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineIncluirCliente ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+
+
+
+
+
+
+/*--------------------- FIM DESENVOLVEDOR --------------------- */
+
 
 module.exports = function(){
 	return TimelineDAO;	

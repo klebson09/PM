@@ -74,31 +74,28 @@ module.exports.autenticar = function(application, req, res) {
 			if (req.session.autenticado) {
 
 				console.log("AUTORIZADO");
-				if (req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T') {
-					
-					console.log("Verificando se o usuário desenvolvedor está vinculado a uma equipe");
+				if (req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T'){
+					timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+						if(error){
+							throw error;
+						} else {							
+							timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+								req.session.msgsTimeline = msgs;
+								console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 
-					timeLineAnalisador.atualizarTimeLineDev(req.session, statusProjetoDAO, function(msgs){
+								res.render("includes/timeLine", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									data: req.session.msgsTimeline,
+									layout: 'includes/layoutIncludes'
+								});
 
-						req.session.msgsTimeline = msgs;
-
-						res.render("includes/timeLine", {
-							sessionNomeUsuario: req.session.nomeUsuario,
-							sessionNomeTipoUsuario: req.session.tipoUsuario,
-							notificacao: req.session.notificacoes,
-							data: req.session.msgsTimeline,
-							layout: 'includes/layoutIncludes'
-						});
-
+							});							
+						}
 					});
-					/*res.render("includes/content", {
-						sessionNomeUsuario: req.session.nomeUsuario,
-						sessionNomeTipoUsuario: req.session.tipoUsuario,
-						notificacao: req.session.notificacoes,
-						layout: 'includes/layoutIncludes'
 
-					});*/
-				} else if (req.session.tipoUsuario == 'C') {
+				}else if (req.session.tipoUsuario == 'C'){
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
 

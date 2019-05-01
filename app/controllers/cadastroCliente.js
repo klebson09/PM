@@ -49,11 +49,12 @@ module.exports.inclCliente = function(application, req, res){
 				if(error){
 					throw error;
 				}else{
-					console.log("cadastroCliente:inclCliente resultObterContaUsuario"+ JSON.stringify(resultObterContaUsuario));
+					console.log("cadastroCliente:inclCliente resultObterContaUsuario "+ JSON.stringify(resultObterContaUsuario));
 					timelineDAO.timelineIncluirCliente(resultObterContaUsuario[0], function(error, resultTimelineIncluirCliente){			
 						if(error){
 							throw error;
 						}else{
+			             	console.log("cadastroCliente:inclCliente resultObterContaUsuario 2 "+ JSON.stringify(resultObterContaUsuario));
 							res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"});
 						}
 					});
