@@ -63,22 +63,64 @@ module.exports.cadastrarEquipe = function(application, req, res){
     var equipe = req.body;
     var connection = application.config.dbConnection;
     console.log("connection criada");
-    var EquipeDAO = new application.app.models.EquipeDAO(connection);
+    var equipeDAO = new application.app.models.EquipeDAO(connection);
 
 
-    EquipeDAO.cadEquipe(equipe, req.session.idContaUsuario ,function(erro, resultado){
+    equipeDAO.cadEquipe(equipe, req.session.idContaUsuario ,function(erro, resultado){
       if(erro){
         throw erro;
       } else {
           console.log("Equipe cadastrada com sucesso");
           var idEquipe = resultado.insertId;
 
-          EquipeDAO.cadMembrosEquipe(equipe.membrosEquipe, idEquipe, function(erro,resultado){
+          equipeDAO.cadMembrosEquipe(equipe.membrosEquipe, idEquipe, function(erro,resultado){
             if(erro){
               throw erro;
             } else {
               console.log("Membros adicionados a equipe");
-              res.send("EQUIPE CADASTRADA COM SUCESSO")
+
+              var timelineDAO = new application.app.models.TimelineDAO(connection);
+              var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+
+              equipeDAO.obterDadosEquipe(idEquipe, function(error, resultObterDadosEquipe){
+
+                if(error){
+                  throw error;
+                } else {
+                  console.log("Dados de equipe obtidos com sucesso");
+
+                  timelineDAO.timelineCriarEquipe(resultObterDadosEquipe[0], function(error, resultTimelineCriarEquipe){
+                    if(error){
+                      throw error;
+                    } else {
+                      timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, idContaUsuario, function(error, resultTimelineObterMsgsEquipe){
+                        if(error){
+                          throw error;
+                        } else {              
+                           timeLineAnalisador.tratarMsgs(resultTimelineObterMsgsEquipe, function(msgs){
+                           req.session.msgsTimeline = msgs;
+                           console.log("criarEquipe.js:cadastrarEquipe - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+
+
+
+                            res.render("includes/timeLine", {
+                              sessionNomeUsuario: req.session.nomeUsuario,
+                              sessionNomeTipoUsuario: req.session.tipoUsuario,
+                              notificacao: req.session.notificacoes,
+                              data: req.session.msgsTimeline,
+                              layout: 'includes/layoutIncludes'
+                           });
+
+                        });             
+                      }
+                    });
+                    }
+                  })
+
+                }
+
+              });
+
             }
           })
       }

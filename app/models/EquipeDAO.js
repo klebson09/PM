@@ -16,6 +16,8 @@ EquipeDAO.prototype.cadEquipe = function(equipe, idAdmEqp ,callback){
 
     sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idTutor+"' )";
 
+    console.log("EquipeDAO:cadEquipe - sqlInsertEquipe = "+sqlInsertEquipe);
+
     this._connection.query(sqlInsertEquipe, callback)
 }
 
@@ -49,6 +51,14 @@ EquipeDAO.prototype.verificarUsuarioVinculadoEquipe = function(idContaUsuario, c
   var sqlVerificarUsuarioVinculadoEquipe = "SELECT me.*, eq.* FROM membrosEquipe me INNER JOIN equipe eq ON me.equipe_IdEquipe = eq.idEquipe WHERE me.conta_usuario_idContaUsuario = "+idContaUsuario;;
    this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
 }
+
+EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){
+  console.log("EquipeDAO:obterDadosEquipe - INICIO");
+  var sqlObterDadosEquipe = "SELECT * FROM equipe WHERE idEquipe = "+idEquipe;
+  console.log("EquipeDAO:obterDadosEquipe - sqlObterDadosEquipe = "+sqlObterDadosEquipe);
+  this._connection.query(sqlObterDadosEquipe, callback);
+}
+
 //
 
 module.exports = function(){

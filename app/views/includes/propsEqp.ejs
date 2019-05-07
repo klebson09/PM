@@ -84,8 +84,8 @@
                        <td><span><%= proposta.feedback %></span></td>
                        <td>
                          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" value="<%=proposta.idProposta;%>" onclick="btnIdProposta(this.value)" data-target="#myModal">Responder</button>
-                         <button type="button" class="btn btn-success btn-sm" value="" onclick="btnAprovar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>)" >Aprovar</button>
-                         <button type="button" class="btn btn-danger btn-sm"  value="" onclick="btnRecusar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>)" >Recusar</button>
+                         <button type="button" class="btn btn-success btn-sm" value="" onclick="btnAprovar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>,<%=proposta.idEquipe%>)" >Aprovar</button>
+                         <button type="button" class="btn btn-danger btn-sm"  value="" onclick="btnRecusar(<%=proposta.idProposta%>,<%=proposta.idProjeto%>,<%=proposta.idEquipe%>)" >Recusar</button>
                        </td>
                        <!-- <td><span class="badge bg-red">Tutor</span></td> -->
                      </tr>
@@ -117,16 +117,16 @@
     console.log("O/ btnIdProposta "+value);
       document.getElementById("idProposta").setAttribute('value',value);
   }
-  function btnRecusar(e,f) {
+  function btnRecusar(e,f,g) {
     console.log("O/ btnRecusar ");
-    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado", idProjeto: f } );
+    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado", idProjeto: f, idEquipe: g } );
   }
-  function btnAprovar(e,f) {
+  function btnAprovar(e,f,g) {
     //  alert(value);
       // document.getElementById("idProposta").setAttribute('value',value);
       console.log("O/ btnAprovar "+e);
       // console.log("O/ btnAprovar "+evtId.target.id);
-      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovada", idProjeto: f }, function(data){
+      $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovada", idProjeto: f, idEquipe: g }, function(data){
 
         console.log("data = "+data);
 

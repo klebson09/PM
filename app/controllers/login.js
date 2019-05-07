@@ -44,7 +44,7 @@ module.exports.autenticar = function(application, req, res) {
 				req.session.tipoUsuario = result[0].tipoUsuario;
 				req.session.nomeUsuario = result[0].nomeUsuario;
 				req.session.email = result[0].email;
-				req.session.equipe = result[0].equipe;
+				req.session.idEquipe = 0;
 				req.session.dataCadastro = new Date(result[0].dataCadastro);
 				req.session.dataCadastroExtenso =  "";
 				req.session.horaCadastroExtenso =  "";
@@ -75,24 +75,55 @@ module.exports.autenticar = function(application, req, res) {
 
 				console.log("AUTORIZADO");
 				if (req.session.tipoUsuario == 'D' || req.session.tipoUsuario == 'T'){
-					timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+
+					var equipeDAO = new application.app.models.EquipeDAO(connection);
+
+					equipeDAO.verificarUsuarioVinculadoEquipe(req.session.idContaUsuario, function(error, resultObterEquipeUsr){
 						if(error){
 							throw error;
-						} else {							
-							timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-								req.session.msgsTimeline = msgs;
-								console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+						} else {
+							if(resultObterEquipeUsr[0] != undefined && resultObterEquipeUsr[0] != null && resultObterEquipeUsr.length > 0){
+								req.session.idEquipe = resultObterEquipeUsr[0].idEquipe;
 
-								res.render("includes/timeLine", {
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									data: req.session.msgsTimeline,
-									layout: 'includes/layoutIncludes'
+								timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+									if(error){
+										throw error;
+									} else {							
+										timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+											req.session.msgsTimeline = msgs;
+											console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+											res.render("includes/timeLine", {
+												sessionNomeUsuario: req.session.nomeUsuario,
+												sessionNomeTipoUsuario: req.session.tipoUsuario,
+												notificacao: req.session.notificacoes,
+												data: req.session.msgsTimeline,
+												layout: 'includes/layoutIncludes'
+											});
+										});							
+									}
 								});
 
-							});							
+							} else {
+								timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+									if(error){
+										throw error;
+									} else {							
+										timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+											req.session.msgsTimeline = msgs;
+											console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+											res.render("includes/timeLine", {
+												sessionNomeUsuario: req.session.nomeUsuario,
+												sessionNomeTipoUsuario: req.session.tipoUsuario,
+												notificacao: req.session.notificacoes,
+												data: req.session.msgsTimeline,
+												layout: 'includes/layoutIncludes'
+											});
+										});							
+									}
+								});	
+							}
 						}
+							
 					});
 
 				}else if (req.session.tipoUsuario == 'C'){
