@@ -16,6 +16,9 @@ module.exports.criarTermoDeAbertura = function(application, req, res){
   var connection = application.config.dbConnection;
 	var termoAbertura = req.body;
 	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
+	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
 
 
 	termoAberturaDAO.criarTermoAbertura(termoAbertura, function(erro, result){
@@ -35,7 +38,47 @@ module.exports.criarTermoDeAbertura = function(application, req, res){
 					throw erro;
 				} else {
 					console.log("CHECKPOINT DO PROJETO CADASTRADO COM SUCESSO");
-					res.send("TERMO DE ABERTURA E CHECKPOINTS DO PROJETO CADASTRADOS COM SUCESSO")
+					res.send("TERMO DE ABERTURA E CHECKPOINTS DO PROJETO CADASTRADOS COM SUCESSO");
+
+					projetosDispDAO.consultarProjetoEquipe(idProjeto, function(error, resultConsultarProjetoEquipe){
+							if(error){
+								throw error;
+							} else {
+								var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
+								console.log("propostasEqp:criarTermoAbertura - nomeProjeto = "+dadosProjetoEquipe.nomeProjeto);
+								console.log("propostasEqp:criarTermoAbertura - nomeEquipe = "+dadosProjetoEquipe.nomeEquipe);
+								console.log("propostasEqp:criarTermoAbertura - nomeEquipe = "+dadosProjetoEquipe.idContaUsuario);
+									timelineDAO.timelineCriarTermoAbertura(dadosProjetoEquipe.nomeProjeto, req.session.idEquipe, function(error, resultTimelineCriarTermoAbertura){
+										if(error){
+											throw error;
+										} else {
+												timelineDAO.timelineReceberTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, idProjeto, dadosProjetoEquipe.idContaUsuario, function(error, resultTimelineReceberTermoAbertura){
+													if(error){
+														throw error;
+													} else {
+														timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+															if(error){
+																throw error;
+															} else {
+																timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+																	req.session.msgsTimeline = msgs;
+																	console.log("propostasEqp:criarTermoAbertura - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+																	res.render("includes/timeLine", {
+																		sessionNomeUsuario: req.session.nomeUsuario,
+																		sessionNomeTipoUsuario: req.session.tipoUsuario,
+																		notificacao: req.session.notificacoes,
+																		data: req.session.msgsTimeline,
+																		layout: 'includes/layoutIncludes'
+																	});
+																});
+															}
+														});
+													}
+												});
+										}
+								});
+							}
+					});
 				}
 			})
 	});

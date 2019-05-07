@@ -70,6 +70,19 @@ TimelineDAO.prototype.timelineRecusarProposta = function(nomeEquipe, idContaUsua
 	this._connection.query(sql, callback);
 }
 
+TimelineDAO.prototype.timelineReceberTermoAbertura = function(nomeEquipe, nomeProjeto, idProjeto, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineReceberTermoAbertura - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineReceberTermoAbertura - nomeProjeto "+nomeProjeto);
+	var titulo = "Equipe "+nomeEquipe+" enviou para você o Termo de Abertura do projeto "+nomeProjeto;
+	var href = "/consultar_termo_abertura?idProjeto="+idProjeto;
+	var msg = "A equipe "+nomeEquipe+" finalizou a elaboração do Termo de Abertura do projeto "+nomeProjeto+" e enviou o mesmo para a sua análise. Clique em <a href="+href+"><b>TERMO DE ABERTURA</b></a> para visualizar o documento.";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineReceberTermoAbertura ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
@@ -135,6 +148,17 @@ TimelineDAO.prototype.timelinePropostaRecusada = function(nomeProjeto, idEquipe,
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelinePropostaRecusada ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineCriarTermoAbertura = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelineCriarTermoAbertura - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" enviado";
+	var msg = "O Termo de Abertura foi gerado com sucesso e encaminhado ao cliente para análise. Uma vez aprovado o Termo de Abertura, é iniciado o desenvolvimento do projeto."
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineCriarTermoAbertura ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 
