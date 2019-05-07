@@ -16,15 +16,51 @@ module.exports.viewTimeLine = function(application, req, res){
 
 module.exports.exibirTimeLine = function(application, req, res){
 
-	console.log("exibirTimeLine");
+	console.log("timeLine.js:exibirTimeLine - INICIO");
 
-	res.render("includes/timeLine", {
-		sessionNomeUsuario: req.session.nomeUsuario,
-		sessionNomeTipoUsuario: req.session.tipoUsuario,
-		notificacao: req.session.notificacoes,
-		data: req.session.msgsTimeline,
-		layout: 'includes/layoutIncludes'
-	});
+	var connection = application.config.dbConnection;
+	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+
+  if(req.session.tipoUsuario == 'C'){
+		timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+			if(error){
+				throw error;
+			} else {
+				timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+					req.session.msgsTimeline = msgs;
+					console.log("timeLine.js:exibirTimeLine - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+					res.render("includes/timeLine", {
+						sessionNomeUsuario: req.session.nomeUsuario,
+						sessionNomeTipoUsuario: req.session.tipoUsuario,
+						notificacao: req.session.notificacoes,
+						data: req.session.msgsTimeline,
+						layout: 'includes/layoutIncludes'
+					});
+				});
+			}
+		});
+	} else {
+		timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+			if(error){
+				throw error;
+			} else {
+				timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+					req.session.msgsTimeline = msgs;
+					console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+					res.render("includes/timeLine", {
+						sessionNomeUsuario: req.session.nomeUsuario,
+						sessionNomeTipoUsuario: req.session.tipoUsuario,
+						notificacao: req.session.notificacoes,
+						data: req.session.msgsTimeline,
+						layout: 'includes/layoutIncludes'
+					});
+				});
+			}
+		});
+	}
+
+
 }
 
 module.exports.listTimeLineClient = function(application, req, res){

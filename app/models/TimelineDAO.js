@@ -40,7 +40,7 @@ TimelineDAO.prototype.timelineReceberProposta = function(projeto, idContaUsuario
 	var titulo = "Proposta Recebida";
 	var href = "/propostas_projeto"
 	var msg = "Boas notícias, você recebeu alguma proposta do projeto <b>"+nomeProjeto+" </b>. Verifique todas as propostas clicando em <b><a href="+href+">VISUALIZAR PROPOSTA(S)</a></b>.";
-	var icon = "fa fa-envelope bg-blue";	
+	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineEnviarProposta ====>> sql "+sql);
@@ -51,7 +51,7 @@ TimelineDAO.prototype.timelineAprovarProposta = function(nomeEquipe, idContaUsua
 	console.log("TimelineDAO:timelineAprovarProposta - INICIO nomeProjeto "+nomeEquipe);
 	var titulo = "Você aprovou a proposta da equipe "+nomeEquipe;
 	var msg = "Muito bem, agora a brincadeira vai ficar seria, a equipe de desenvolvimento vai entrar em contato por email para esclarecer alguma eventual dúvida, eles estão trabalhando no desenvolvimento de um documento com as principais funcionalidades do sistema, o <b>TERMO DE ABERTURA</b>";
-	var icon = "fa fa-envelope bg-blue";	
+	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineAprovarProposta ====>> sql "+sql);
@@ -59,13 +59,23 @@ TimelineDAO.prototype.timelineAprovarProposta = function(nomeEquipe, idContaUsua
 
 }
 
+TimelineDAO.prototype.timelineRecusarProposta = function(nomeEquipe, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineRecusarProposta - INICIO nomeEquipe "+nomeEquipe);
+	var titulo = "Você recusou a proposta da equipe "+nomeEquipe;
+	var msg = "Parece que a proposta da equipe "+nomeEquipe+" não era o que você esperava. Aguarde novas propostas para o seu projeto.";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineRecusarProposta ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
 
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
 	console.log("TimelineDAO:timelineIncluirDev - INICIO desenvolvedor "+JSON.stringify(desenvolvedor) );
 	var idContaUsuario = desenvolvedor.idContaUsuario;
-	var nomeDesenvolvedor = desenvolvedor.nomeUsuario;	
+	var nomeDesenvolvedor = desenvolvedor.nomeUsuario;
 	var titulo = "Boas Vindas!";
 	var href = "/criar_equipe";
 	var msg = "Olá <b>"+nomeDesenvolvedor+"</b> seja bem vindo ao portal, aqui você terá a oportunidade de aplicar seu conhecimento em desenvolvimento de software e alavancar de vez sua carreira. Nenhum homem é uma ilha, então, você precisa fazer parte de uma equipe, clique em <b><a href="+href+">CRIAR EQUIPE</a></b> para iniciar suas atividades nesse sistema.";
@@ -85,7 +95,7 @@ TimelineDAO.prototype.timelineCriarEquipe = function(equipe, callback){
 	var titulo = "Parabéns, você pertence a equipe "+nomeEquipe+", #partiuprojeto";
 	var href = "/projeto_disp";
 	var msg = "Você é participante de uma equipe, agora você tem muitas oportunidades para mostrar o seu potencial. Muitos clientes precisam da sua ajuda, clique em <b><a href="+href+">PROJETOS DISPONIVEIS</a></b> e faça uma proposta para um cliente, convença-o de que é capaz de solucionar os seus problemas";
-	var icon = "fa fa-envelope bg-blue";	
+	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineCriarEquipe ====>> sql "+sql);
@@ -97,7 +107,7 @@ TimelineDAO.prototype.timelineEnviarProposta = function(projeto, idEquipe, callb
 	var nomeProjeto = projeto.nomeProjeto;
 	var titulo = "Proposta Enviada";
 	var msg = "A proposta de sua equipe para o projeto "+nomeProjeto+" foi enviada para analise do cliente, a qualquer momento o cliente pode aceitar sua proposta";
-	var icon = "fa fa-envelope bg-blue";	
+	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineEnviarProposta ====>> sql "+sql);
@@ -109,10 +119,22 @@ TimelineDAO.prototype.timelinePropostaAprovada = function(nomeProjeto, idEquipe,
 	var titulo = "Cliente aprovou sua proposta para o projeto "+nomeProjeto;
 	var href = "/termo_abertura";
 	var msg = "Boas noticias, o cliente aceitou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", vocês devem negociar todos os termos e formaliza-los no Termo de Abertura. Clique em <b><a href="+href+">TERMO DE ABERTURA</a></b> para redigir o termo de abertura para a analise posterior do cliente";
-	var icon = "fa fa-envelope bg-blue";	
+	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelinePropostaAprovada ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelinePropostaRecusada = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelinePropostaRecusada - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Cliente recusou sua proposta para o projeto "+nomeProjeto;
+	var href = "/projetos_disp";
+	var msg = "O cliente recusou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", você pode formalizar uma nova proposta para o mesmo projeto ou outro projeto. Clique em <b><a href="+href+">PROJETOS DISPONIVEIS</a></b> para analisar os projetos ainda disponíveis";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelinePropostaRecusada ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 
@@ -134,5 +156,5 @@ TimelineDAO.prototype.timelineObterMsgsEquipe = function(idEquipe, idContaUsuari
 
 
 module.exports = function(){
-	return TimelineDAO;	
+	return TimelineDAO;
 }
