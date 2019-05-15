@@ -36,7 +36,7 @@
                   <h2 class="fs-title col-md-offset-1" id="tituloForm" style="padding-bottom: 20px;">  Termo de Abertura</h2>
                   <!-- <h3 class="fs-subtitle">This is step 1</h3> -->
 
-                  <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="7" />
+                  <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTermoAbertura.idProjeto %>" />
 
 
                   <div class="form-group  col-md-12 ">
@@ -61,7 +61,7 @@
                   </div>
                   <div class="form-group col-md-12">
                     <label for="prazosEstimadosProj">Prazo Estimado</label>
-                    <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="calendar" />
+                    <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="date" />
                   </div>
                   <div class="form-group col-md-12">
                     <label for="entregasProj">Entregas</label>
@@ -85,8 +85,14 @@
                   <div class="form-group col-md-12">
                     <label for="equipeProj" >Equipe</label>
                     <ul id="equipeProj">
-                      <li>Klebson Leonardo</li>
-                      <li>Matheus Barouh</li>
+                      <%
+                        var equipe = dadosTermoAbertura.equipe;
+                        for(var i=0; i < equipe.length; i++){
+                        %>
+                         <li><%= equipe[i].nomeUsuario %></li>
+                        <%
+                        }
+                       %> 
                     </ul>
                   </div>
                   <div class="form-group col-md-12" >

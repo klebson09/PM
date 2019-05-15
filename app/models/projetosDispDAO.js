@@ -56,6 +56,20 @@ projetosDispDAO.prototype.atualizarStatusProjeto = function(idProjeto, idEquipe,
   this._connection.query(sql, callback);
 }
 
+projetosDispDAO.prototype.projetoAndamentoCliente = function(idContaUsuario, callback){
+  console.log("projetosDispDAO:projetoAndamentoCliente - INICIO");
+  var sql = "SELECT idProjeto FROM projeto WHERE idContaUsuario = "+idContaUsuario+" AND status != 'Concluído'";
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
+projetosDispDAO.prototype.projetoAndamentoDev = function(idEquipe, callback){
+  console.log("projetosDispDAO:projetoAndamentoDev - INICIO");
+  var sql = "SELECT idProjeto FROM projeto WHERE idEquipe = "+idEquipe+" AND status != 'Concluído'";
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
 
 
 module.exports = function(){

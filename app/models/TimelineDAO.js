@@ -70,11 +70,11 @@ TimelineDAO.prototype.timelineRecusarProposta = function(nomeEquipe, idContaUsua
 	this._connection.query(sql, callback);
 }
 
-TimelineDAO.prototype.timelineReceberTermoAbertura = function(nomeEquipe, nomeProjeto, idProjeto, idContaUsuario, callback){
+TimelineDAO.prototype.timelineReceberTermoAbertura = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
 	console.log("TimelineDAO:timelineReceberTermoAbertura - INICIO nomeEquipe "+nomeEquipe);
 	console.log("TimelineDAO:timelineReceberTermoAbertura - nomeProjeto "+nomeProjeto);
 	var titulo = "Equipe "+nomeEquipe+" enviou para você o Termo de Abertura do projeto "+nomeProjeto;
-	var href = "/consultar_termo_abertura?idProjeto="+idProjeto;
+	var href = "/consultar_termo_abertura";
 	var msg = "A equipe "+nomeEquipe+" finalizou a elaboração do Termo de Abertura do projeto "+nomeProjeto+" e enviou o mesmo para a sua análise. Clique em <a href="+href+"><b>TERMO DE ABERTURA</b></a> para visualizar o documento.";
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";

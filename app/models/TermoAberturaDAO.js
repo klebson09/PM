@@ -18,6 +18,8 @@ TermoAberturaDAO.prototype.criarTermoAbertura = function(termoAbertura, callback
   var orcamento = termoAbertura.orcamentoEstimado;
   var restricoes = termoAbertura.restricoesProjeto;
 
+  console.log("prazoEstimado --------------------> "+prazoEstimado);
+
   sqlInsertTermoAbertura += "VALUES ("+idProjeto+", '"+tituloProjeto+"', '"+objetivo+"', '"+escopo+"', '"+escopoNegativo+"', '"+interfacesOutrosProjetos+"', '"+prazoEstimado+"', "+orcamento+", '"+restricoes+"')";
   console.log(sqlInsertTermoAbertura);
   // sql = sql.concat(tituloWhere);

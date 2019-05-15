@@ -59,6 +59,13 @@ EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){
   this._connection.query(sqlObterDadosEquipe, callback);
 }
 
+EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
+  console.log("EquipeDAO:obterMembrosEquipe - INICIO");
+  var sqlObterMembrosEquipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe WHERE membrosequipe.equipe_idEquipe = "+idEquipe+" AND projeto.status != 'Concluído'";
+   console.log("EquipeDAO:obterMembrosEquipe - sqlObterMembrosEquipe = "+sqlObterMembrosEquipe);
+  this._connection.query(sqlObterMembrosEquipe, callback);
+}
+
 //
 
 module.exports = function(){

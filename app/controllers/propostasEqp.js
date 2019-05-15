@@ -91,7 +91,7 @@ module.exports.aprovarProposta = function(application, req, res){
 
       console.log("propostasEqp:aprovarProposta - atualizando status do projeto...");
 
-      if(req.body.status == "Aprovado"){
+      if(req.body.status == "Aprovada"){
         console.log("propostasEqp:aprovarProposta - PROPOSTA APROVADA - STATUS DO PROJETO SERA ATUALIZADO");
         projetosDispDAO.atualizarStatusProjeto(req.body.idProjeto, req.body.idEquipe ,"Em Negociação" ,function(error, resultAtualizarStatusProjeto){
 
@@ -120,7 +120,14 @@ module.exports.aprovarProposta = function(application, req, res){
                         if(error){
                           throw error;
                         } else{
-                          timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+                           var data = {
+                             resultado: "2",
+                             mensagem: "PROPOSTA APROVADA COM SUCESSO"
+                        }
+
+                      console.log("APROVADA - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      res.send(data);     
+                         /* timelineDAO.  timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
                             if(error){
                               throw error;
                             } else {
@@ -137,7 +144,7 @@ module.exports.aprovarProposta = function(application, req, res){
                                 });
                               });
                             }
-                          });
+                          });*/
                         }
 
                       });
@@ -175,6 +182,14 @@ module.exports.aprovarProposta = function(application, req, res){
                    if(error){
                      throw error;
                    } else{
+                    var data = {
+                        resultado: "3",
+                        mensagem: "PROPOSTA RECUSADA"
+                    }
+  
+                      console.log("RECUSADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      res.send(data);  
+                   /*
                      timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
                        if(error){
                          throw error;
@@ -192,7 +207,7 @@ module.exports.aprovarProposta = function(application, req, res){
                            });
                          });
                        }
-                     });
+                     });*/
                    }
 
                  });

@@ -119,7 +119,16 @@
   }
   function btnRecusar(e,f,g) {
     console.log("O/ btnRecusar ");
-    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado", idProjeto: f, idEquipe: g } );
+    $.post( "/aprovar_proposta", { idProposta: e, status: "Recusado", idProjeto: f, idEquipe: g },
+    function(data){
+
+       console.log("resultado = "+data.resultado);
+
+       alert(data.mensagem);
+
+       window.location.replace("/homeTimeLine");
+
+      } );
   }
   function btnAprovar(e,f,g) {
     //  alert(value);
@@ -128,16 +137,9 @@
       // console.log("O/ btnAprovar "+evtId.target.id);
       $.post( "/aprovar_proposta", { idProposta: e, status: "Aprovada", idProjeto: f, idEquipe: g }, function(data){
 
-        console.log("data = "+data);
+        console.log("resultado = "+data.resultado);
 
-        if(data == "2"){
-          alert("PROPOSTA APROVADA COM SUCESSO");
-        } else if(data == "3"){
-          alert("PROPOSTA RECUSADA COM SUCESSO");
-        } else {
-          alert("PROPOSTA RECUSADA COM SUCESSO");
-          alert("VOCÊ NÃO TEM MAIS PROPOSTAS PARA ESSE PROJETO");
-        }
+        alert(data.mensagem);
 
         window.location.replace("/homeTimeLine");
 

@@ -45,6 +45,7 @@ module.exports.autenticar = function(application, req, res) {
 				req.session.nomeUsuario = result[0].nomeUsuario;
 				req.session.email = result[0].email;
 				req.session.idEquipe = 0;
+				req.session.idProjeto = 0;
 				req.session.dataCadastro = new Date(result[0].dataCadastro);
 				req.session.dataCadastroExtenso =  "";
 				req.session.horaCadastroExtenso =  "";
@@ -85,22 +86,34 @@ module.exports.autenticar = function(application, req, res) {
 							if(resultObterEquipeUsr[0] != undefined && resultObterEquipeUsr[0] != null && resultObterEquipeUsr.length > 0){
 								req.session.idEquipe = resultObterEquipeUsr[0].idEquipe;
 
-								timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+								projetosDispDAO.projetoAndamentoDev(req.session.idEquipe, function(error, resultProjetoAndamentoDev){
 									if(error){
 										throw error;
-									} else {							
-										timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-											req.session.msgsTimeline = msgs;
-											console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
-											res.render("includes/timeLine", {
-												sessionNomeUsuario: req.session.nomeUsuario,
-												sessionNomeTipoUsuario: req.session.tipoUsuario,
-												notificacao: req.session.notificacoes,
-												data: req.session.msgsTimeline,
-												layout: 'includes/layoutIncludes'
-											});
-										});							
-									}
+									} else {
+
+										req.session.idProjeto = resultProjetoAndamentoDev[0].idProjeto;
+
+										console.log("login.js:autenticar - req.session.idProjeto DEV = "+req.session.idProjeto);
+
+										timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+											if(error){
+												throw error;
+											} else {							
+												timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+													req.session.msgsTimeline = msgs;
+													console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+													res.render("includes/timeLine", {
+														sessionNomeUsuario: req.session.nomeUsuario,
+														sessionNomeTipoUsuario: req.session.tipoUsuario,
+														notificacao: req.session.notificacoes,
+														data: req.session.msgsTimeline,
+														layout: 'includes/layoutIncludes'
+													});
+												});							
+											}
+										});
+
+									}	
 								});
 
 							} else {
@@ -129,28 +142,37 @@ module.exports.autenticar = function(application, req, res) {
 				}else if (req.session.tipoUsuario == 'C'){
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
-
-
-					timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+					projetosDispDAO.projetoAndamentoCliente(req.session.idContaUsuario, function(error, resultProjetoAndamentoCliente){
 						if(error){
 							throw error;
 						} else {
+							req.session.idProjeto = resultProjetoAndamentoCliente[0].idProjeto;
+
+							console.log("login.js:autenticar - req.session.idProjeto CLIENTE = "+req.session.idProjeto);
+
+
+							timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+								if(error){
+									throw error;
+								} else {
 							
-							timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+									timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
 
-								req.session.msgsTimeline = msgs;
+										req.session.msgsTimeline = msgs;
 
-								console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+										console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 
-								res.render("includes/timeLine", {
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									data: req.session.msgsTimeline,
-									layout: 'includes/layoutIncludes'
-								});
+										res.render("includes/timeLine", {
+											sessionNomeUsuario: req.session.nomeUsuario,
+											sessionNomeTipoUsuario: req.session.tipoUsuario,
+											notificacao: req.session.notificacoes,
+											data: req.session.msgsTimeline,
+											layout: 'includes/layoutIncludes'
+										});
 
-							});							
+									});							
+								}
+							});
 						}
 					});
 
