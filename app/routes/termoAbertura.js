@@ -7,4 +7,8 @@ module.exports = function(application){
     application.post('/criar_termo_abertura', function(req, res){
       application.app.controllers.termoAbertura.criarTermoDeAbertura(application, req, res);
     });
+
+     application.get('/consultar_termo_abertura', function(req, res){
+      application.app.controllers.termoAbertura.consultarTermoDeAbertura(application, req, res);
+    });
 }

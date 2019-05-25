@@ -33,57 +33,85 @@
                     <h2 class="fs-title col-md-offset-1" id="tituloForm" style="padding-bottom: 20px;">  Termo de Abertura</h2>
                     <!-- <h3 class="fs-subtitle">This is step 1</h3> -->
 
-                    <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTermoAbertura.idProjeto %>" />
-
+                    <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTA.idProjeto %>" />
 
                     <div class="form-group  col-md-12 ">
                       <label for="tituloProj">Título do Projeto</label>
-                      <input type="text" id="tituloProj" class="form-control" name="tituloProjeto"  />
+                      <input type="text" id="tituloProj" class="form-control" name="tituloProjeto" value="<%= dadosTA.tituloProjeto %>"  readonly  />
                     </div>
                     <div class="form-group col-md-12">
                       <label for="objetivoProj">Objetivo</label>
-                      <textarea class="form-control" name="objetivoProjeto" id="objetivoProj" rows="5" ></textarea>
+                      <textarea class="form-control" name="objetivo" id="objetivoProj" rows="5" readonly ><%= dadosTA.objetivo %></textarea>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="escopoProj">Escopo</label>
-                      <textarea class="form-control" name="escopoProjeto" id="escopoProj" rows="8" ></textarea>
+                      <textarea class="form-control" name="escopo" id="escopoProj" rows="8"  readonly><%= dadosTA.escopo %></textarea>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="escopoNegativoProj">Escopo Negativo</label>
-                      <textarea class="form-control" name="escopoNegativoProjeto" id="escopoNegativoProj" rows="8" ></textarea>
+                      <textarea class="form-control" name="escopoNegativoProjeto" id="escopoNegativoProj" rows="8" readonly ><%= dadosTA.escopoNegativo %></textarea>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="interfacesOutrosSistemasProj">Interfaces com Outros Projetos</label>
-                      <textarea class="form-control" name="interfaceOutrosSistemasProjeto" id="interfacesOutrosSistemasProj" rows="5" ></textarea>
+                      <textarea class="form-control" name="interfaceOutrosSistemasProjeto" id="interfacesOutrosSistemasProj" rows="5"  readonly><%= dadosTA.interfacesOutrosProjetos %></textarea>
                     </div>
-                    <div class="form-group col-md-12">
-                      <label for="prazosEstimadosProj">Prazo Estimado</label>
-                      <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="date" />
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="entregasProj">Entregas</label>
-                      <!--<textarea class="form-control" name="entregasProjeto" id="entregasProj" rows="6"></textarea>-->
-                      <div class="table-controls">
-                        <button id="add-row" type="button" class="action-button btn  btn-success">
-                          <font style="vertical-align: inherit;">
-                            <font style="vertical-align: inherit;">Adicionar Entregável</font>
-                          </font>
-                        </button>
-                      </div>
-                      <form action="" method="post">
-                        <div id="example-table"></div>
-                        <input type="hidden" id="tableDataEntr" name="entregaveis" value=""/>
-                      </form>
-                    </div>
+                    
+
+                    
+
+
+                    
                     <div class="form-group col-md-12">
                       <label for="orcamentoProj">Orçamento Estimado</label>
-                      <input class="form-control" name="orcamentoEstimado" id="orcamentoProj" type="number"></input>
+                      <input class="form-control" name="orcamentoEstimado" id="orcamentoProj" type="number" 
+                      value="<%= dadosTA.orcamento %>" readonly></input>
                     </div>
+
+                    <div class="form-group col-md-12">
+                      <label for="prazosEstimadosProj">Prazo Estimado</label>
+                      <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="text"value="<%= dadosTA.prazoEstimado %>" readonly></input>
+                    </div>
+                 
+                    <div class="form-group col-md-12">
+                      <label for="entregasProj">Entregas</label>
+                      
+                      <div class="row">
+                      <div class="col-xs-12">
+                        <div class="box">
+                          
+                          <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                              <tr>
+                                <th>Unidade</th>
+                                <th>Descrição</th>
+                                <th>Data Inicial</th>
+                                <th>Data Final</th>
+                                <th>Observação</th>
+                              </tr>
+                                <%   for(var i = 0; i < dadosCP.length; i++){ %>
+                              <tr>
+                                <td><%=i+1 %></td>
+                                <td><%= dadosCP[i].descricao %></td>
+                                <td><%= dadosCP[i].dataInicial %></td>
+                                <td><%= dadosCP[i].dataFinal %></td>
+                                <td><%= dadosCP[i].observacoes %></td>
+                              </tr>    
+
+                              <% }%>                        
+                              
+                              
+                            </table>
+                          </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                      </div>
+                    </div>
+                   
+
                     <div class="form-group col-md-12">
                       <label for="equipeProj" >Equipe</label>
                       <ul id="equipeProj">
                         <%
-                          var equipe = dadosTermoAbertura.equipe;
+                          var equipe = dadosEQP; 
                           for(var i=0; i < equipe.length; i++){
                           %>
                            <li><%= equipe[i].nomeUsuario %></li>
@@ -94,10 +122,14 @@
                     </div>
                     <div class="form-group col-md-12" >
                       <label for="restricoesProj">Restrições</label>
-                      <textarea class="form-control" name="restricoesProjeto" id="restricoesProj" rows="6"></textarea>
+                      <textarea class="form-control" name="restricoesProjeto" id="restricoesProj" rows="6" 
+                       readonly><%= dadosTA.restricoes %></textarea>
                     </div>
-                    <div class="form-group col-md-12">
-                      <input type="button" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Enviar" onclick="submeterForm()" />
+                    <div class="form-group col-md-6">
+                      <input type="button" id="btnAprovarTermoAbertura"  class="submit action-button btn  btn-success col-md-offset-5" value="Aprovar" onclick="submeterForm()" />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="button" id="btnRecusarTermoAbertura"  class="submit action-button btn  btn-danger col-md-offset-5" value="Recusar" onclick="submeterForm()" />
                     </div>
                   </div>
 
@@ -159,93 +191,15 @@
 
     <script type="text/javascript" src="moment/moment.js"></script>
 
-    <script>
-
-      var contPos=0;
-      var tableData = null;
-      var dateEditor = function(cell, onRendered, success, cancel){
-
-          //create and style editor
-          var editor = $("<input type='date'></input>");
-          editor.css({
-              "padding":"3px",
-              "width":"100%",
-              "box-sizing":"border-box",
-          });
-
-          onRendered(function(){
-            editor.focus();
-            editor.css("height","100%");
-          });
-
-          //when the value has been set, trigger the cell to update
-          editor.on("blur", function(e){
-              success(moment(editor.val(), "YYYY-MM-DD").format("DD/MM/YYYY"));
-          });
-
-          //return the editor element
-          return editor;
-      };
-
-      $("#example-table").tabulator({
-        placeholder:"Adicione os entregáveis do projeto",
-
-        selectable:true,
-        addRowPos : "bottom" ,
-
-        columns:[
-          {title:"Descrição", field:"descricao", sorter:"string", width:200, editor:true},
-          {title:"Data Inicial", field:"dataInicial", sorter:"date", align:"center", formatter:"html", editor:dateEditor},
-          {title:"Data Final", field:"dataFinal", sorter:"date", align:"center", formatter:"html", editor:dateEditor},
-          {title:"Status", field:"status", sorter:"string", editor:"select", editorParams:{
-            "A iniciar":"A iniciar",
-            "Em execução":"Em execução",
-            "Pausado":"Pausado",
-            "Finalizado":"Finalizado",
-            }},
-          {title:"Observações", field:"observacoes", formatter:"textarea", align:"left", width:200, editor:true},
-          {title:"", field:"del", formatter:"html", align:"left", width:20, editor:false}
-        ],
-        index:"id",
-        rowFormatter:function(row){
-        },
-      });
-
-      $("#example-table").tabulator("hideColumn","id");
-
-      //Add row on "Add Row" button click
-      $("#add-row").click(function(){
-        var cont = contPos;
-        $("#example-table").tabulator("addRow", {
-          id:cont,
-          status:"A iniciar",
-          del: "<span class=\"glyphicon glyphicon-remove\" onclick=\"removerLinha("+cont+")\"><\/span>"
-        });
-        contPos++;
-      });
-
-
-
-      function removerLinha(pos){
-        var row = $("#example-table").tabulator("getRow", pos);
-        $("#example-table").tabulator("deleteRow", row.getIndex());
-      }
-
-      function submeterForm(){
-        var i = 0;
-        var data = $("#example-table").tabulator("getData");
-
-        for(i=0;i<data.length;i++){
-          data[i].dataInicial = moment(data[i].dataInicial,"DD/MM/YYYY").format("YYYY-MM-DD");
-          data[i].dataFinal = moment(data[i].dataFinal,"DD/MM/YYYY").format("YYYY-MM-DD");    
-        }
-
-        var dataJSON = JSON.stringify(data); 
-        var tableDataEntr = document.getElementById("tableDataEntr");
-        tableDataEntr.setAttribute("value",dataJSON);
-       $("#msform").submit();
+    <script type="text/javascript">
+      
+      function formatarData(data){
+        console.log("data = "+data);
+        return data.format("yyyy-mm-dd");
       }
 
     </script>
+
+
   </body>
 </html>

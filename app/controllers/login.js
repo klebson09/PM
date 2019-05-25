@@ -91,9 +91,14 @@ module.exports.autenticar = function(application, req, res) {
 										throw error;
 									} else {
 
-										req.session.idProjeto = resultProjetoAndamentoDev[0].idProjeto;
+										if(resultProjetoAndamentoDev[0] != undefined && resultProjetoAndamentoDev[0] != null){
 
-										console.log("login.js:autenticar - req.session.idProjeto DEV = "+req.session.idProjeto);
+											req.session.idProjeto = resultProjetoAndamentoDev[0].idProjeto;
+
+											console.log("login.js:autenticar - req.session.idProjeto DEV = "+req.session.idProjeto);
+
+										}
+										
 
 										timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
 											if(error){
@@ -146,11 +151,12 @@ module.exports.autenticar = function(application, req, res) {
 						if(error){
 							throw error;
 						} else {
-							req.session.idProjeto = resultProjetoAndamentoCliente[0].idProjeto;
+							if(resultProjetoAndamentoCliente[0] != undefined && resultProjetoAndamentoCliente[0] != null){
+								req.session.idProjeto = resultProjetoAndamentoCliente[0].idProjeto;
 
-							console.log("login.js:autenticar - req.session.idProjeto CLIENTE = "+req.session.idProjeto);
-
-
+								console.log("login.js:autenticar - req.session.idProjeto CLIENTE = "+req.session.idProjeto);
+							}
+							
 							timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
 								if(error){
 									throw error;

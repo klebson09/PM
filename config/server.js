@@ -28,6 +28,8 @@ var app = express();
 
 var moment = require('moment');
 
+var formatoData = ('dateFormat');
+
 app.use(expressLayouts);
 
 /* setar as variáveis 'view engine' e 'views' do express */
@@ -44,6 +46,8 @@ app.use(bodyParser.urlencoded({extended: true})); // quando tiver um post em alg
 
 /*configurar o middleware express-validator */
 app.use(expressValidator());
+
+
 
 /*configurar o middleware express-session */
 app.use(expressSession({

@@ -27,6 +27,19 @@ TermoAberturaDAO.prototype.criarTermoAbertura = function(termoAbertura, callback
   this._connection.query(sqlInsertTermoAbertura, callback);
 }
 
+TermoAberturaDAO.prototype.consultarTermoAbertura = function(idProjeto, callback){
+    
+  console.log("************consultar Termo de Abertura***************");   
+
+  var sqlConsultarTermoAbertura = "SELECT termo_abertura.*, projeto.nomeProjeto, projeto.idEquipe FROM termo_abertura INNER JOIN projeto ON termo_abertura.idProjeto = projeto.idProjeto WHERE termo_abertura.idProjeto = "+idProjeto;
+
+  console.log("TermoAberturaDAO:consultarTermoAbertura - sqlConsultarTermoAbertura = "+sqlConsultarTermoAbertura);
+
+  this._connection.query(sqlConsultarTermoAbertura, callback);
+
+
+}
+
 module.exports = function(){
   return TermoAberturaDAO;
 }

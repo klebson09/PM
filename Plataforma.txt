@@ -9,6 +9,7 @@ Mobile
 Web
 Multiplataforma
 
+ALTER TABLE `pm`.`plataforma` AUTO_INCREMENT = 1;
 INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Desktop');
 INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Mobile');
 INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Web');

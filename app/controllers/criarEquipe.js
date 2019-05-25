@@ -72,6 +72,7 @@ module.exports.cadastrarEquipe = function(application, req, res){
       } else {
           console.log("Equipe cadastrada com sucesso");
           var idEquipe = resultado.insertId;
+          req.session.idEquipe = idEquipe;
 
           equipeDAO.cadMembrosEquipe(equipe.membrosEquipe, idEquipe, function(erro,resultado){
             if(erro){
@@ -93,7 +94,7 @@ module.exports.cadastrarEquipe = function(application, req, res){
                     if(error){
                       throw error;
                     } else {
-                      timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, idContaUsuario, function(error, resultTimelineObterMsgsEquipe){
+                      timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgsEquipe){
                         if(error){
                           throw error;
                         } else {              
