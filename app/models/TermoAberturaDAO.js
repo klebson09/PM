@@ -40,6 +40,18 @@ TermoAberturaDAO.prototype.consultarTermoAbertura = function(idProjeto, callback
 
 }
 
+TermoAberturaDAO.prototype.atualizarStatusTermoAbertura = function(status, respostaCliente, idProjeto, callback){
+
+  console.log("************atualizarStatusTermoAbertura***************");    
+  
+  var sqlAtualizarStatusTermoAbertura = "UPDATE termo_abertura SET status, respostaCliente VALUES('"+status+"','"+respostaCliente+"') WHERE idProjeto = "+idProjeto;    
+
+  console.log("TermoAberturaDAO:atualizarStatusTermoAbertura - sqlAtualizarStatusTermoAbertura = "+sqlAtualizarStatusTermoAbertura);
+
+  this._connection.query(sqlAtualizarStatusTermoAbertura, callback);
+
+}
+
 module.exports = function(){
   return TermoAberturaDAO;
 }

@@ -125,11 +125,17 @@
                       <textarea class="form-control" name="restricoesProjeto" id="restricoesProj" rows="6" 
                        readonly><%= dadosTA.restricoes %></textarea>
                     </div>
-                    <div class="form-group col-md-6">
-                      <input type="button" id="btnAprovarTermoAbertura"  class="submit action-button btn  btn-success col-md-offset-5" value="Aprovar" onclick="submeterForm()" />
+                    <div class="col-md-12" style="margin: 25px 0px 25px 0px; ">
+                    </div>
+                     <div class="form-group col-md-12">
+                      <label for="respostaCliente">Digite aqui suas observações(Opcional)</label>
+                      <textarea class="form-control" name="respostaDoCliente" id="respostaCliente" rows="5" ></textarea>
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="button" id="btnRecusarTermoAbertura"  class="submit action-button btn  btn-danger col-md-offset-5" value="Recusar" onclick="submeterForm()" />
+                      <input type="button" id="btnAprovarTermoAbertura"  class="submit action-button btn  btn-success col-md-offset-5" value="Aprovar" onclick="submeterFormulario('A')" />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="button" id="btnRecusarTermoAbertura"  class="submit action-button btn  btn-danger col-md-offset-5" value="Recusar" onclick="submeterFormulario('R')" />
                     </div>
                   </div>
 
@@ -196,6 +202,21 @@
       function formatarData(data){
         console.log("data = "+data);
         return data.format("yyyy-mm-dd");
+      }
+
+      function submeterFormulario(resposta){
+        console.log("termoAbertClie:submeterFormulario ");
+        var respostaCli = document.getElementById('respostaCliente').value;
+        console.log("termoAbertClie:submeterFormulario - respostaCli = "+respostaCli);
+        $.post( "/resposta_termo_abertura", { status: resposta, respostaCliente: respostaCli}, function(data){
+
+           console.log("termoAbertClie:submeterFormulario - resultado = "+data.resultado);
+
+           alert(data.mensagem);
+
+           window.location.replace("/homeTimeLine");
+
+        } );
       }
 
     </script>

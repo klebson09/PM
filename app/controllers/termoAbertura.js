@@ -180,6 +180,87 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 	});
 }
 
+module.exports.respostaTermoDeAbertura = function(application, req, res){
+
+	var status = req.body.status;
+	var respostaCliente = req.body.respostaCliente;
+	var connection = application.config.dbConnection;	
+	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
+	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+
+	console.log("termoAbertura:respostaTermoDeAbertura - INICIO");
+
+	console.log("termoAbertura:respostaTermoDeAbertura - status = "+status);
+	console.log("termoAbertura:respostaTermoDeAbertura - respostaCliente = "+respostaCliente);
+
+	termoAberturaDAO.atualizarStatusTermoAbertura(status, respostaCliente, req.session.idProjeto, function(error, resultAtualizarTermoAbertura){
+		if(error){
+			throw error;
+		} else {
+			console.log("termoAbertura:respostaTermoDeAbertura - resultAtualizarTermoAbertura = "+JSON.stringify(resultAtualizarTermoAbertura));
+
+			projetosDispDAO.consultarProjetoEquipe(req.session.idProjeto, function(error, resultConsultarProjetoEquipe){
+
+				if(error){
+					throw error;
+				} else {
+					console.log("termoAbertura:respostaTermoDeAbertura - resultConsultarProjetoEquipe = "+JSON.stringify(resultConsultarProjetoEquipe));	
+					var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
+
+					if(status = 'A'){ //Termo de Abertura aprovado
+						timelineDAO.timelineAprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineAprovarTermoAbertura){
+							if(error){
+								throw error;
+							} else {
+								console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineAprovarTermoAbertura = "+JSON.stringify(resultTimelineAprovarTermoAbertura));		
+								timelineDAO.timelineTermoAberturaAprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaAprovado){
+									if(error){
+										throw error;
+									} else {
+										console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineTermoAberturaAprovado = "+JSON.stringify(resultTimelineTermoAberturaAprovado));		
+										 var data = {
+                            				 resultado: "2",
+                             				 mensagem: "TERMO DE ABERTURA APROVADO"
+                             			 };	 
+
+                             			console.log("termoAbertura:respostaTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      					res.send(data);  
+									}
+								});			
+							}
+						});
+					} else { //Termo de Abertura reprovado
+						timelineDAO.timelineReprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineReprovarTermoAbertura){
+							if(error){
+								throw error;
+							} else {
+								console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineReprovarTermoAbertura = "+JSON.stringify(resultTimelineReprovarTermoAbertura));		
+								timelineDAO.timelineTermoAberturaReprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaReprovado){
+									if(error){
+										throw error;
+									} else {
+										console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineTermoAberturaReprovado = "+JSON.stringify(resultTimelineTermoAberturaReprovado));		
+										 var data = {
+                            				 resultado: "3",
+                             				 mensagem: "TERMO DE ABERTURA REPROVADO"
+                             			 };	 
+
+                             			console.log("termoAbertura:respostaTermoDeAbertura - REPROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      					res.send(data);  
+									}
+								});
+							}
+						});
+					}
+
+				}
+
+			});
+		}
+	});
+}
+
 function formatarData(dataPrazoEstimado){
 	var dia  = dataPrazoEstimado.getDate().toString().padStart(2, '0');
     var mes  = (dataPrazoEstimado.getMonth()+1).toString().padStart(2, '0'); 

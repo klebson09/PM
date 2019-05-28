@@ -83,6 +83,31 @@ TimelineDAO.prototype.timelineReceberTermoAbertura = function(nomeEquipe, nomePr
 	this._connection.query(sql, callback);
 }
 
+TimelineDAO.prototype.timelineAprovarTermoAbertura = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineAprovarTermoAbertura - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineAprovarTermoAbertura - nomeProjeto "+nomeProjeto);
+	var titulo = "Você aprovou o Termo de Abertura da equipe "+nomeEquipe+".";
+	var msg = "Com a aprovação do Termo de Abertura, o projeto "+nomeProjeto+" está em andamento. Qualquer atualização no processo de desenvolvimento do projeto será informado por meio dessa timeline";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineAprovarTermoAbertura ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineReprovarTermoAbertura = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineReprovarTermoAbertura - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineReprovarTermoAbertura - nomeProjeto "+nomeProjeto);
+	var titulo = "Você reprovou o Termo de Abertura da equipe "+nomeEquipe+".";
+	var href = "/encerrar_negociacao";
+	var msg = "A equipe "+nomeEquipe+" será notificada de sua decisão e pode entrar em contato para renegociar os termos. Você pode aguardar uma atualização do termo de abertura ou decidir encerrar as negociações por meio desse <b><a href="+href+">link</a></b>";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineReprovarTermoAbertura ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
@@ -160,6 +185,30 @@ TimelineDAO.prototype.timelineCriarTermoAbertura = function(nomeProjeto, idEquip
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineCriarTermoAbertura ====>> sql "+sql);
 	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineTermoAberturaAprovado = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelineTermoAberturaAprovado - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" foi aprovado pelo cliente";
+	var msg = "Boas noticias para a equipe, o cliente aprovou o termo de abertura para o projeto "+nomeProjeto+". Logo o projeto está em andamento. Quando houver atualização no status do projeto, isto é, em cada um dos entregáveis, acesse o link <b><a href="+href+">ATUALIZAR STATUS</a></b>"
+	var href = "/consultar_checkpoints";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineTermoAberturaAprovado ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineTermoAberturaReprovado = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelineTermoAberturaReprovado - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" foi reprovado pelo cliente";
+	var msg = "Infelizmente o cliente não ficou satisfeito com o Termo de Abertura para o projeto "+nomeProjeto+". Após entrar em contato com o cliente, a equipe poderá redigir o <b><a href="+href+">TERMO DE ABERTURA</a></b>."
+	var href = "/termo_abertura";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineTermoAberturaReprovado ====>> sql "+sql);
+	this._connection.query(sql, callback);	
 }
 
 /*--------------------- OBTER MENSAGENS TIMELINE --------------*/

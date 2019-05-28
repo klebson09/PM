@@ -11,4 +11,12 @@ module.exports = function(application){
      application.get('/consultar_termo_abertura', function(req, res){
       application.app.controllers.termoAbertura.consultarTermoDeAbertura(application, req, res);
     });
+
+     application.post('/resposta_termo_abertura', function(req, res){
+      application.app.controllers.termoAbertura.respostaTermoDeAbertura(application, req, res);
+    });
+
+
+
+     
 }
