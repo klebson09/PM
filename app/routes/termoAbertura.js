@@ -20,7 +20,13 @@ module.exports = function(application){
       application.app.controllers.termoAbertura.respostaTermoDeAbertura(application, req, res);
     });
 
+    application.post('/consultar_checkpoints', function(req, res){
+      application.app.controllers.termoAbertura.consultarCheckpointsTermoDeAbertura(application, req, res);
+    });
 
+
+
+   
 
      
 }

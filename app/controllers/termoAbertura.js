@@ -369,6 +369,27 @@ module.exports.editarTermoDeAbertura = function(application, req, res){
 	});
 }
 
+module.exports.consultarCheckpointsTermoDeAbertura = function(application, req, res){
+
+	var idProjeto = req.body.idProjeto;
+	var connection = application.config.dbConnection;
+	var checkpointDAO = new application.app.models.CheckpointDAO(connection);
+
+	checkpointDAO.consultarCheckpoints(idProjeto, function(error, resultConsultarCheckpoints){
+
+		if(error){
+			throw error;
+		} else {
+			var checkpoints = resultConsultarCheckpoints[0];
+			console.log("termoAbertura:consultarCheckpointsTermoDeAbertura checkpoints = "+JSON.stringify(checkpoints));
+
+			res.send(checkpoints);
+		}
+
+	});
+
+}
+
 function formatarData(dataPrazoEstimado){
 	var dia  = dataPrazoEstimado.getDate().toString().padStart(2, '0');
     var mes  = (dataPrazoEstimado.getMonth()+1).toString().padStart(2, '0'); 
@@ -376,3 +397,4 @@ function formatarData(dataPrazoEstimado){
 	console.log("termoAbertura:formatarData - dataPrazoEstimado = "+dataPrazoEstimado);
 	return dia+"/"+mes+"/"+ano;
 }
+
