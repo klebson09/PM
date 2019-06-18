@@ -42,9 +42,10 @@ TermoAberturaDAO.prototype.consultarTermoAbertura = function(idProjeto, callback
 
 TermoAberturaDAO.prototype.atualizarStatusTermoAbertura = function(status, respostaCliente, idProjeto, callback){
 
-  console.log("************atualizarStatusTermoAbertura***************");    
-  
-  var sqlAtualizarStatusTermoAbertura = "UPDATE termo_abertura SET status, respostaCliente VALUES('"+status+"','"+respostaCliente+"') WHERE idProjeto = "+idProjeto;    
+  console.log("************atualizarStatusTermoAbertura***************");  
+  console.log("TermoAberturaDAO:atualizarStatusTermoAbertura - status =@@& 33 "+status);
+    
+  var sqlAtualizarStatusTermoAbertura = "UPDATE termo_abertura SET status='"+status+"', respostaCliente='"+respostaCliente+"' WHERE idProjeto = "+idProjeto;    
 
   console.log("TermoAberturaDAO:atualizarStatusTermoAbertura - sqlAtualizarStatusTermoAbertura = "+sqlAtualizarStatusTermoAbertura);
 

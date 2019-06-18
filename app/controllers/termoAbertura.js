@@ -116,21 +116,20 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 	var termoAbertura = null;
 	var checkpoints = [];
 	var membrosEquipe = [];
+	var statusTermoAbertura = "";
 
 	termoAberturaDAO.consultarTermoAbertura(req.session.idProjeto, function(error, resultConsultarTermoAbertura){
 
 		console.log("termoAbertura:consulconsultarTermoAberturatarTermoDeAbertura - resultConsultarTermoAbertura = "+JSON.stringify(resultConsultarTermoAbertura));
 
-
-
 		if(error){
 			throw error;
 		} else {
-
 			termoAbertura = resultConsultarTermoAbertura[0];
+			statusTermoAbertura = termoAbertura.status;
 			var dataPrazoEstimado = new Date(termoAbertura.prazoEstimado);
 			termoAbertura.prazoEstimado = formatarData(dataPrazoEstimado);
-			console.log("termoAbertura:consulconsultarTermoAbertura - termoAbertura.prazoEstimado = "+termoAbertura.prazoEstimado);
+			console.log("termoAbertura:consulconsultarTermoAbertura - termoAbertura.prazoEstimado = "+termoAbertura.prazoEstimado+ " statusTermoAbertura =>>> "+statusTermoAbertura);
 
 			checkpointDAO.consultarCheckpoints(req.session.idProjeto, function(error, resultConsultarCheckpoints){
 
@@ -150,21 +149,40 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 					equipeDAO.obterMembrosEquipe(termoAbertura.idEquipe, function(error, resultObterMembrosEquipe){
 
 						console.log("termoAbertura:consultarTermoAbertura - resultObterMembrosEquipe = "+JSON.stringify(resultObterMembrosEquipe));
+						console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
 
+						
 						if(error){
 							throw error;
 						} else {
+							var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterMembrosEquipe};
 							membrosEquipe = resultObterMembrosEquipe;
 
-							res.render("includes/termoAberturaCliente", {
-								sessionNomeUsuario: req.session.nomeUsuario,
-								sessionNomeTipoUsuario: req.session.tipoUsuario,
-								notificacao: req.session.notificacoes,
-								dadosTA: termoAbertura,
-								dadosCP: checkpoints,
-								dadosEQP: membrosEquipe,
-								layout: 'includes/layoutIncludes'
-							});
+							if(statusTermoAbertura = "R"){
+								res.render("includes/termoAberturaClienteEditar", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									dadosTA: termoAbertura,
+									dadosCP: checkpoints,
+									dadosEQP: membrosEquipe,
+									dadosTermoAbertura: dados,
+									layout: 'includes/layoutIncludes'
+								});
+
+
+							}else {
+								res.render("includes/termoAberturaCliente", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									dadosTA: termoAbertura,
+									dadosCP: checkpoints,
+									dadosEQP: membrosEquipe,
+									dadosTermoAbertura: dados,
+									layout: 'includes/layoutIncludes'
+								});
+							}
 						}	
 
 					});
@@ -182,7 +200,7 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 
 module.exports.respostaTermoDeAbertura = function(application, req, res){
 
-	var status = req.body.status;
+	var statusTA = req.body.status;
 	var respostaCliente = req.body.respostaCliente;
 	var connection = application.config.dbConnection;	
 	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
@@ -191,13 +209,14 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 
 	console.log("termoAbertura:respostaTermoDeAbertura - INICIO");
 
-	console.log("termoAbertura:respostaTermoDeAbertura - status = "+status);
+	console.log("termoAbertura:respostaTermoDeAbertura - statusTA = "+statusTA);
 	console.log("termoAbertura:respostaTermoDeAbertura - respostaCliente = "+respostaCliente);
 
-	termoAberturaDAO.atualizarStatusTermoAbertura(status, respostaCliente, req.session.idProjeto, function(error, resultAtualizarTermoAbertura){
+	termoAberturaDAO.atualizarStatusTermoAbertura(statusTA, respostaCliente, req.session.idProjeto, function(error, resultAtualizarTermoAbertura){
 		if(error){
 			throw error;
 		} else {
+			console.log("termoAbertura:respostaTermoDeAbertura - statusTA =@@& "+statusTA);
 			console.log("termoAbertura:respostaTermoDeAbertura - resultAtualizarTermoAbertura = "+JSON.stringify(resultAtualizarTermoAbertura));
 
 			projetosDispDAO.consultarProjetoEquipe(req.session.idProjeto, function(error, resultConsultarProjetoEquipe){
@@ -207,8 +226,10 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 				} else {
 					console.log("termoAbertura:respostaTermoDeAbertura - resultConsultarProjetoEquipe = "+JSON.stringify(resultConsultarProjetoEquipe));	
 					var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
-
-					if(status = 'A'){ //Termo de Abertura aprovado
+					console.log("termoAbertura:consultarProjetoEquipe - statusTA =@@& 22 "+statusTA);
+				
+					if(statusTA == "A"){ //Termo de Abertura aprovado
+						console.log("termoAbertura:respostaTermoDeAbertura - statusTA =@@& Aprovado "+statusTA);
 						timelineDAO.timelineAprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineAprovarTermoAbertura){
 							if(error){
 								throw error;
@@ -231,6 +252,7 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 							}
 						});
 					} else { //Termo de Abertura reprovado
+						console.log("termoAbertura:respostaTermoDeAbertura - statusTA =@@& RECUSADO "+statusTA);
 						timelineDAO.timelineReprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineReprovarTermoAbertura){
 							if(error){
 								throw error;
@@ -247,6 +269,92 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
                              			 };	 
 
                              			console.log("termoAbertura:respostaTermoDeAbertura - REPROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      					res.send(data);  
+									}
+								});
+							}
+						});
+					}
+
+				}
+
+			});
+		}
+	});
+}
+
+module.exports.editarTermoDeAbertura = function(application, req, res){
+
+	var statusTA = req.body.status;
+	var respostaCliente = req.body.respostaCliente;
+	var connection = application.config.dbConnection;	
+	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
+	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+
+	console.log("termoAbertura:editarTermoDeAbertura - INICIO");
+
+	console.log("termoAbertura:editarTermoDeAbertura - statusTA = "+statusTA);
+	console.log("termoAbertura:editarTermoDeAbertura - respostaCliente = "+respostaCliente);
+
+	termoAberturaDAO.atualizarStatusTermoAbertura(statusTA, respostaCliente, req.session.idProjeto, function(error, resultAtualizarTermoAbertura){
+		if(error){
+			throw error;
+		} else {
+			console.log("termoAbertura:editarTermoDeAbertura - statusTA =@@& "+statusTA);
+			console.log("termoAbertura:editarTermoDeAbertura - resultAtualizarTermoAbertura = "+JSON.stringify(resultAtualizarTermoAbertura));
+
+			projetosDispDAO.consultarProjetoEquipe(req.session.idProjeto, function(error, resultConsultarProjetoEquipe){
+
+				if(error){
+					throw error;
+				} else {
+					console.log("termoAbertura:editarTermoDeAbertura - resultConsultarProjetoEquipe = "+JSON.stringify(resultConsultarProjetoEquipe));	
+					var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
+					console.log("termoAbertura:consultarProjetoEquipe - statusTA =@@& 22 "+statusTA);
+
+				
+					if(statusTA == "A"){ //Termo de Abertura aprovado
+						console.log("termoAbertura:editarTermoDeAbertura - statusTA =@@& Aprovado "+statusTA);
+						timelineDAO.timelineAprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineAprovarTermoAbertura){
+							if(error){
+								throw error;
+							} else {
+								console.log("termoAbertura:editarTermoDeAbertura - resultTimelineAprovarTermoAbertura = "+JSON.stringify(resultTimelineAprovarTermoAbertura));		
+								timelineDAO.timelineTermoAberturaAprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaAprovado){
+									if(error){
+										throw error;
+									} else {
+										console.log("termoAbertura:editarTermoDeAbertura - resultTimelineTermoAberturaAprovado = "+JSON.stringify(resultTimelineTermoAberturaAprovado));		
+										 var data = {
+                            				 resultado: "2",
+                             				 mensagem: "TERMO DE ABERTURA APROVADO"
+                             			 };	 
+
+                             			console.log("termoAbertura:editarTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      					res.send(data);  
+									}
+								});			
+							}
+						});
+					} else { //Termo de Abertura reprovado
+						console.log("termoAbertura:editarTermoDeAbertura - statusTA =@@& RECUSADO "+statusTA);
+						timelineDAO.timelineReprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineReprovarTermoAbertura){
+							if(error){
+								throw error;
+							} else {
+								console.log("termoAbertura:editarTermoDeAbertura - resultTimelineReprovarTermoAbertura = "+JSON.stringify(resultTimelineReprovarTermoAbertura));		
+								timelineDAO.timelineTermoAberturaReprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaReprovado){
+									if(error){
+										throw error;
+									} else {
+										console.log("termoAbertura:editarTermoDeAbertura - resultTimelineTermoAberturaReprovado = "+JSON.stringify(resultTimelineTermoAberturaReprovado));		
+										 var data = {
+                            				 resultado: "3",
+                             				 mensagem: "TERMO DE ABERTURA REPROVADO"
+                             			 };	 
+
+                             			console.log("termoAbertura:editarTermoDeAbertura - REPROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
                       					res.send(data);  
 									}
 								});

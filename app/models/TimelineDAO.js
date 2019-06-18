@@ -202,8 +202,8 @@ TimelineDAO.prototype.timelineTermoAberturaAprovado = function(nomeProjeto, idEq
 TimelineDAO.prototype.timelineTermoAberturaReprovado = function(nomeProjeto, idEquipe, callback){
 	console.log("TimelineDAO:timelineTermoAberturaReprovado - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" foi reprovado pelo cliente";
+	var href = "/consultar_termo_abertura";
 	var msg = "Infelizmente o cliente não ficou satisfeito com o Termo de Abertura para o projeto "+nomeProjeto+". Após entrar em contato com o cliente, a equipe poderá redigir o <b><a href="+href+">TERMO DE ABERTURA</a></b>."
-	var href = "/termo_abertura";
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
