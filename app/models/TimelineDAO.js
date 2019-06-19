@@ -108,6 +108,19 @@ TimelineDAO.prototype.timelineReprovarTermoAbertura = function(nomeEquipe, nomeP
 	this._connection.query(sql, callback);
 }
 
+TimelineDAO.prototype.timelineReceberTermoAberturaAtualizado = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineReceberTermoAberturaAtualizado - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineReceberTermoAberturaAtualizado - nomeProjeto "+nomeProjeto);
+	var titulo = "Equipe "+nomeEquipe+" enviou para você o Termo de Abertura do projeto "+nomeProjeto+"atualizado";
+	var href = "/consultar_termo_abertura";
+	var msg = "A equipe "+nomeEquipe+" atualizou o Termo de Abertura do projeto "+nomeProjeto+" e enviou o mesmo para a sua análise. Clique em <a href="+href+"><b>TERMO DE ABERTURA</b></a> para visualizar o documento.";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineReceberTermoAbertura ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
@@ -211,6 +224,18 @@ TimelineDAO.prototype.timelineTermoAberturaReprovado = function(nomeProjeto, idE
 	this._connection.query(sql, callback);	
 }
 
+
+
+TimelineDAO.prototype.timelineAtualizarTermoAbertura = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelineAtualizarTermoAbertura - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" atualizado";
+	var msg = "O Termo de Abertura foi atualizado com sucesso e encaminhado novamente ao cliente para análise. Uma vez aprovado o Termo de Abertura, é iniciado o desenvolvimento do projeto."
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineAtualizarTermoAbertura ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
 /*--------------------- OBTER MENSAGENS TIMELINE --------------*/
 
 TimelineDAO.prototype.timelineObterMsgs = function(idContaUsuario, callback){

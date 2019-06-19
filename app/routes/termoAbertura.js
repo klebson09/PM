@@ -17,7 +17,7 @@ module.exports = function(application){
     });
 
     application.post('/editar_termo_abertura', function(req, res){
-      application.app.controllers.termoAbertura.respostaTermoDeAbertura(application, req, res);
+      application.app.controllers.termoAbertura.editarTermoDeAbertura(application, req, res);
     });
 
     application.post('/consultar_checkpoints', function(req, res){
