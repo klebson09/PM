@@ -159,13 +159,26 @@
         $celular.mask('(00)00000-0000', {reverse: false});
       });
 
-    function tornarDate(dataNascimento){
+      function tornarDate(dataNascimento){
         dataNascimento.type = 'date';
-     }
-     function tornarText(dataNascimento){
+      }
+
+      function tornarText(dataNascimento){
        if(!dataNascimento.value != ''){
+        var dataFormatada = formatarDataPtBr(dataNascimento);
          dataNascimento.type = 'text';
-       }
+         dataNascimento.value = dataFormatada;
+        }
+      }
+     function formatarDataPtBr(data){
+      var dataPrazoEstimado = new Date(data.value);
+      var dia  = dataPrazoEstimado.getDate().toString().padStart(2, '0');
+      var mes  = (dataPrazoEstimado.getMonth()+1).toString().padStart(2, '0'); 
+      var ano  = dataPrazoEstimado.getFullYear();
+      console.log("CadastroDesenvolvedor.ejs:formatarDataPtBr - dataPrazoEstimado = "+dataPrazoEstimado);
+      var dataFormatada = dia+"/"+mes+"/"+ano;
+      return dataFormatada;
+
      }
 
     </script>

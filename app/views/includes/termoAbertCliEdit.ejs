@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Termo de Abertura</title>
+    <title>Atualizar Termo de Abertura</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -26,14 +26,15 @@
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
-                <form id="msform" action="/criar_termo_abertura" method="post" >
+                <form id="msform" action="/editar_termo_abertura" method="post" >
                   <!-- fieldsets -->
                   <fieldset>
                     <!-- <div class="box box-success"> -->
-                    <h2 class="fs-title col-md-offset-1" id="tituloForm" style="padding-bottom: 20px;">  Termo de Abertura</h2>
+                    <h2 class="fs-title col-md-offset-1" id="tituloForm" style="padding-bottom: 20px;">Atualizar Termo de Abertura</h2>
                     <!-- <h3 class="fs-subtitle">This is step 1</h3> -->
 
                     <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTA.idProjeto %>" />
+                    <input type="hidden" id="status" class="form-control" name="status" value="A" />
 
                     <div class="form-group  col-md-12 ">
                       <label for="tituloProj">Título do Projeto</label>
@@ -69,7 +70,7 @@
 
                     <div class="form-group col-md-12">
                       <label for="prazosEstimadosProj">Prazo Estimado</label>
-                      <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="text"value="<%= dadosTA.prazoEstimado %>"  ></input>
+                      <input class="form-control" name="prazosEstimadosProjeto" id="prazosEstimadosProj" type="text"  value="<%=dadosTA.prazoEstimado %>" onfocus="tornarDate(this)" onblur="tornarText(this)" ></input>
                     </div>
                  
                     <div class="form-group col-md-12">
@@ -129,7 +130,7 @@
                     </div>
                     
                     <div class="form-group col-md-12">
-                      <input type="button" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Enviar" onclick="submeterFormulario()" />
+                      <input type="submit" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Atualizar" />
                     </div>
                   </div>
 
@@ -192,26 +193,17 @@
     <script type="text/javascript" src="moment/moment.js"></script>
 
     <script type="text/javascript">
-      
-      function formatarData(data){
-        console.log("data = "+data);
-        return data.format("yyyy-mm-dd");
-      }
 
-      function submeterFormulario(resposta){
-        console.log("termoAbertClie:submeterFormulario ");
-        var respostaCli = document.getElementById('respostaCliente').value;
-        console.log("termoAbertClie:submeterFormulario - respostaCli = "+respostaCli);
-        $.post( "/resposta_termo_abertura", { status: resposta, respostaCliente: respostaCli}, function(data){
+     
 
-           console.log("termoAbertClie:submeterFormulario - resultado = "+data.resultado);
-
-           alert(data.mensagem);
-
-           window.location.replace("/homeTimeLine");
-
-        } );
-      }
+    function tornarDate(data){
+        data.type = 'date';
+     }
+     function tornarText(data){
+       if(!data.value != ''){
+         data.type = 'text';
+       }
+     }
 
     </script>
 

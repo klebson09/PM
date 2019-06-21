@@ -283,9 +283,92 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 	});
 }
 
-module.exports.editarTermoDeAbertura = function(application, req, res){
 
-	
+module.exports.consultarEdicaoTermoDeAbertura = function(application, req, res){
+
+
+	console.log("**************************** termoAbertura:consultarEdicaoTermoDeAbertura  *********************************************");
+
+	var connection = application.config.dbConnection;
+	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
+	var checkpointDAO = new application.app.models.CheckpointDAO(connection);
+	var equipeDAO = new application.app.models.EquipeDAO(connection);
+	var termoAbertura = null;
+	var checkpoints = [];
+	var membrosEquipe = [];
+	var statusTermoAbertura = "";
+
+	termoAberturaDAO.consultarTermoAbertura(req.session.idProjeto, function(error, resultConsultarTermoAbertura){
+
+		console.log("termoAbertura:consultarEdicaoTermoDeAbertura - resultConsultarTermoAbertura = "+JSON.stringify(resultConsultarTermoAbertura));
+
+		if(error){
+			throw error;
+		} else {
+			termoAbertura = resultConsultarTermoAbertura[0];
+			statusTermoAbertura = termoAbertura.status;
+			var dataPrazoEstimado = new Date(termoAbertura.prazoEstimado);
+			termoAbertura.prazoEstimado = formatarData(dataPrazoEstimado);
+			console.log("termoAbertura:consultarEdicaoTermoDeAbertura - termoAbertura.prazoEstimado = "+termoAbertura.prazoEstimado+ " statusTermoAbertura =>>> "+statusTermoAbertura);
+
+			checkpointDAO.consultarCheckpoints(req.session.idProjeto, function(error, resultConsultarCheckpointsEdit){
+
+				console.log("termoAbertura:consultarEdicaoTermoDeAbertura - resultConsultarCheckpointsEdit = "+JSON.stringify(resultConsultarCheckpointsEdit));
+
+				if(error){
+					throw error;
+				} else {
+
+					checkpoints = resultConsultarCheckpointsEdit;
+
+					for(var i=0; i<checkpoints.length; i++){
+						checkpoints[i].dataInicial = formatarData(new Date(checkpoints[i].dataInicial));
+						checkpoints[i].dataFinal = formatarData(new Date(checkpoints[i].dataFinal));
+					}
+
+					equipeDAO.obterMembrosEquipe(termoAbertura.idEquipe, function(error, resultObterMembrosEquipeEdit){
+
+						console.log("termoAbertura:consultarEdicaoTermoDeAbertura - resultObterMembrosEquipeEdit = "+JSON.stringify(resultObterMembrosEquipeEdit));
+						console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
+
+						
+						if(error){
+							throw error;
+						} else {
+							var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterMembrosEquipeEdit};
+							membrosEquipe = resultObterMembrosEquipeEdit;
+
+							
+								res.render("includes/termoAberturaClienteEditar", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									dadosTA: termoAbertura,
+									dadosCP: checkpoints,
+									dadosEQP: membrosEquipe,
+									dadosTermoAbertura: dados,
+									layout: 'includes/layoutIncludes'
+								});
+
+
+							
+						}	
+
+					});
+
+					
+
+				}
+
+			});
+
+		}
+
+	});
+}
+module.exports.editarTermoDeAbertura = function(application, req, res){
+console.log("************termoAbertura.js:editarTermoDeAbertura INICIO***************");
+
 
   var connection = application.config.dbConnection;
 	var termoAbertura = req.body;
@@ -302,8 +385,7 @@ module.exports.editarTermoDeAbertura = function(application, req, res){
 		if(erro){
 			throw erro;
 		} else {		
-			console.log("TERMO DE ABERTURA CADASTRADO COM SUCESSO");
-			console.log("Cadastrando Checkpoints....");
+			console.log("termoAbertura.js:atualizarTermoAbertura ATUALIZADO COM SUCESSO");
 
 			var idProjeto = termoAbertura.idProjeto
 			var checkpointDAO = new application.app.models.CheckpointDAO(connection);

@@ -16,6 +16,12 @@ module.exports = function(application){
       application.app.controllers.termoAbertura.respostaTermoDeAbertura(application, req, res);
     });
 
+     //-----------------------DEV -----------------------------
+     application.get('/visualizar_edicao_termo_abertura', function(req, res){
+        console.log("**************************** rota termoAbertura:visualizar_edicao_termo_abertura  *********************************************");
+      application.app.controllers.termoAbertura.consultarEdicaoTermoDeAbertura(application, req, res);
+    });
+
     application.post('/editar_termo_abertura', function(req, res){
       application.app.controllers.termoAbertura.editarTermoDeAbertura(application, req, res);
     });

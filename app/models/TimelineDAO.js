@@ -111,7 +111,7 @@ TimelineDAO.prototype.timelineReprovarTermoAbertura = function(nomeEquipe, nomeP
 TimelineDAO.prototype.timelineReceberTermoAberturaAtualizado = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
 	console.log("TimelineDAO:timelineReceberTermoAberturaAtualizado - INICIO nomeEquipe "+nomeEquipe);
 	console.log("TimelineDAO:timelineReceberTermoAberturaAtualizado - nomeProjeto "+nomeProjeto);
-	var titulo = "Equipe "+nomeEquipe+" enviou para você o Termo de Abertura do projeto "+nomeProjeto+"atualizado";
+	var titulo = "Equipe "+nomeEquipe+" enviou para você o Termo de Abertura do projeto "+nomeProjeto+" atualizado";
 	var href = "/consultar_termo_abertura";
 	var msg = "A equipe "+nomeEquipe+" atualizou o Termo de Abertura do projeto "+nomeProjeto+" e enviou o mesmo para a sua análise. Clique em <a href="+href+"><b>TERMO DE ABERTURA</b></a> para visualizar o documento.";
 	var icon = "fa fa-envelope bg-blue";

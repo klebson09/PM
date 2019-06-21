@@ -51,28 +51,25 @@ TermoAberturaDAO.prototype.atualizarStatusTermoAbertura = function(status, respo
 }
 
 TermoAberturaDAO.prototype.atualizarTermoAbertura = function(termoAbertura, callback){
-
-     console.log("************atualizarTermoAbertura***************");  
+     
+     console.log("************atualizarTermoAbertura***************"); 
+     console.log("TermoAberturaDAO:atualizarTermoAbertura - status =@@& 33 "); 
 
   var idProjeto = termoAbertura.idProjeto;
   var tituloProjeto = termoAbertura.tituloProjeto;
-  var objetivo = termoAbertura.objetivoProjeto;
-  var escopo = termoAbertura.escopoProjeto;
+  var objetivo = termoAbertura.objetivo;
+  var escopo = termoAbertura.escopo;
   var escopoNegativo = termoAbertura.escopoNegativoProjeto;
   var interfacesOutrosProjetos = termoAbertura.interfaceOutrosSistemasProjeto;
   var prazoEstimado = termoAbertura.prazosEstimadosProjeto;
   var orcamento = termoAbertura.orcamentoEstimado;
-  var restricoes = termoAbertura.restricoesProjeto;
-
- 
-  console.log("TermoAberturaDAO:atualizarTermoAbertura - status =@@& 33 ");
+  var restricoes = termoAbertura.restricoesProjeto;  
+  var status = termoAbertura.status;  
     
-  var atualizarTermoAbertura = "UPDATE termo_abertura SET tituloProjeto = '"+tituloProjeto+"', objetivo = '"+objetivo+"', escopo = '"+escopo+"', escopoNegativo = '"+escopoNegativo+"', interfacesOutrosProjetos = '"+interfacesOutrosProjetos+"', prazoEstimado = '"+prazoEstimado+"', orcamento = '"+orcamento+"', restricoes = '"+restricoes+"', status = '"+status+"' WHERE idTermoAbertura = "+idProjeto;
+  var atualizarTermoAbertura = "UPDATE termo_abertura SET tituloProjeto = '"+tituloProjeto+"', objetivo = '"+objetivo+"', escopo = '"+escopo+"', escopoNegativo = '"+escopoNegativo+"', interfacesOutrosProjetos = '"+interfacesOutrosProjetos+"', prazoEstimado = '"+prazoEstimado+"', orcamento = '"+orcamento+"', restricoes = '"+restricoes+"', status = '"+status+"' WHERE idProjeto ="+idProjeto;
 
   console.log("TermoAberturaDAO:atualizarTermoAbertura - atualizarTermoAbertura = "+atualizarTermoAbertura);
-
   this._connection.query(atualizarTermoAbertura, callback);
-
 }
 
 module.exports = function(){
