@@ -120,7 +120,7 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 
 	termoAberturaDAO.consultarTermoAbertura(req.session.idProjeto, function(error, resultConsultarTermoAbertura){
 
-		console.log("termoAbertura:consulconsultarTermoAberturatarTermoDeAbertura - resultConsultarTermoAbertura = "+JSON.stringify(resultConsultarTermoAbertura));
+		console.log("termoAbertura:consultarTermoAbertura - resultConsultarTermoAbertura = "+JSON.stringify(resultConsultarTermoAbertura));
 
 		if(error){
 			throw error;
@@ -149,29 +149,15 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 					equipeDAO.obterMembrosEquipe(termoAbertura.idEquipe, function(error, resultObterMembrosEquipe){
 
 						console.log("termoAbertura:consultarTermoAbertura - resultObterMembrosEquipe = "+JSON.stringify(resultObterMembrosEquipe));
-						console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
-
 						
 						if(error){
 							throw error;
 						} else {
+							console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
+
 							var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterMembrosEquipe};
 							membrosEquipe = resultObterMembrosEquipe;
-
-							if(statusTermoAbertura = "R"){
-								res.render("includes/termoAberturaClienteEditar", {
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									dadosTA: termoAbertura,
-									dadosCP: checkpoints,
-									dadosEQP: membrosEquipe,
-									dadosTermoAbertura: dados,
-									layout: 'includes/layoutIncludes'
-								});
-
-
-							}else {
+							
 								res.render("includes/termoAberturaCliente", {
 									sessionNomeUsuario: req.session.nomeUsuario,
 									sessionNomeTipoUsuario: req.session.tipoUsuario,
@@ -181,13 +167,10 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 									dadosEQP: membrosEquipe,
 									dadosTermoAbertura: dados,
 									layout: 'includes/layoutIncludes'
-								});
-							}
+								});							
 						}	
 
-					});
-
-					
+					});					
 
 				}
 
