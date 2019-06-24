@@ -87,7 +87,8 @@ TimelineDAO.prototype.timelineAprovarTermoAbertura = function(nomeEquipe, nomePr
 	console.log("TimelineDAO:timelineAprovarTermoAbertura - INICIO nomeEquipe "+nomeEquipe);
 	console.log("TimelineDAO:timelineAprovarTermoAbertura - nomeProjeto "+nomeProjeto);
 	var titulo = "Você aprovou o Termo de Abertura da equipe "+nomeEquipe+".";
-	var msg = "Com a aprovação do Termo de Abertura, o projeto "+nomeProjeto+" está em andamento. Qualquer atualização no processo de desenvolvimento do projeto será informado por meio dessa timeline";
+	var href = "/checkpoint";
+	var msg = "Com a aprovação do Termo de Abertura, o projeto "+nomeProjeto+" está em andamento. Qualquer atualização no processo de desenvolvimento do projeto será informado por meio dessa timeline. Clique no link <a href="+href+"><b>CHECKPOINTS</b></a> para acompanhar o andamento do desenvolvimento do sistema";
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";

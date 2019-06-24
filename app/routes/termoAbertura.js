@@ -13,12 +13,12 @@ module.exports = function(application){
     });
 
      application.post('/resposta_termo_abertura', function(req, res){
+              console.log("**************************** rota termoAbertura:resposta_termo_abertura  *********************************************");
       application.app.controllers.termoAbertura.respostaTermoDeAbertura(application, req, res);
     });
 
      //-----------------------DEV -----------------------------
      application.get('/visualizar_edicao_termo_abertura', function(req, res){
-        console.log("**************************** rota termoAbertura:visualizar_edicao_termo_abertura  *********************************************");
       application.app.controllers.termoAbertura.consultarEdicaoTermoDeAbertura(application, req, res);
     });
 

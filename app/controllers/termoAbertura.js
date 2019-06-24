@@ -149,6 +149,7 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 					equipeDAO.obterMembrosEquipe(termoAbertura.idEquipe, function(error, resultObterMembrosEquipe){
 
 						console.log("termoAbertura:consultarTermoAbertura - resultObterMembrosEquipe = "+JSON.stringify(resultObterMembrosEquipe));
+
 						
 						if(error){
 							throw error;
@@ -189,8 +190,7 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
 	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
-
-	console.log("termoAbertura:respostaTermoDeAbertura - INICIO");
+	console.log("**************************** termoAbertura:respostaTermoDeAbertura  *********************************************")
 
 	console.log("termoAbertura:respostaTermoDeAbertura - statusTA = "+statusTA);
 	console.log("termoAbertura:respostaTermoDeAbertura - respostaCliente = "+respostaCliente);
