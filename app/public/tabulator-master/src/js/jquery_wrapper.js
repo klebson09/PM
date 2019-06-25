@@ -13,20 +13,37 @@
  (function (factory) {
  	"use strict";
  	if (typeof define === 'function' && define.amd) {
- 		define(['jquery'], factory);
+ 		define(['jquery', 'jquery-ui', 'tabulator'], factory);
  	}
  	else if(typeof module !== 'undefined' && module.exports) {
- 		module.exports = factory(require('jquery'));
+ 		module.exports = factory(
+    require('jquery'), 
+    require('jquery-ui'), 
+    require('tabulator')
+   );
  	}
  	else {
  		factory(jQuery);
  	}
- }(function ($, undefined) {
+ }(function ($, undefined, Tabulator) {
+ 	$.widget("ui.tabulator", {
+ 		_create:function(){
+ 			this.table = new Tabulator(this.element[0], this.options);
 
- 	/*=include core.js */
+ 			//map tabulator functions to jquery wrapper
+ 			for(var key in Tabulator.prototype){
+ 				if(typeof Tabulator.prototype[key] === "function" && key.charAt(0) !== "_"){
+ 					this[key] = this.table[key].bind(this.table);
+ 				}
+ 			}
+ 		},
 
- 	$.widget("ui.tabulator", Tabulator);
+ 		_setOption: function(option, value){
+ 			console.error("Tabulator jQuery wrapper does not support setting options after the table has been instantiated");
+ 		},
 
+ 		_destroy: function(option, value){
+ 			this.table.destroy();
+ 		},
+ 	});
  }));
-
-

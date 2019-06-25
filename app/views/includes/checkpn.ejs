@@ -21,9 +21,11 @@
     <div class="wrapper">
       <!-- Right side column. Contains the navbar and content of the page -->
       <div class="content-wrapper">
+
         <!-- Main content -->
         <section class="content">
           <div class="row">
+
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
                   <!-- fieldsets -->
@@ -45,9 +47,9 @@
                             <th>Data Inicial</th>
                             <th>Data Final</th>
                             <th>Status</th>
-                            <th>Observação</th>
+                            <th>Observações</th>
                           </tr>                
-                          
+                             
                             <% 
                               var checkpoints = dadosCP;
                               var j =1;
@@ -59,7 +61,7 @@
                               <td><%= checkpoints[i].dataInicial %></td>
                               <td><%= checkpoints[i].dataFinal %></td>
                               <td><span class="label label-success"><%= checkpoints[i].status %></span></td>
-                              <td><%= checkpoints[i].obsevacoes %></td>
+                              <td><%= checkpoints[i].observacoes %></td>
                             </tr>
                             <%
                             }

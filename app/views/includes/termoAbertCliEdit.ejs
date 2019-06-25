@@ -75,36 +75,52 @@
                  
                     <div class="form-group col-md-12">
                       <label for="entregasProj">Entregas</label>
-                      
-                      <div class="row">
-                      <div class="col-xs-12">
-                        <div class="box">
-                          
-                          <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
-                              <tr>
-                                <th>Unidade</th>
-                                <th>Descrição</th>
-                                <th>Data Inicial</th>
-                                <th>Data Final</th>
-                                <th>Observação</th>
-                              </tr>
-                                <%   for(var i = 0; i < dadosCP.length; i++){ %>
-                              <tr>
-                                <td><%=i+1 %></td>
-                                <td><%= dadosCP[i].descricao %></td>
-                                <td><%= dadosCP[i].dataInicial %></td>
-                                <td><%= dadosCP[i].dataFinal %></td>
-                                <td><%= dadosCP[i].observacoes %></td>
-                              </tr>    
-
-                              <% }%>                        
+                       <div class="table-controls">
+                          <button id="add-row" type="button" class="action-button btn  btn-success">
+                            <font style="vertical-align: inherit;">
+                              <font style="vertical-align: inherit;">Adicionar Entregável</font>
+                            </font>
+                          </button>
+                        </div>
+                       <div class="box-body table-responsive no-padding">
+                          <table class="table table-hover" id="example-table">
+                              <thead>  
+                                <tr>
+                                  <th>id</th>
+                                  <th>Descrição</th>
+                                  <th>Data Inicial</th>
+                                  <th>Data Final</th>
+                                  <th>Status</th>
+                                  <th>Observações</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                             <tbody>
                               
-                              
-                            </table>
+                                <% 
+                                  var checkpoints = dadosCP;
+                                  var j =1;
+                                  for(var i=0; i < checkpoints.length; i++){
+                                  %>                          
+                                <tr>
+                                  <td><%= j++ %></td>
+                                  <td><%= checkpoints[i].descricao %></td>
+                                  <td><%= checkpoints[i].dataInicial %></td>
+                                  <td><%= checkpoints[i].dataFinal %></td>
+                                  <!--<td id=""><span class="label label-primary"><%= checkpoints[i].status %></span></td>-->
+                                  <td><%= checkpoints[i].status %></td>
+                                  <td><%= checkpoints[i].observacoes %></td>
+                                  <td><span class="glyphicon glyphicon-remove" onclick="removerLinha(<%= i+1 %>)"></span></td>
+                                </tr>
+                                <%
+                                }
+                                %>
+                            </tbody>                                                                      
+                          </table>
+                          <input type="hidden" id="tableDataEntr" name="entregaveis" value=""/>
                           </div><!-- /.box-body -->
-                        </div><!-- /.box -->
-                      </div>
+                        
+                      
                     </div>
                    
 
@@ -130,7 +146,7 @@
                     </div>
                     
                     <div class="form-group col-md-12">
-                      <input type="submit" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Atualizar" />
+                      <input type="button" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Atualizar" onclick="submeterForm()"/>
                     </div>
                   </div>
 
@@ -204,6 +220,128 @@
          data.type = 'text';
        }
      }
+
+      var contPos=0;
+      var tableData = null;
+      var dateEditor = function(cell, onRendered, success, cancel, editorParams){
+        //cell - the cell component for the editable cell
+        //onRendered - function to call when the editor has been rendered
+        //success - function to call to pass the successfuly updated value to Tabulator
+        //cancel - function to call to abort the edit and return to a normal cell
+        //editorParams - params object passed into the editorParams column definition property
+
+        //create and style editor
+        var editor = document.createElement("input");
+
+        editor.setAttribute("type", "date");
+
+        //create and style input
+        editor.style.padding = "3px";
+        editor.style.width = "100%";
+        editor.style.boxSizing = "border-box";
+
+        //Set value of editor to the current value of the cell
+        editor.value = moment(cell.getValue(), "DD/MM/YYYY").format("YYYY-MM-DD")
+
+        //set focus on the select box when the editor is selected (timeout allows for editor to be added to DOM)
+        onRendered(function(){
+            editor.focus();
+            editor.style.css = "100%";
+        });
+
+        //when the value has been set, trigger the cell to update
+        function successFunc(){
+            success(moment(editor.value, "YYYY-MM-DD").format("DD/MM/YYYY"));
+        }
+
+        //editor.addEventListener("change", successFunc);
+        editor.addEventListener("blur", successFunc);
+
+        //return the editor element
+        return editor;
+    };
+
+     var table = new Tabulator("#example-table", { 
+      placeholder:"Adicione os entregáveis do projeto",
+
+      selectable:true,
+        addRowPos : "bottom" ,
+
+        columns:[
+          {title:"Descrição", field:"descricao", sorter:"string", width:200, editor:true},
+          {title:"Data Inicial", field:"dataInicial", sorter:"date", align:"center", formatter:"html", editor:dateEditor},
+          {title:"Data Final", field:"dataFinal", sorter:"date", align:"center", formatter:"html", editor:dateEditor},
+          {title:"Status",  field:"status",  sorter:"string",  formatter:"string", editor:"select", editorParams:{
+            values:{
+             /* "<span class='label label-primary'>A iniciar</span>":"A iniciar",
+              "<span class='label label-warning'>Em execução</span>":"Em execução",
+              "<span class='label label-danger'>Pausado</span>":"Pausado",
+              "<span class='label label-success'>Finalizado</span>":"Finalizado", */
+              "A iniciar":"A iniciar",
+              "Em execução":"Em execução",
+              "Pausado":"Pausado",
+              "Finalizado":"Finalizado",
+            }
+            }, width:120, cellClick:function(e, cell){
+
+            },},
+          {title:"Observações", field:"observacoes", formatter:"textarea", align:"left", width:208, editor:true},
+          {title:"", field:"del", formatter:"html", align:"left", width:20, editor:false}
+        ],
+        index:"id",
+        rowFormatter:function(row){
+        },
+
+     });
+
+      table.hideColumn("id");
+
+      //Add row on "Add Row" button click
+      $("#add-row").click(function(){
+        var cont = contPos;
+        table.addRow({
+          id:cont,
+          status:"A iniciar",
+          observacoes:"",
+          del: "<span class=\"glyphicon glyphicon-remove\" onclick=\"removerLinha("+cont+")\"><\/span>"
+        });
+        contPos++;
+      });
+
+       function removerLinha(pos){
+        var row = table.getRow(pos);
+        table.deleteRow(row.getIndex());
+      }
+
+      function submeterForm(){
+
+        console.log("checkpnEdt:submeterForm ");
+
+        var prazosEstimadosProjeto = document.getElementById("prazosEstimadosProj");
+        alert("prazosEstimadosProjeto ANTES = "+prazosEstimadosProjeto.value)
+
+        if(prazosEstimadosProjeto.value.includes("/")){
+          prazosEstimadosProjeto.value  = moment(prazosEstimadosProjeto.value,"DD/MM/YYYY").format("YYYY-MM-DD");
+          alert("prazosEstimadosProjeto DEPOIS = "+prazosEstimadosProjeto.value)
+        }
+
+
+        var i = 0;
+        var data = table.getData();
+
+        for(i=0;i<data.length;i++){
+            data[i].dataInicial = moment(data[i].dataInicial,"DD/MM/YYYY").format("YYYY-MM-DD");
+            data[i].dataFinal = moment(data[i].dataFinal,"DD/MM/YYYY").format("YYYY-MM-DD");
+            data[i].del = "";
+        }
+
+        var dataJSON = JSON.stringify(data); 
+        alert("dataJSON = "+dataJSON)
+        var tableDataEntr = document.getElementById("tableDataEntr");
+        tableDataEntr.setAttribute("value",dataJSON);
+        $("#msform").submit();
+        
+      }
 
 
 

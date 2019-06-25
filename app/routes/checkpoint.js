@@ -5,7 +5,12 @@ module.exports = function(application){
     });
     application.get('/consultar_checkpoints', function(req, res){    	
 	console.log("**************************** checkpoint:rota - consultar_checkpoints  *********************************************");
-      application.app.controllers.checkpoint.consultarCheckpointsEqp(application, req, res);
+      application.app.controllers.checkpoint.consultarCheckpointsProjeto(application, req, res);
+    });
+
+    application.post('/atualizar_checkpoints', function(req, res){    	
+	console.log("**************************** checkpoint:rota - atualizar_checkpoints  *********************************************");
+      application.app.controllers.checkpoint.atualizarCheckpointsProjeto(application, req, res);
     });
 
      

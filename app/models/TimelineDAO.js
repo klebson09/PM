@@ -122,6 +122,21 @@ TimelineDAO.prototype.timelineReceberTermoAberturaAtualizado = function(nomeEqui
 	this._connection.query(sql, callback);
 }
 
+//--------------------------------------
+
+TimelineDAO.prototype.timelineProjetoAtualizado = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineProjetoAtualizado - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineProjetoAtualizado - nomeProjeto "+nomeProjeto);
+	var titulo = "Projeto "+nomeProjeto+" foi atualizado";
+	var href = "/checkpoint";
+	var msg = "A equipe "+nomeEquipe+" atualizou o status do projeto "+nomeProjeto+". Clique em <a href="+href+"><b>CHECKPOINTS</b></a> para visualizar o andamento do projeto até o momento.";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineProjetoAtualizado ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
@@ -204,8 +219,9 @@ TimelineDAO.prototype.timelineCriarTermoAbertura = function(nomeProjeto, idEquip
 TimelineDAO.prototype.timelineTermoAberturaAprovado = function(nomeProjeto, idEquipe, callback){
 	console.log("TimelineDAO:timelineTermoAberturaAprovado - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" foi aprovado pelo cliente";
-	var msg = "Boas noticias para a equipe, o cliente aprovou o termo de abertura para o projeto "+nomeProjeto+". Logo o projeto está em andamento. Quando houver atualização no status do projeto, isto é, em cada um dos entregáveis, acesse o link <b><a href="+href+">ATUALIZAR STATUS</a></b>"
 	var href = "/consultar_checkpoints";
+	var msg = "Boas noticias para a equipe, o cliente aprovou o termo de abertura para o projeto "+nomeProjeto+". Logo o projeto está em andamento. Quando houver atualização no status do projeto, isto é, em cada um dos entregáveis, acesse o link <b><a href="+href+">ATUALIZAR STATUS</a></b>"
+	console.log("href = "+href);
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
@@ -216,7 +232,7 @@ TimelineDAO.prototype.timelineTermoAberturaAprovado = function(nomeProjeto, idEq
 TimelineDAO.prototype.timelineTermoAberturaReprovado = function(nomeProjeto, idEquipe, callback){
 	console.log("TimelineDAO:timelineTermoAberturaReprovado - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Termo de Abertura do projeto "+nomeProjeto+" foi reprovado pelo cliente";
-	var href = "/consultar_termo_abertura";
+	var href = "/visualizar_edicao_termo_abertura"; 
 	var msg = "Infelizmente o cliente não ficou satisfeito com o Termo de Abertura para o projeto "+nomeProjeto+". Após entrar em contato com o cliente, a equipe poderá redigir o <b><a href="+href+">TERMO DE ABERTURA</a></b>."
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
@@ -237,6 +253,22 @@ TimelineDAO.prototype.timelineAtualizarTermoAbertura = function(nomeProjeto, idE
 	console.log("TimelineDAO:timelineAtualizarTermoAbertura ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
+
+
+TimelineDAO.prototype.timelineAtualizarStatusProjeto = function(nomeProjeto, idEquipe, callback){
+	console.log("TimelineDAO:timelineAtualizarStatusProjeto - INICIO nomeProjeto "+nomeProjeto);
+	var titulo = "Projeto "+nomeProjeto+" atualizado";
+	var msg = "O processo de desenvolvimento do projeto "+nomeProjeto+" foi atualizado pela equipe de desenvolvimento. Cada atualização do desenvolvimento do projeto será informado ao cliente."
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineAtualizarStatusProjeto ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+
+
+
 /*--------------------- OBTER MENSAGENS TIMELINE --------------*/
 
 TimelineDAO.prototype.timelineObterMsgs = function(idContaUsuario, callback){

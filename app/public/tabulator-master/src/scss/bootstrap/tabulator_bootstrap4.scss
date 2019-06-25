@@ -4,37 +4,37 @@
 // Style conversion file, bootstrap to tabulator
 
 //Main Theme Variables
-$backgroundColor: $table-bg; //background color of tabulator
-$borderColor:$table-border-color; //border to tablulator
-$textSize:$font-size-base; //table text size
+$backgroundColor: $table-bg !default; //background color of tabulator
+$borderColor:$table-border-color !default; //border to tabulator
+$textSize:$font-size-base !default; //table text size
 
 //header themeing
-$headerBackgroundColor:#fff; //border to tablulator
-$headerSeperatorColor:$table-border-color; //header bottom seperator color
+$headerBackgroundColor:#fff !default; //border to tabulator
+$headerSeperatorColor:$table-border-color !default; //header bottom seperator color
 
-$cellPadding:$table-cell-padding; //padding round header
+$cellPadding:$table-cell-padding !default; //padding round header
 
 //column header arrows
-$sortArrowActive: #666;
-$sortArrowInactive: #bbb;
+$sortArrowActive: #666 !default;
+$sortArrowInactive: #bbb !default;
 
 //row themeing
-$rowBackgroundColor:$backgroundColor; //table row background color
-$rowAltBackgroundColor: $table-accent-bg; //table row background color
-$rowBorderColor:$table-border-color; //table border color
-$rowHoverBackground:$table-hover-bg; //row background color on hover
+$rowBackgroundColor:$backgroundColor !default; //table row background color
+$rowAltBackgroundColor: $table-accent-bg !default; //table row background color
+$rowBorderColor:$table-border-color !default; //table border color
+$rowHoverBackground:$table-hover-bg !default; //row background color on hover
 
-$rowSelectedBackground: #9ABCEA; //row background color when selected
-$rowSelectedBackgroundHover: #769BCC;//row background color when selected and hovered
+$rowSelectedBackground: #9ABCEA !default; //row background color when selected
+$rowSelectedBackgroundHover: #769BCC !default;//row background color when selected and hovered
 
 
-$editBoxColor:#1D68CD; //border color for edit boxes
-$errorColor:#dd0000; //error indication
+$editBoxColor:#1D68CD !default; //border color for edit boxes
+$errorColor:#dd0000 !default; //error indication
 
 //footer themeing
-$footerBorderColor:$pagination-border-color; //footer border color
-$footerSeperatorColor:$table-border-color; //footer bottom seperator color
-
+$footerBorderColor:$pagination-border-color !default; //footer border color
+$footerSeperatorColor:$table-border-color !default; //footer bottom seperator color
+$footerActiveColor:$pagination-active-color !default; //footer bottom active text color
 
 
 //Tabulator Containing Element
@@ -238,6 +238,44 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 				}
 			}
 
+			&.tabulator-col-vertical{
+				.tabulator-col-content{
+					.tabulator-col-title{
+						writing-mode: vertical-rl;
+						text-orientation: mixed;
+
+						display:flex;
+						align-items:center;
+						justify-content:center;
+					}
+				}
+
+				&.tabulator-col-vertical-flip{
+					.tabulator-col-title{
+						transform: rotate(180deg);
+					}
+				}
+
+				&.tabulator-sortable{
+					.tabulator-col-title{
+						padding-right:0;
+						padding-top:20px;
+					}
+
+					&.tabulator-col-vertical-flip{
+						.tabulator-col-title{
+							padding-right:0;
+							padding-bottom:20px;
+						}
+
+					}
+
+					.tabulator-arrow{
+						right:calc(50% - 6px);
+					}
+				}
+			}
+
 		}
 
 		.tabulator-frozen{
@@ -278,7 +316,7 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 		}
 
 		.tabulator-frozen-rows-holder{
-			min-width:200%;
+			min-width:400%;
 
 			&:empty{
 				display: none;
@@ -415,6 +453,24 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 		}
 
 		//pagination container element
+		.tabulator-paginator{
+			font-family:inherit;
+			font-weight:inherit;
+			font-size:inherit;
+		}
+
+		//page size select element
+		.tabulator-page-size{
+			display:inline-block;
+
+			margin:0 5px;
+			padding:2px 5px;
+
+			border:1px solid $footerBorderColor;
+			border-radius:3px;
+		}
+
+		//pagination container element
 		.tabulator-pages{
 			// margin:0 7px;
 		}
@@ -432,11 +488,6 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 
 			background:rgba(255,255,255,.2);
 
-			color: $pagination-color;
-			font-family:inherit;
-			font-weight:normal;
-			font-size:inherit;
-
 			&[data-page="first"]{
 				border-top-left-radius:4px;
 				border-bottom-left-radius:4px;
@@ -451,7 +502,7 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 			&.active{
 				border-color:$pagination-active-border-color;
 				background-color:$pagination-active-bg;
-				color:$pagination-active-color;
+				color:$footerActiveColor;
 			}
 
 			&:disabled{
@@ -472,7 +523,7 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 	}
 
 	//holding div that contains loader and covers tabulator element to prevent interaction
-	.tablulator-loader{
+	.tabulator-loader{
 		position:absolute;
 		display: flex;
 		align-items:center;
@@ -929,6 +980,91 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 			}
 		}
 
+		.tabulator-data-tree-branch{
+			display:inline-block;
+			vertical-align:middle;
+
+			height:9px;
+			width:7px;
+
+			margin-top:-9px;
+			margin-right:5px;
+
+			border-bottom-left-radius:1px;
+
+			border-left:2px solid $rowBorderColor;
+			border-bottom:2px solid $rowBorderColor;
+		}
+
+		.tabulator-data-tree-control{
+
+			display:inline-flex;
+			justify-content:center;
+			align-items:center;
+			vertical-align:middle;
+
+			height:11px;
+			width:11px;
+
+			margin-right:5px;
+
+			border:1px solid #ccc;
+			border-radius:2px;
+			background:rgba(0, 0, 0, .1);
+
+			overflow:hidden;
+
+			&:hover{
+				cursor:pointer;
+				background:rgba(0, 0, 0, .2);
+			}
+
+			.tabulator-data-tree-control-collapse{
+				display:inline-block;
+				position: relative;
+
+				height: 7px;
+				width: 1px;
+
+				background: transparent;
+
+				&:after {
+					position: absolute;
+					content: "";
+					left: -3px;
+					top: 3px;
+
+					height: 1px;
+					width: 7px;
+
+					background: #ccc;
+				}
+			}
+
+			.tabulator-data-tree-control-expand{
+				display:inline-block;
+				position: relative;
+
+				height: 7px;
+				width: 1px;
+
+				background: #ccc;
+
+				&:after {
+					position: absolute;
+					content: "";
+					left: -3px;
+					top: 3px;
+
+					height: 1px;
+					width: 7px;
+
+					background: #ccc;
+				}
+			}
+
+		}
+
 		.tabulator-responsive-collapse-toggle{
 			display: inline-flex;
 			align-items:center;
@@ -967,6 +1103,14 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 				display:none;
 			}
 		}
+
+		.tabulator-traffic-light{
+			display: inline-block;
+			height:14px;
+			width:14px;
+
+			border-radius:14px;
+		}
 	}
 
 	//row grouping element
@@ -999,34 +1143,25 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 		}
 
 		&.tabulator-group-level-1{
-			.tabulator-arrow{
-				margin-left:20px;
-			}
+			padding-left:30px;
 		}
 
 		&.tabulator-group-level-2{
-			.tabulator-arrow{
-				margin-left:40px;
-			}
+			padding-left:50px;
 		}
 
 		&.tabulator-group-level-3{
-			.tabulator-arrow{
-				margin-left:60px;
-			}
+			padding-left:70px;
 		}
 
 		&.tabulator-group-level-4{
-			.tabulator-arrow{
-				margin-left:80px;
-			}
+			padding-left:90px;
 		}
 
 		&.tabulator-group-level-5{
-			.tabulator-arrow{
-				margin-left:100px;
-			}
+			padding-left:110px;
 		}
+
 
 		//sorting arrow
 		.tabulator-arrow{
@@ -1045,5 +1180,48 @@ $footerSeperatorColor:$table-border-color; //footer bottom seperator color
 			margin-left:10px;
 			color:#666;
 		}
+	}
+}
+
+.tabulator-edit-select-list{
+	position: absolute;
+	display:inline-block;
+	box-sizing:border-box;
+
+	max-height:200px;
+
+	background:$headerBackgroundColor;
+	border:1px solid $rowBorderColor;
+
+	font-size:$textSize;
+
+	overflow-y:auto;
+	-webkit-overflow-scrolling: touch;
+
+	z-index: 10000;
+
+	.tabulator-edit-select-list-item{
+		padding:4px;
+
+		&.active{
+			color:$headerBackgroundColor;
+			background:$editBoxColor;
+		}
+
+		&:hover{
+			cursor:pointer;
+
+			color:$headerBackgroundColor;
+			background:$editBoxColor;
+		}
+	}
+
+	.tabulator-edit-select-list-group{
+		border-bottom:1px solid $rowBorderColor;
+
+		padding:4px;
+		padding-top:6px;
+
+		font-weight:bold;
 	}
 }

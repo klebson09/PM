@@ -7,12 +7,16 @@ function CheckpointDAO(connection){
 CheckpointDAO.prototype.criarCheckpoints = function(entregaveis, idProjeto, callback){
 
   console.log("************criar Checkpoints***************");
-  console.log("CheckpointDAO:criarCheckpoints - entregaveis = "+JSON.stringify(entregaveis));
+  console.log("CheckpointDAO:criarCheckpoints - entregaveis = "+entregaveis);
+
   console.log("CheckpointDAO:criarCheckpoints - idProjeto = "+idProjeto);
   sqlInsertCheckpoints =  "INSERT INTO checkpoint (idProjeto, descricao, dataInicial, dataFinal, status, observacoes) VALUES ?";
   var values = [];
   var i=0;
-  
+
+  entregaveis = JSON.parse(entregaveis);
+  console.log("CheckpointDAO:criarCheckpoints - entregaveis.length = "+entregaveis.length);
+  console.log("CheckpointDAO:criarCheckpoints @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
   for(i=0;i<entregaveis.length;i++){
 
     var descricao = entregaveis[i].descricao;
@@ -45,6 +49,16 @@ CheckpointDAO.prototype.consultarCheckpoints = function(idProjeto, callback){
   console.log("CheckpointDAO.consultarCheckpoints - sqlConsultarCheckpoints = "+sqlConsultarCheckpoints);
 
   this._connection.query(sqlConsultarCheckpoints, callback);
+}
+
+CheckpointDAO.prototype.deletarCheckpoints = function(idProjeto, callback){
+  console.log("********************** CheckpointDAO.deletarCheckpoints ***********************************");
+
+  var sqlDeletarCheckpoints = "DELETE FROM checkpoint WHERE idProjeto = "+idProjeto;
+
+  console.log("CheckpointDAO.deletarCheckpoints - sqlDeletarCheckpoints = "+sqlDeletarCheckpoints);
+
+  this._connection.query(sqlDeletarCheckpoints, callback);
 }
 
 module.exports = function(){

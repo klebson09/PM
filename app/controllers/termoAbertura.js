@@ -359,6 +359,7 @@ console.log("************termoAbertura.js:editarTermoDeAbertura INICIO**********
 	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
 	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+	var entregaveis = termoAbertura.entregaveis;	
 
 
 	console.log(req.body);
@@ -373,52 +374,73 @@ console.log("************termoAbertura.js:editarTermoDeAbertura INICIO**********
 			var idProjeto = termoAbertura.idProjeto
 			var checkpointDAO = new application.app.models.CheckpointDAO(connection);
 
+				checkpointDAO.deletarCheckpoints(idProjeto, function(error, resultDeletarCheckpoints){
+					console.log("termoAbertura.js:atualizarTermoAbertura - resultDeletarCheckpoints = "+JSON.stringify(resultDeletarCheckpoints));
 
+					if(error){
+						throw error;
+					} else {
+						checkpointDAO.criarCheckpoints(entregaveis, idProjeto, function(erro, resultCriarCheckpoints){
+							if(erro){
+								throw erro;
+							} else {
+								console.log("termoAbertura.js:atualizarTermoAbertura  resultCriarCheckpoints "+ JSON.stringify(resultCriarCheckpoints) );
 
-					projetosDispDAO.consultarProjetoEquipe(idProjeto, function(error, resultConsultarProjetoEquipe){
-						if(error){
-							throw error;
-						} else {
-							var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
-							console.log("propostasEqp:criarTermoAbertura - nomeProjeto = "+dadosProjetoEquipe.nomeProjeto);
-							console.log("propostasEqp:criarTermoAbertura - nomeEquipe = "+dadosProjetoEquipe.nomeEquipe);
-							console.log("propostasEqp:criarTermoAbertura - nomeEquipe = "+dadosProjetoEquipe.idContaUsuario);
-								timelineDAO.timelineAtualizarTermoAbertura(dadosProjetoEquipe.nomeProjeto, req.session.idEquipe, function(error, resultTimelineCriarTermoAbertura){
+								console.log("CHECKPOINT DO PROJETO ATUALIZADO COM SUCESSO");
+
+								projetosDispDAO.consultarProjetoEquipe(idProjeto, function(error, resultConsultarProjetoEquipe){
 									if(error){
 										throw error;
 									} else {
-											timelineDAO.timelineReceberTermoAberturaAtualizado(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idContaUsuario, function(error, resultTimelineReceberTermoAbertura){
-												console.log("termoAbertura.js:timelineReceberTermoAberturaAtualizado  resultTimelineReceberTermoAbertura "+ JSON.stringify(resultTimelineReceberTermoAbertura) );
-
+										var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
+										console.log("termoAbertura.js:atualizarTermoAbertura - nomeProjeto = "+dadosProjetoEquipe.nomeProjeto);
+										console.log("termoAbertura.js:atualizarTermoAbertura - nomeEquipe = "+dadosProjetoEquipe.nomeEquipe);
+										console.log("termoAbertura.js:atualizarTermoAbertura - idContaUsuario = "+dadosProjetoEquipe.idContaUsuario);
+											timelineDAO.timelineAtualizarTermoAbertura(dadosProjetoEquipe.nomeProjeto, req.session.idEquipe, function(error, resultTimelineCriarTermoAbertura){
 												if(error){
 													throw error;
 												} else {
-													timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
-														console.log("termoAbertura.js:timelineObterMsgsEquipe  resultTimelineObterMsgs "+ JSON.stringify(resultTimelineObterMsgs));
+														timelineDAO.timelineReceberTermoAberturaAtualizado(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idContaUsuario, function(error, resultTimelineReceberTermoAbertura){
+															console.log("termoAbertura.js:atualizarTermoAbertura  resultTimelineReceberTermoAbertura "+ JSON.stringify(resultTimelineReceberTermoAbertura) );
 
-														if(error){
-															throw error;
-														} else {
-															timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-																req.session.msgsTimeline = msgs;
-																console.log("propostasEqp:criarTermoAbertura - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
-																res.render("includes/timeLine", {
-																	sessionNomeUsuario: req.session.nomeUsuario,
-																	sessionNomeTipoUsuario: req.session.tipoUsuario,
-																	notificacao: req.session.notificacoes,
-																	data: req.session.msgsTimeline,
-																	layout: 'includes/layoutIncludes'
+															if(error){
+																throw error;
+															} else {
+																timelineDAO.timelineObterMsgsEquipe(req.session.idEquipe, req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+																	console.log("termoAbertura.js:atualizarTermoAbertura  resultTimelineObterMsgs "+ JSON.stringify(resultTimelineObterMsgs));
+
+																	if(error){
+																		throw error;
+																	} else {
+																		timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+																			req.session.msgsTimeline = msgs;
+																			console.log("termoAbertura.js:atualizarTermoAbertura - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+																			res.render("includes/timeLine", {
+																				sessionNomeUsuario: req.session.nomeUsuario,
+																				sessionNomeTipoUsuario: req.session.tipoUsuario,
+																				notificacao: req.session.notificacoes,
+																				data: req.session.msgsTimeline,
+																				layout: 'includes/layoutIncludes'
+																			});
+																		});
+																	}
 																});
-															});
-														}
-													});
+															}
+														});
 												}
 											});
 									}
 								});
-						}
-					});
-				}	
+								
+
+							}	
+						});	
+					}	
+				});
+
+
+					
+		}	
 		
 	});	
 }
