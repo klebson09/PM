@@ -213,27 +213,41 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 				
 					if(statusTA == "A"){ //Termo de Abertura aprovado
 						console.log("termoAbertura:respostaTermoDeAbertura - statusTA =@@& Aprovado "+statusTA);
-						timelineDAO.timelineAprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineAprovarTermoAbertura){
+
+						projetosDispDAO.atualizarStatusProjeto(req.session.idProjeto, dadosProjetoEquipe.idEquipe, "Em andamento", function(error, resultAtualizarStatusProjeto){
+
 							if(error){
 								throw error;
 							} else {
-								console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineAprovarTermoAbertura = "+JSON.stringify(resultTimelineAprovarTermoAbertura));		
-								timelineDAO.timelineTermoAberturaAprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaAprovado){
+								console.log("termoAbertura:respostaTermoDeAbertura - resultAtualizarStatusProjeto = "+JSON.stringify(resultAtualizarStatusProjeto));	
+
+								timelineDAO.timelineAprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineAprovarTermoAbertura){
+									
 									if(error){
 										throw error;
 									} else {
-										console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineTermoAberturaAprovado = "+JSON.stringify(resultTimelineTermoAberturaAprovado));		
-										 var data = {
-                            				 resultado: "2",
-                             				 mensagem: "TERMO DE ABERTURA APROVADO"
-                             			 };	 
+										console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineAprovarTermoAbertura = "+JSON.stringify(resultTimelineAprovarTermoAbertura));		
+										timelineDAO.timelineTermoAberturaAprovado(dadosProjetoEquipe.nomeProjeto, dadosProjetoEquipe.idEquipe, function(error, resultTimelineTermoAberturaAprovado){
+											if(error){
+												throw error;
+											} else {
+												console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineTermoAberturaAprovado = "+JSON.stringify(resultTimelineTermoAberturaAprovado));		
+										 		var data = {
+                            				 		resultado: "2",
+                             				    	mensagem: "TERMO DE ABERTURA APROVADO"
+                             			    	};	 
 
-                             			console.log("termoAbertura:respostaTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
-                      					res.send(data);  
+                             					console.log("termoAbertura:respostaTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+                      							res.send(data);  
+											}
+										});			
 									}
-								});			
+								});
+
 							}
-						});
+
+						});	
+
 					} else { //Termo de Abertura reprovado
 						console.log("termoAbertura:respostaTermoDeAbertura - statusTA =@@& RECUSADO "+statusTA);
 						timelineDAO.timelineReprovarTermoAbertura(dadosProjetoEquipe.nomeEquipe, dadosProjetoEquipe.nomeProjeto, req.session.idContaUsuario, function(error, resultTimelineReprovarTermoAbertura){

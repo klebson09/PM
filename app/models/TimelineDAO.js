@@ -122,8 +122,6 @@ TimelineDAO.prototype.timelineReceberTermoAberturaAtualizado = function(nomeEqui
 	this._connection.query(sql, callback);
 }
 
-//--------------------------------------
-
 TimelineDAO.prototype.timelineProjetoAtualizado = function(nomeEquipe, nomeProjeto, idContaUsuario, callback){
 	console.log("TimelineDAO:timelineProjetoAtualizado - INICIO nomeEquipe "+nomeEquipe);
 	console.log("TimelineDAO:timelineProjetoAtualizado - nomeProjeto "+nomeProjeto);
@@ -134,6 +132,31 @@ TimelineDAO.prototype.timelineProjetoAtualizado = function(nomeEquipe, nomeProje
 	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineProjetoAtualizado ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineProjetoFinalizadoEquipe = function(nomeProjeto, nomeEquipe, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineProjetoFinalizadoEquipe - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineProjetoFinalizadoEquipe - nomeProjeto "+nomeProjeto);
+	var titulo = "Projeto "+nomeProjeto+" finalizado pela equipe "+nomeEquipe;
+	var href = "/checkpoint";
+	var msg = "A equipe "+nomeEquipe+" finalizou o projeto "+nomeProjeto+". Clique em <a href="+href+"><b>CHECKPOINTS</b></a> para validar o encerramento do projeto.";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineProjetoFinalizadoEquipe ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineEncerrarProjeto = function(nomeProjeto, nomeEquipe, idContaUsuario, callback){
+	console.log("TimelineDAO:timelineEncerrarProjeto - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineEncerrarProjeto - nomeProjeto "+nomeProjeto);
+	var titulo = "Projeto "+nomeProjeto+" foi finalizado com sucesso! :)";
+	var msg = "Ficamos felizes com o sucesso do projeto e com sua satisfação pelo trabalho realizado pela equipe "+nomeEquipe+". Parabens a todos os envolvidos!";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineEncerrarProjeto ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 
@@ -263,6 +286,30 @@ TimelineDAO.prototype.timelineAtualizarStatusProjeto = function(nomeProjeto, idE
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineAtualizarStatusProjeto ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineFinalizarProjetoEquipe = function(nomeProjeto, nomeEquipe, idEquipe, callback){
+	console.log("TimelineDAO:timelineFinalizarProjetoEquipe - INICIO nomeProjeto "+nomeProjeto);
+	console.log("TimelineDAO:timelineFinalizarProjetoEquipe - INICIO nomeEquipe "+nomeEquipe);
+	var titulo = "O projeto "+nomeProjeto+" foi finalizado pela equipe "+nomeEquipe;
+	var msg = "O projeto "+nomeProjeto+" foi finalizado pela sua equipe e segue para o cliente validar o encerramento das atividades."
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineFinalizarProjetoEquipe ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineProjetoEncerrado = function(nomeProjeto, nomeEquipe, idEquipe, callback){
+	console.log("TimelineDAO:timelineProjetoEncerrado - INICIO nomeEquipe "+nomeEquipe);
+	console.log("TimelineDAO:timelineProjetoEncerrado - nomeProjeto "+nomeProjeto);
+	var titulo = "PARABENS! Cliente aprovou o encerramento do projeto "+nomeProjeto;
+	var msg = "Excelente notícia! O cliente ficou satisfeito com o produto do projeto "+nomeProjeto+". Parabens a toda a equipe <b>"+nomeEquipe+"!</b>";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineProjetoEncerrado ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 

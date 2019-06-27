@@ -70,6 +70,12 @@ projetosDispDAO.prototype.projetoAndamentoDev = function(idEquipe, callback){
   this._connection.query(sql, callback);
 }
 
+projetosDispDAO.prototype.consultarStatusProjeto = function(idProjeto, callback){
+  console.log("projetosDispDAO:consultarStatusProjeto - INICIO");
+  var sql = "SELECT status FROM projeto WHERE idProjeto = "+idProjeto;
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
 
 
 module.exports = function(){
