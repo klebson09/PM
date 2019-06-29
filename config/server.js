@@ -63,6 +63,7 @@ consign()
     .then('app/controllers')
     .then('app/util')
     .then('config/dbConnection.js')
+    .then('config/mailConfig.js')
     .into(app);
 
 /* exportar o objeto app */

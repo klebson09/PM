@@ -7,16 +7,26 @@ module.exports.pagLogin = function(application, req, res) {
 }
 
 module.exports.autenticar = function(application, req, res) {
-	console.log("CONTROLLER AUTENTICAR");
+	console.log("login.js:autenticar - INICIO");
 	var dadosFormLogin = req.body;
-	console.log("********");
+	var connection = application.config.dbConnection;
+	var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
+	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+	var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
+	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+	var notifModelarProj = null;
+
+	req.session.autenticado = false;
+
 	console.log(dadosFormLogin);
 	req.assert('email', 'Campo Email vazio').notEmpty();
 	req.assert('senha', 'Campo Senha vazio').notEmpty();
 	req.assert('email', 'Email inválido').isEmail();
 
-	// console.log('email: ', req.body.email);
 	var erros = req.validationErrors();
+
+	console.log("login.js:autenticar - erros = "+JSON.stringify(erros));
 
 	if (erros) {
 		console.log(erros);
@@ -26,8 +36,6 @@ module.exports.autenticar = function(application, req, res) {
 		});
 		return;
 	}
-	var connection = application.config.dbConnection;
-	var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
 
 	UsuarioDAO.autenticar(dadosFormLogin, function(error, result) {
 
@@ -35,7 +43,7 @@ module.exports.autenticar = function(application, req, res) {
 			throw error;
 		} else {
 
-			console.log("RESULT ==>>> " + result);
+			console.log("login.js:autenticar - RESULT ==>>> " + result);
 			if (result[0] != undefined) {
 				console.log(result[0].nomeUsuario);
 
@@ -55,22 +63,16 @@ module.exports.autenticar = function(application, req, res) {
 					tipo: "#"
 				}];
 				req.session.msgsTimeline = [];
+
+				console.log("tipoUsuario = "+req.session.tipoUsuario);
+				console.log("nomeUsuario = "+req.session.nomeUsuario);
+				console.log("dataCadastroJS = "+req.session.dataCadastro);
+
+
+				console.log("dataCadastroDATA = "+req.session.dataCadastro.getDate());
+				console.log("dataCadastroMES = "+req.session.dataCadastro.getMonth());
+				console.log("dataCadastroANO = "+req.session.dataCadastro.getFullYear());
 			}
-
-			console.log("tipoUsuario = "+req.session.tipoUsuario);
-			console.log("nomeUsuario = "+req.session.nomeUsuario);
-			console.log("dataCadastroJS = "+req.session.dataCadastro);
-			console.log("dataCadastroDATA = "+req.session.dataCadastro.getDate());
-			console.log("dataCadastroMES = "+req.session.dataCadastro.getMonth());
-			console.log("dataCadastroANO = "+req.session.dataCadastro.getFullYear());
-
-			var notifModelarProj = null;
-
-			var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
-			var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
-			var timelineDAO = new application.app.models.TimelineDAO(connection);
-			var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
-			
 
 			if (req.session.autenticado) {
 
@@ -199,12 +201,13 @@ module.exports.autenticar = function(application, req, res) {
 			}else {
 				console.log("NEGADO");
 				console.log("************* ");
-				var erros = {
+				var erros = [{
 					location: 'body',
 					param: 'senha',
 					msg: 'Campo Email ou Senha incorreto',
 					value: ''
-				}
+				}];
+
 				console.log(JSON.stringify(erros));
 				res.render("login/login", {
 					validacao: erros
@@ -215,3 +218,112 @@ module.exports.autenticar = function(application, req, res) {
 
 	// res.send('tudo ok para criar a sessão');
 }
+
+module.exports.recuperarSenha = function(application, req, res) {
+	console.log("login.js:autenticar - INICIO ");
+	res.render("login/recuperarSenha", {
+		validacao: []
+	});
+}
+
+module.exports.recuperacaoSenha = function(application, req, res) {
+	
+	var email = req.body.email;	
+	var connection = application.config.dbConnection;
+	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
+	var transporter = new application.config.mailConfig;
+
+	req.assert('email', 'Campo Email vazio').notEmpty();
+	req.assert('email', 'Email inválido').isEmail();
+
+	var erros = req.validationErrors();
+
+	console.log("login.js:autenticar - erros = "+JSON.stringify(erros));
+
+	if (erros) {
+		console.log(erros);
+		console.log("break");
+		res.render("login/recuperarSenha", {
+			validacao: erros
+		});
+		return;
+	}
+
+	usuarioDAO.obterContaUsuarioEmail(email, function(error, resultObterContaUsuarioEmail){
+		if(error){
+			throw error;
+		} else {
+			console.log("login:recuperacaoSenha - resultObterContaUsuarioEmail = "+resultObterContaUsuarioEmail[0].email);
+			var emailUsuario = resultObterContaUsuarioEmail[0].email;
+
+			if(emailUsuario != undefined){
+				console.log("login:recuperacaoSenha - email recuperado com sucesso");
+
+				var mailOptions = {
+				  from: 'pmn0reply19@outlook.com',
+				  to: emailUsuario,
+				  subject: 'Recuperação da senha',
+				  html: '<h1>Recuperação da Senha - Project Marketplace</h1><p>Segue <a href="http://localhost:3000/alterar_senha">link</a> para recuperação de sua senha.</p>'
+				};
+
+				transporter.sendMail(mailOptions, function(error, info){
+				  if (error) {
+					    console.log('error =====>>>>'+error);
+					    console.log('info =====>>>>'+info);
+				  } else {
+					  console.log('login:recuperacaoSenha - Email enviado: ' + info.response);
+
+					  res.send("LINK DE ALTERAÇÃO DE SENHA ENVIADO COM SUCESSO PARA "+emailUsuario);
+				  }
+				});
+
+			} else {
+				console.log("login:recuperacaoSenha - email não existe na base de dados");
+
+				var erros = [{
+					location: 'body',
+					param: 'email',
+					msg: 'Email não cadastrado.',
+					value: ''
+				}];
+
+				console.log(JSON.stringify(erros));
+				res.render("login/recuperarSenha", {
+					validacao: erros
+				});
+			}			
+		}
+	})
+
+}
+
+module.exports.alterarSenha = function(application, req, res) {
+	console.log("login.js:autenticar - INICIO ");
+	res.render("login/alterarSenha", {
+		validacao: []
+	});
+}
+
+module.exports.alteracaoSenha = function(application, req, res) {
+
+	req.assert('novaSenha', 'Campo Nova Senha vazio').notEmpty();
+	req.assert('confirmarNovaSenha', 'Campo Confirmar Nova Senha vazio').notEmpty();
+
+	//req.check('confirmarNovaSenha', 'Senha divergente').equals('novaSenha');
+	
+	var erros = req.validationErrors();
+
+	console.log("login.js:alteracaoSenha - erros = "+JSON.stringify(erros));
+
+	if (erros) {
+		console.log(erros);
+		console.log("break");
+		res.render("login/alterarSenha", {
+			validacao: erros
+		});
+		return;
+	}
+
+
+}
+

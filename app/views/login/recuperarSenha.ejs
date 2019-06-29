@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>SAGP | Login</title>
+    <title>SAGP | Recuperar Senha</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -20,25 +20,14 @@
         <a href="../apresentacao/apresentacao.html"><b>SAGP</b></a> <!-- KL redireciona para a tela de apresentação inicial -->
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">Faça o login para iniciar sua sessão</p>
-        <form action="/autenticar" method="post">
+        <p class="login-box-msg">Digite o seu e-mail.</p>
+        <form action="/recuperacao_senha" method="post">
           <div class="form-group has-feedback">
             <input type="text" name="email" class="form-control" placeholder="Email"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="password" name="senha" class="form-control" placeholder="Senha"/>
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          </div>
-          <div class="row">
-            <div class="col-xs-8">
-              <div class="checkbox icheck">
-                <label>
-                  <input type="checkbox"> Lembre-se
-                </label>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-xs-4">
+          </div>          
+          <div class="row">            
+            <div class="col-xs-offset-4 col-xs-4">
               <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
             </div><!-- /.col -->
           </div>
@@ -62,10 +51,6 @@
           <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
         </div>
   -->       <!-- /.social-auth-links -->
-
-        <a href="/recuperar_senha">Esqueci minha senha</a><br>
-        <a href="/cadastro_cliente" class="text-center">Cadastre-se agora</a>
-
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

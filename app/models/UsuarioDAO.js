@@ -33,6 +33,13 @@ UsuarioDAO.prototype.obterContaUsuario = function(idContaUsuario, callback){
   this._connection.query(sql, callback);
 }
 
+UsuarioDAO.prototype.obterContaUsuarioEmail = function(email, callback){
+  console.log("UsuarioDAO:obterContaUsuarioEmail INICIO")
+  var sql = "SELECT email FROM pm.conta_usuario WHERE email = '"+email+"'";
+  console.log("UsuarioDAO:obterContaUsuarioEmail - sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
 module.exports = function(){
   return UsuarioDAO;
 }
