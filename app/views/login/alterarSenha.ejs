@@ -22,6 +22,7 @@
       <div class="login-box-body">
         <p class="login-box-msg">Alteração da Senha</p>
         <form id="actionSenha" action="/alteracao_senha" method="post">
+          <input type="hidden" name="token" value="<%= token %>"/>
           <div class="form-group has-feedback">
             <input type="password" id="novaSenha" name="novaSenha" class="form-control" placeholder="Nova Senha"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -56,8 +57,7 @@
         </div>
   -->       <!-- /.social-auth-links -->
 
-        <a href="/recuperar_senha">Esqueci minha senha</a><br>
-        <a href="/cadastro_cliente" class="text-center">Cadastre-se agora</a>
+        
 
 
       </div><!-- /.login-box-body -->

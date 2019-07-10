@@ -38,6 +38,11 @@ module.exports.inclCliente = function(application, req, res){
 	*/
 	var connection = application.config.dbConnection;
 	var clienteDAO = new application.app.models.ClienteDAO(connection);
+	var cryptoPM = new application.app.models.CryptoPM();
+
+	console.log("cadastroCliente:inclCliente - iniciando encriptação...")
+  	dadosFormLogin.senha = cryptoPM.crypt(dadosFormLogin.senha);
+  	console.log("cadastroCliente:inclCliente - dados encriptados =  "+dadosFormLogin.senha);
 
 	clienteDAO.incluirCliente(dadosFormLogin, function(error, resultIncluirCliente){		
 		if(error){

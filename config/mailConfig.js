@@ -16,7 +16,8 @@ var mailPm = function(){
 	    secureConnection: false, // TLS requires secureConnection to be false
 	    port: 587, // port for secure SMTP
 	    tls: {
-	       ciphers:'SSLv3'
+	       ciphers:'SSLv3',
+	       rejectUnauthorized: false
 	    },
 	  	auth: {
 			user: "pmn0reply19@outlook.com",

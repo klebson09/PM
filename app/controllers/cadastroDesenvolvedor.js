@@ -10,8 +10,14 @@ module.exports.cadastrar = function(application, req, res){
 	console.log(dadosFormCadastroDesenvolvedor);
 	var connection = application.config.dbConnection;
 	var DesenvolvedorDAO = new application.app.models.DesenvolvedorDAO(connection);
+  var cryptoPM = new application.app.models.CryptoPM();
 	console.log("connection = "+connection);
 	console.log("DesenvolvedorDAO = "+DesenvolvedorDAO);
+  console.log("cryptoPM = "+cryptoPM);
+
+  console.log("cadastroDesenvolvedor:cadastrar - iniciando encriptação...")
+  dadosFormCadastroDesenvolvedor.senha = cryptoPM.crypt(dadosFormCadastroDesenvolvedor.senha);
+  console.log("cadastroDesenvolvedor:cadastrar - dados encriptados =  "+dadosFormCadastroDesenvolvedor.senha);
 
 
 	 DesenvolvedorDAO.incluirDev(dadosFormCadastroDesenvolvedor, function(error, resultIncluirDev){  
@@ -19,6 +25,8 @@ module.exports.cadastrar = function(application, req, res){
     var timelineDAO = new application.app.models.TimelineDAO(connection);
     var idContaUsuario = resultIncluirDev.insertId;
     console.log("cadastroDesenvolvedor:incluirDev idContaUsuario "+idContaUsuario);
+
+
 
     if(error){
         throw error;

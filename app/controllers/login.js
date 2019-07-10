@@ -14,6 +14,7 @@ module.exports.autenticar = function(application, req, res) {
 	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
 	var statusProjetoDAO = new application.app.models.StatusProjetoDAO(connection);
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
+	var cryptoPM = new application.app.models.CryptoPM();
 	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
 	var notifModelarProj = null;
 
@@ -36,6 +37,10 @@ module.exports.autenticar = function(application, req, res) {
 		});
 		return;
 	}
+
+	console.log("login:autenticar - iniciando encriptação...")
+  	dadosFormLogin.senha = cryptoPM.crypt(dadosFormLogin.senha);
+  	console.log("login:autenticar - dados encriptados =  "+dadosFormLogin.senha);
 
 	UsuarioDAO.autenticar(dadosFormLogin, function(error, result) {
 
@@ -232,13 +237,16 @@ module.exports.recuperacaoSenha = function(application, req, res) {
 	var connection = application.config.dbConnection;
 	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
 	var transporter = new application.config.mailConfig;
+	var cryptoPM = new application.app.models.CryptoPM();
 
 	req.assert('email', 'Campo Email vazio').notEmpty();
 	req.assert('email', 'Email inválido').isEmail();
 
 	var erros = req.validationErrors();
 
+	console.log("login.js:autenticar - req.body = "+JSON.stringify(req.body));
 	console.log("login.js:autenticar - erros = "+JSON.stringify(erros));
+	console.log("login.js:autenticar - email = "+email);
 
 	if (erros) {
 		console.log(erros);
@@ -249,62 +257,102 @@ module.exports.recuperacaoSenha = function(application, req, res) {
 		return;
 	}
 
-	usuarioDAO.obterContaUsuarioEmail(email, function(error, resultObterContaUsuarioEmail){
+	usuarioDAO.atualizarFlagAlteracaoSenhaUsuario(email, function(error, resultAtualizarFlagAlteracaoSenhaUsuario){
 		if(error){
 			throw error;
 		} else {
-			console.log("login:recuperacaoSenha - resultObterContaUsuarioEmail = "+resultObterContaUsuarioEmail[0].email);
-			var emailUsuario = resultObterContaUsuarioEmail[0].email;
+			usuarioDAO.obterContaUsuarioEmail(email, function(error, resultObterContaUsuarioEmail){
+				if(error){
+					throw error;
+				} else {
+					console.log("login:recuperacaoSenha - resultObterContaUsuarioEmail = "+resultObterContaUsuarioEmail[0].email);
+					var emailUsuario = resultObterContaUsuarioEmail[0].email;
 
-			if(emailUsuario != undefined){
-				console.log("login:recuperacaoSenha - email recuperado com sucesso");
 
-				var mailOptions = {
-				  from: 'pmn0reply19@outlook.com',
-				  to: emailUsuario,
-				  subject: 'Recuperação da senha',
-				  html: '<h1>Recuperação da Senha - Project Marketplace</h1><p>Segue <a href="http://localhost:3000/alterar_senha">link</a> para recuperação de sua senha.</p>'
-				};
+					console.log("login:recuperacaoSenha - iniciando encriptação...")
+				    var token =  cryptoPM.crypt(emailUsuario);
+				  	console.log("login:recuperacaoSenha - dados encriptados =  "+token);
 
-				transporter.sendMail(mailOptions, function(error, info){
-				  if (error) {
-					    console.log('error =====>>>>'+error);
-					    console.log('info =====>>>>'+info);
-				  } else {
-					  console.log('login:recuperacaoSenha - Email enviado: ' + info.response);
 
-					  res.send("LINK DE ALTERAÇÃO DE SENHA ENVIADO COM SUCESSO PARA "+emailUsuario);
-				  }
-				});
+					if(emailUsuario != undefined){
+						console.log("login:recuperacaoSenha - email recuperado com sucesso");
 
-			} else {
-				console.log("login:recuperacaoSenha - email não existe na base de dados");
+						var mailOptions = {
+						  from: 'pmn0reply19@outlook.com',
+						  to: emailUsuario,
+						  subject: 'Recuperação da senha',
+						  html: '<h1>Recuperação da Senha - Project Marketplace</h1><p>Segue <a href = "http://localhost:3000/alterar_senha?id='+token+'" style = "color: # 000; text-decoration: none"> link </a> para recuperação de sua senha.</p>'
+						};
 
-				var erros = [{
-					location: 'body',
-					param: 'email',
-					msg: 'Email não cadastrado.',
-					value: ''
-				}];
+						transporter.sendMail(mailOptions, function(error, info){
+						  if (error) {
+							    console.log('error =====>>>>'+error);
+							    console.log('info =====>>>>'+info);
+						  } else {
+							  console.log('login:recuperacaoSenha - Email enviado: ' + info.response);
 
-				console.log(JSON.stringify(erros));
-				res.render("login/recuperarSenha", {
-					validacao: erros
-				});
-			}			
+							  res.send("LINK DE ALTERAÇÃO DE SENHA ENVIADO COM SUCESSO PARA "+emailUsuario);
+						  }
+						});
+
+					} else {
+						console.log("login:recuperacaoSenha - email não existe na base de dados");
+
+						var erros = [{
+							location: 'body',
+							param: 'email',
+							msg: 'Email não cadastrado.',
+							value: ''
+						}];
+
+						console.log(JSON.stringify(erros));
+						res.render("login/recuperarSenha", {
+							validacao: erros
+						});
+					}			
+				}
+			});
 		}
-	})
-
-}
-
-module.exports.alterarSenha = function(application, req, res) {
-	console.log("login.js:autenticar - INICIO ");
-	res.render("login/alterarSenha", {
-		validacao: []
 	});
 }
 
+module.exports.alterarSenha = function(application, req, res) {
+	
+	var id = req.query.id;
+	var connection = application.config.dbConnection;
+	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
+	var cryptoPM = new application.app.models.CryptoPM();	
+	var emailUsuario = cryptoPM.decrypt(id);
+
+  	console.log("login:alterarSenha - dados descriptografados =  "+emailUsuario);	
+
+  	usuarioDAO.obterFlagAlteracaoSenhaUsuario(emailUsuario, function(error, resultObterFlagAlteracaoSenhaUsuario){
+  		if(error){
+  			throw error;	
+  		} else {
+  				console.log("login:alterarSenha - resultObterFlagAlteracaoSenhaUsuario =  "+JSON.stringify(resultObterFlagAlteracaoSenhaUsuario));	
+  				console.log("login:alterarSenha - resultObterFlagAlteracaoSenhaUsuario[0].flagAlteracaoSenha =  "+resultObterFlagAlteracaoSenhaUsuario[0].flagAlteracaoSenha);	
+  			if(resultObterFlagAlteracaoSenhaUsuario[0].flagAlteracaoSenha == 1){
+  				res.render("login/alterarSenha", {
+					validacao: [],
+					token: id
+				});	
+  			} else {
+  				res.send("REQUISIÇÃO NÃO PERMITIDA - ALTERAÇÃO DE SENHA FOI FINALIZADA OU NÃO FOI SOLICITADA")
+  			}
+  		}
+  	});			
+
+}
+
 module.exports.alteracaoSenha = function(application, req, res) {
+
+	console.log("login:alteracaoSenha - INICIO")
+
+	var cryptoPM = new application.app.models.CryptoPM();
+	var connection = application.config.dbConnection;
+	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
+	var token = req.body.token;
 
 	req.assert('novaSenha', 'Campo Nova Senha vazio').notEmpty();
 	req.assert('confirmarNovaSenha', 'Campo Confirmar Nova Senha vazio').notEmpty();
@@ -323,6 +371,25 @@ module.exports.alteracaoSenha = function(application, req, res) {
 		});
 		return;
 	}
+
+	console.log("login:alteracaoSenha - iniciando encriptação...")
+  	var senha = cryptoPM.crypt(req.body.novaSenha);
+  	console.log("login:alteracaoSenha - dados encriptados =  "+senha);
+
+  	var emailUsuario = cryptoPM.decrypt(token);
+  	console.log("login:alteracaoSenha - dados descriptografados =  "+emailUsuario);
+
+  	usuarioDAO.alterarSenhaUsuarioEmail(senha, emailUsuario, function(error, resultAlterarSenhaUsuarioEmail){
+  		if(error){
+  			throw error;
+  		} else {
+			console.log("login:alteracaoSenha - senha alterada com sucesso  ");  			
+
+			res.send("SENHA ALTERADA COM SUCESSO, CLIQUE NESSE <a href='/login'>link</a> para login");
+  		}
+  	})
+	 
+
 
 
 }
