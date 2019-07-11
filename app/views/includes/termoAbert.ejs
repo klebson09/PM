@@ -26,6 +26,7 @@
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
+
                 <form id="msform" action="/criar_termo_abertura" method="post" >
                   <!-- fieldsets -->
                   <fieldset>
@@ -36,10 +37,34 @@
                     <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTermoAbertura.idProjeto %>" />
 
 
+
                     <div class="form-group  col-md-12 ">
-                      <label for="tituloProj">Título do Projeto</label>
-                      <input type="text" id="tituloProj" class="form-control" name="tituloProjeto"  />
+                      <label for="nomeProjeto">Título do Projeto</label>
+                      <input type="text" id="nomeProjeto" class="form-control"  value="<%= dadosProjeto.nomeProjeto %>"  readonly  />
                     </div>
+
+
+                    <div class="form-group  col-md-12 ">
+                      <label for="tituloProj">Plataforma</label>
+                      <input type="text" id="plataforma" class="form-control" value="<%=dadosProjeto.nome %>"  readonly  />
+                    </div>
+
+                    <div class="form-group col-md-12">
+                    <label for="escopoProj">Descrição</label>
+                    <textarea class="form-control" id="descricao" rows="8" value=""  readonly><%=dadosProjeto.descricao %></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="escopoNegativoProj">Finalidade</label>
+                      <textarea class="form-control"  id="finalidade" rows="8" value=""  readonly ><%=dadosProjeto.finalidade %></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="interfacesOutrosSistemasProj">Área de atuação</label>
+                      <textarea class="form-control" id="areaAtuacao" rows="5" value=""  readonly ><%=dadosProjeto.areaAtuacao %></textarea>
+                    </div>     
+
+
+
+
                     <div class="form-group col-md-12">
                       <label for="objetivoProj">Objetivo</label>
                       <textarea class="form-control" name="objetivoProjeto" id="objetivoProj" rows="5" ></textarea>

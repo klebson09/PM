@@ -36,9 +36,30 @@
                     <input type="hidden" id="tituloProj" class="form-control" name="idProjeto" value="<%= dadosTA.idProjeto %>" />
 
                     <div class="form-group  col-md-12 ">
-                      <label for="tituloProj">Título do Projeto</label>
-                      <input type="text" id="tituloProj" class="form-control" name="tituloProjeto" value="<%= dadosTA.tituloProjeto %>"  readonly  />
+                      <label for="nomeProjeto">Título do Projeto</label>
+                      <input type="text" id="nomeProjeto" class="form-control" name="nomeProjeto" value="<%= dadosTA.nomeProjeto %>"  readonly  />
                     </div>
+
+
+                    <div class="form-group  col-md-12 ">
+                      <label for="tituloProj">Plataforma</label>
+                      <input type="text" id="plataforma" class="form-control" name="plataforma" value="<%=dadosTA.nome %>"  readonly  />
+                    </div>
+
+                    <div class="form-group col-md-12">
+                    <label for="escopoProj">Descrição</label>
+                    <textarea class="form-control" name="descricao" id="descricao" rows="8" value=""  readonly><%=dadosTA.descricao %></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="escopoNegativoProj">Finalidade</label>
+                      <textarea class="form-control" name="finalidade" id="finalidade" rows="8" value=""  readonly ><%=dadosTA.finalidade %></textarea>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="interfacesOutrosSistemasProj">Área de atuação</label>
+                      <textarea class="form-control" name="areaAtuacao" id="areaAtuacao" rows="5" value=""  readonly ><%=dadosTA.areaAtuacao %></textarea>
+                    </div>     
+
+
                     <div class="form-group col-md-12">
                       <label for="objetivoProj">Objetivo</label>
                       <textarea class="form-control" name="objetivo" id="objetivoProj" rows="5" readonly ><%= dadosTA.objetivo %></textarea>

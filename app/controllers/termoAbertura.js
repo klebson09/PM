@@ -4,23 +4,38 @@ module.exports.termoDeAbertura = function(application, req, res){
 	
 	var connection = application.config.dbConnection;	
 	var equipeDAO = new application.app.models.EquipeDAO(connection);
+	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
 
 	equipeDAO.obterMembrosEquipe(req.session.idEquipe, function(error, resultObterDadosEquipe){
+		console.log("--------------------------------------------------------------");
+		console.log("termoAbertura.js: obterMembrosEquipe - "+JSON.stringify(resultObterDadosEquipe) );
 
 		if(error){
 			throw error;
 		} else{
 			var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterDadosEquipe};
 
-			res.render("includes/termoAbertura", {
-	        	sessionNomeUsuario: req.session.nomeUsuario,
-            	sessionNomeTipoUsuario: req.session.tipoUsuario,
-            	notificacao: req.session.notificacoes,
-            	dadosTermoAbertura: dados,
-				layout: 'includes/layoutIncludes'
-			});
+			projetosDispDAO.consultarProjeto(req.session.idProjeto, function(error, resultConsultarProjeto){
+				console.log("--------------------------------------------------------------");
+				console.log("termoAbertura.js: resultConsultarProjeto - "+JSON.stringify(resultConsultarProjeto) );
+
+				if(error){
+					throw error;
+				}else{	
+					var dadosPj = resultConsultarProjeto[0];
+
+					res.render("includes/termoAbertura", {
+			        	sessionNomeUsuario: req.session.nomeUsuario,
+		            	sessionNomeTipoUsuario: req.session.tipoUsuario,
+		            	notificacao: req.session.notificacoes,
+		            	dadosTermoAbertura: dados,
+		            	dadosProjeto: dadosPj,
+						layout: 'includes/layoutIncludes'
+					});
+				}
+			});	
 		}
-	});	       
+	});       
 }
 
 module.exports.criarTermoDeAbertura = function(application, req, res){

@@ -31,7 +31,7 @@ TermoAberturaDAO.prototype.consultarTermoAbertura = function(idProjeto, callback
     
   console.log("************consultar Termo de Abertura***************");   
 
-  var sqlConsultarTermoAbertura = "SELECT termo_abertura.*, projeto.nomeProjeto, projeto.idEquipe FROM termo_abertura INNER JOIN projeto ON termo_abertura.idProjeto = projeto.idProjeto WHERE termo_abertura.idProjeto = "+idProjeto;
+  var sqlConsultarTermoAbertura = "SELECT termo_abertura.*, projeto.*, plataforma.* FROM termo_abertura INNER JOIN projeto ON termo_abertura.idProjeto = projeto.idProjeto INNER JOIN plataforma ON projeto.idPlataforma = plataforma.idPlataforma WHERE termo_abertura.idProjeto = "+idProjeto;
 
   console.log("TermoAberturaDAO:consultarTermoAbertura - sqlConsultarTermoAbertura = "+sqlConsultarTermoAbertura);
 
