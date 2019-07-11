@@ -41,7 +41,7 @@
 <!-- Info boxes -->
 <!-- START ACCORDION -->
 <h2 class="page-header">Projetos</h2>
-<%= JSON.stringify(data); %>
+
 <div class="row">
 <%
 for(var i=0; i < data.length; i++){
@@ -74,7 +74,6 @@ for(var i=0; i < data.length; i++){
                   <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="box-body">
                       <%=data[i].descricao; %>
-                      idProjeto <%=data[i].idProjeto; %>
                     </div>
                     <div class="box-footer ">
                       <form action="/candidatarse_projeto" method="post">

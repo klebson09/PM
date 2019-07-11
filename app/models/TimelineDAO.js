@@ -219,7 +219,7 @@ TimelineDAO.prototype.timelinePropostaAprovada = function(nomeProjeto, idEquipe,
 TimelineDAO.prototype.timelinePropostaRecusada = function(nomeProjeto, idEquipe, callback){
 	console.log("TimelineDAO:timelinePropostaRecusada - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Cliente recusou sua proposta para o projeto "+nomeProjeto;
-	var href = "/projetos_disp";
+	var href = "/projeto_disp";
 	var msg = "O cliente recusou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", você pode formalizar uma nova proposta para o mesmo projeto ou outro projeto. Clique em <b><a href="+href+">PROJETOS DISPONIVEIS</a></b> para analisar os projetos ainda disponíveis";
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";

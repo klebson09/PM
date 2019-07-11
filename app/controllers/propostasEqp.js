@@ -42,6 +42,7 @@ module.exports.listarPropostasProjeto = function(application, req, res){
               sessionNomeUsuario: req.session.nomeUsuario,
               sessionNomeTipoUsuario: req.session.tipoUsuario,
               data: projetosPropostas,
+              nomeProj: nomeProjeto,
               notificacao: req.session.notificacoes,
               layout: 'includes/layoutIncludes'
             });
@@ -73,11 +74,13 @@ module.exports.enviarRespostaProposta = function(application, req, res){
 }
 module.exports.aprovarProposta = function(application, req, res){
  var connection = application.config.dbConnection;
-  var propostaDAO = new application.app.models.propostaDAO(connection);
-  console.log("==@@@@@@@@@@@2req  "+JSON.stringify(req.body));
-  console.log("IDPROJETOOOOOOO!!!!@@@"+req.body.idProjeto);
-   console.log("IDEQUIPE!!!!@@@"+req.body.idEquipe);
-  propostaDAO.aprovarProp(req, function(error, result){
+ var propostaDAO = new application.app.models.propostaDAO(connection);
+ console.log("==@@@@@@@@@@@2req  "+JSON.stringify(req.body));
+ console.log("IDPROJETOOOOOOO!!!!@@@"+req.body.idProjeto);
+ console.log("IDEQUIPE!!!!@@@"+req.body.idEquipe);
+ var nomeEquipe = req.body.nomeEquipe;
+ var nomeProjeto = req.body.nomeProjeto;
+ propostaDAO.aprovarProp(req, function(error, result){
 
     if(error){
       throw error;
@@ -162,22 +165,15 @@ module.exports.aprovarProposta = function(application, req, res){
         });
       } else {
         console.log("propostasEqp:aprovarProposta - PROPOSTA RECUSADA - STATUS DO PROJETO NÃO SERA ATUALIZADO");
+      
+        console.log("propostasEqp:aprovarProposta - PROPOSTA RECUSADA nomeProjeto = "+nomeProjeto);
+        console.log("propostasEqp:aprovarProposta - PROPOSTA RECUSADA nomeEquipe = "+nomeEquipe);
 
-        projetosDispDAO.consultarProjetoEquipe(req.body.idProjeto, function(error, resultConsultarProjetoEquipe){
-
-           if(error){
-             throw error;
-           } else {
-             var dadosProjetoEquipe = resultConsultarProjetoEquipe[0];
-             console.log("propostasEqp:aprovarProposta - PROPOSTA RECUSADA nomeProjeto = "+dadosProjetoEquipe.nomeProjeto);
-             console.log("propostasEqp:aprovarProposta - PROPOSTA RECUSADA nomeEquipe = "+dadosProjetoEquipe.nomeEquipe);
-
-             timelineDAO.timelineRecusarProposta(dadosProjetoEquipe.nomeEquipe, req.session.idContaUsuario, function(error, resultTimelineAprovarProposta){
-
-               if(error){
+        timelineDAO.timelineRecusarProposta(nomeEquipe, req.session.idContaUsuario, function(error, resultTimelineAprovarProposta){
+            if(error){
                  throw error;
                } else {
-                 timelineDAO.timelinePropostaRecusada(dadosProjetoEquipe.nomeProjeto, req.body.idEquipe, function(error, resultTimelinePropostaAprovada){
+                 timelineDAO.timelinePropostaRecusada(nomeProjeto, req.body.idEquipe, function(error, resultTimelinePropostaAprovada){
 
                    if(error){
                      throw error;
@@ -216,9 +212,9 @@ module.exports.aprovarProposta = function(application, req, res){
              });
 
 
-           }
+           
 
-        })
+        
 
 
       }
