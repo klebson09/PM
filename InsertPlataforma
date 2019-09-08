@@ -1,0 +1,4 @@
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Desktop');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Mobile');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Web');
+INSERT INTO `pm`.`plataforma` (`nome`) VALUES ('Multiplataforma');
