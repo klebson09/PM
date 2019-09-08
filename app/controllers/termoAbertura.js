@@ -22,16 +22,29 @@ module.exports.termoDeAbertura = function(application, req, res){
 				if(error){
 					throw error;
 				}else{	
-					var dadosPj = resultConsultarProjeto[0];
 
-					res.render("includes/termoAbertura", {
-			        	sessionNomeUsuario: req.session.nomeUsuario,
-		            	sessionNomeTipoUsuario: req.session.tipoUsuario,
-		            	notificacao: req.session.notificacoes,
-		            	dadosTermoAbertura: dados,
-		            	dadosProjeto: dadosPj,
-						layout: 'includes/layoutIncludes'
-					});
+					equipeDAO.obterTutorEquipe(req.session.idEquipe, function(error, resultObterTutorEquipe){
+
+						if(error){
+							throw error;
+						} else {
+							console.log("termoAbertura.js: resultObterTutorEquipe - "+JSON.stringify(resultObterTutorEquipe) );
+							var dadosT = resultObterTutorEquipe;
+
+							var dadosPj = resultConsultarProjeto[0];
+
+								res.render("includes/termoAbertura", {
+					        			sessionNomeUsuario: req.session.nomeUsuario,
+				            			sessionNomeTipoUsuario: req.session.tipoUsuario,
+				            			notificacao: req.session.notificacoes,
+				            			dadosTermoAbertura: dados,
+				            			dadosProjeto: dadosPj,
+				            			dadosTutor: dadosT,
+										layout: 'includes/layoutIncludes'
+								});
+						}
+
+					});	
 				}
 			});	
 		}

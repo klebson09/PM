@@ -46,7 +46,10 @@ module.exports.cadastrar = function(application, req, res){
                     throw error;
                   }else{
                     console.log("cadastroDesenvolvedor:timelineIncluirDev resultTimelineIncluirDev "+ JSON.stringify(resultTimelineIncluirDev));
-                    res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"});
+                    var mensagem = {
+                      msg: 1
+                    };
+                    res.render("login/login",{validacao:mensagem});
                   }
                 });
 

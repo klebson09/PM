@@ -60,7 +60,10 @@ module.exports.inclCliente = function(application, req, res){
 							throw error;
 						}else{
 			             	console.log("cadastroCliente:inclCliente resultObterContaUsuario 2 "+ JSON.stringify(resultObterContaUsuario));
-							res.render("main/main",{mensagem:"Usuário Cadastrado com sucesso!"});
+			             	var mensagem = {
+			             		msg: 1
+			             	};
+							res.render("login/login",{validacao:mensagem});
 						}
 					});
 

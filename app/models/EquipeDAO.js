@@ -8,13 +8,15 @@ function EquipeDAO(connection){
 EquipeDAO.prototype.cadEquipe = function(equipe, idAdmEqp ,callback){
     console.log("INSERT cadastrarEquipe");
 
-    var sqlInsertEquipe = "INSERT INTO equipe (nomeEquipe, descricao, idTutor)";
+    console.log("EquipeDAO:cadEquipe: idAdmEqp = "+idAdmEqp);
+
+    var sqlInsertEquipe = "INSERT INTO equipe (nomeEquipe, descricao, idTutor, idAdmEquipe)";
 
     var nomeEquipe = equipe.nomeEquipe;
     var descrEquipe = equipe.descrEquipe;
     var idTutor = equipe.tutor;
 
-    sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idTutor+"' )";
+    sqlInsertEquipe += "VALUES ('"+nomeEquipe+"', '"+descrEquipe+"', '"+idTutor+"',  '"+idAdmEqp+"' )";
 
     console.log("EquipeDAO:cadEquipe - sqlInsertEquipe = "+sqlInsertEquipe);
 
@@ -66,6 +68,12 @@ EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
   this._connection.query(sqlObterMembrosEquipe, callback);
 }
 
+EquipeDAO.prototype.obterTutorEquipe = function(idEquipe, callback){
+  console.log("EquipeDAO:obterTutorEquipe - INICIO");
+  var sqlObterTutor = "SELECT * FROM conta_usuario INNER JOIN equipe ON conta_usuario.idContaUsuario = equipe.idTutor WHERE equipe.idEquipe = "+idEquipe;
+  console.log("EquipeDAO:obterMembrosEquipe - sqlObterMembrosEquipe = "+sqlObterTutor);
+  this._connection.query(sqlObterTutor, callback);
+}
 //
 
 module.exports = function(){

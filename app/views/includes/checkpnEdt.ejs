@@ -22,6 +22,22 @@
     <div class="wrapper">
       <!-- Right side column. Contains the navbar and content of the page -->
       <div class="content-wrapper">
+          <div id="myModal" class="modal modal-warning fade-in" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Atenção</h5>
+                </div>
+                <div class="modal-body">
+                    <p><small>Ainda tem entregaveis pendentes para o projeto!</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
         <!-- Main content -->
         <section class="content"  style="padding-bottom: 0px;">
           <div class="row">
@@ -152,7 +168,7 @@
                       <div class="col-md-12">
                         <div class="box" style="padding: 20px;">
                             <div>
-                               <p>Ao clicar em finalizar projeto é declarado que todos os entregaveis do projeto foram entregues e validados pelo cliente. Obs: Todos os checkpoints devem possuir status <b>Finalizado</b> antes de prosseguir para essa etapa final.</p>
+                               <p>Ao clicar em finalizar projeto é declarado que todos os checkpoints foram entregues e validados pelo cliente. Obs: Todos os checkpoints devem possuir status <b>Finalizado</b> antes de prosseguir para essa etapa final.</p>
                             </div>
                             <div class="panel box box-primary"></div>
                             <div class="form-group col-md-12">
@@ -167,6 +183,7 @@
         </div>
       </section>  
 
+        <a id="alertCheckpoints" href="#" data-toggle="modal" data-target="#myModal"></a>
     </div><!-- /.content-wrapper -->
 
       <!-- jQuery -->
@@ -341,7 +358,9 @@
               });
            
           } else {
-            alert("AINDA TEM ENTREGAVEIS PENDENTES PARA O PROJETO!")
+            document.getElementById("alertCheckpoints").click();
+
+            //alert("AINDA TEM ENTREGAVEIS PENDENTES PARA O PROJETO!")
           }
       }
    

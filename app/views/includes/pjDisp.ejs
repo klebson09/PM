@@ -62,12 +62,14 @@ for(var i=0; i < data.length; i++){
               <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                   <% if(data[i].idPlataforma == 1) { %>
-                    Sistema Android
+                    Sistema Desktop
                     <% } else if(data[i].idPlataforma == 2) { %>
-                      Sistema Web
-                      <% } else{ %>
-                        Sistema Não definido
-                        <% } %>
+                      Sistema Mobile
+                      <% } else if(data[i].idPlataforma == 3){ %>
+                        Sistema Web
+                        <% } else { %>
+                          Sistema Multiplataforma
+                       <% } %>
                       </a>
                     </h4>
                   </div>

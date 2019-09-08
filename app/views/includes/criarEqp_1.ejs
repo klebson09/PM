@@ -1,6 +1,21 @@
 <!-- Right side column. Contains the navbar and content of the page -->
 <div class="content-wrapper">
 
+  <div id="modalErro" class="modal modal-danger fade-in" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Atenção</h5>
+                </div>
+                <div class="modal-body">
+                    <p><small>Selecione os membros da equipe e o tutor</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>   
 
   <!-- Main content -->
   <section class="content">
@@ -29,7 +44,7 @@
                     </div>
 					<% var tutores = dataTutor %>
                     <div class="demoTutor">
-                      <select  name="tutor" class="minimal" style="-webkit-appearance:menulist; width:100%; margin-top:20px; padding: 6px 25px 5px 5px; border-radius: 4px;">
+                      <select id="selectTutor"  name="tutor" class="minimal" style="-webkit-appearance:menulist; width:100%; margin-top:20px; padding: 6px 25px 5px 5px; border-radius: 4px;">
                          <option value="0" selected>Tutor</option>
                          <% for(var i=0; i<tutores.length; i++){ %>
                          <option value="<%= tutores[i].idContaUsuario  %>"><%= tutores[i].nomeUsuario %></option>
@@ -73,7 +88,7 @@
         <!-- /.col -->
       </div>
                  <div class="form-group col-md-12">
-                  <input type="submit" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Cadastrar"  />
+                  <input type="button" id="btnCriarEquipe"  class="submit action-button btn  btn-success col-md-offset-5" value="Cadastrar" onclick="validarCampos()"  />
                 </div>
             </fieldset>
 
@@ -83,3 +98,19 @@
       </div>
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+ <a id="msgErroTutorDevs" href="#" data-toggle="modal" data-target="#modalErro"></a> 
+<script>
+  
+  function validarCampos(){
+    //Validando se campo tutor esta preenchido
+      var tutor = document.getElementById("selectTutor").value;
+      var devs = document.getElementsByName("membrosEquipe")[0].value;
+        
+      if(tutor == "0" || devs == ""){
+        document.getElementById("msgErroTutorDevs").click();
+      } else{
+        document.getElementById("msform").submit();
+      }
+  }
+
+</script>

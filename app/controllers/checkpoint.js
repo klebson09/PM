@@ -70,6 +70,7 @@ module.exports.atualizarCheckpointsProjeto = function(application, req, res){
 				if(error){
 					throw error;
 				} else {
+					entregaveis = JSON.parse(entregaveis);
 					checkpointDAO.criarCheckpoints(entregaveis, idProjeto, function(erro, resultCriarCheckpoints){
 						if(erro){
 							throw erro;

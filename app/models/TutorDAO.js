@@ -3,7 +3,7 @@
    console.log("-> this._connection = "+this._connection);
  }
 
- TutorDAO.prototype.incluirTutor = function(usuario, req, res){
+ TutorDAO.prototype.incluirTutor = function(usuario, req, res, callback){
 
    var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
     var sqlUsuario = "INSERT INTO conta_usuario (idContato, email, senha, nomeUsuario, tipoUsuario, tipoPessoa, cpf_cnpj)";
@@ -49,20 +49,13 @@
 
 	     sqlDadosEducacionaisTutor += "VALUES ('"+idUsuario+"', '"+siape+"', '"+instituicaoEnsino+"', '"+formacaoAcademica+"',  '"+cargo+"')";
 
-	     this._connection.query(sqlDadosEducacionaisTutor, function(err,result){
+	     this._connection.query(sqlDadosEducacionaisTutor, callback);
 
-	     	if (err) throw err;
-
-     			console.log("insert DADOS EDUCACIONAIS TUTOR ok O/ -->>");
-
-     			res.send("TUDO OK, TUTOR CADASTRADO");
-
-	     });
      });
 
    });
 
-     }//
+}//
 
 
  module.exports = function(){

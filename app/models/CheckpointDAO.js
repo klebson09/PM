@@ -14,8 +14,8 @@ CheckpointDAO.prototype.criarCheckpoints = function(entregaveis, idProjeto, call
   var values = [];
   var i=0;
 
-  entregaveis = JSON.parse(entregaveis);
-  console.log("CheckpointDAO:criarCheckpoints - entregaveis.length = "+entregaveis.length);
+  //entregaveis = JSON.parse(entregaveis);
+  console.log("CheckpointDAO:criarCheckpoints - entregaveis.length = "+JSON.stringify(entregaveis));
   console.log("CheckpointDAO:criarCheckpoints @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
   for(i=0;i<entregaveis.length;i++){
 

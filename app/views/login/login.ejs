@@ -14,7 +14,24 @@
     <link href="plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />
 
   </head>
-  <body class="login-page">
+  <body class="login-page" onload="verificarMsg()">
+  
+    <div id="myModal" class="modal modal-success fade-in" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastro realizado com sucesso!</h5>
+                </div>
+                <div class="modal-body">
+                    <p><small>Faça o login para acessar o sistema</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
     <div class="login-box" style="width: 350px;">
       <div class="login-logo">
         <a href="../apresentacao/apresentacao.html"><b>SAGP</b></a> <!-- KL redireciona para a tela de apresentação inicial -->
@@ -43,7 +60,9 @@
             </div><!-- /.col -->
           </div>
         </form>
+        
         <% if(validacao.length > 0 ){%>
+
         <div class="alert alert-danger alert-dismissable">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
           <h4><i class="icon fa fa-ban"></i> Atenção</h4>
@@ -64,7 +83,7 @@
   -->       <!-- /.social-auth-links -->
 
         <a href="/recuperar_senha">Esqueci minha senha</a><br>
-        <a href="/cadastro_cliente" class="text-center">Cadastre-se agora</a>
+        <a href="/main" class="text-center">Cadastre-se agora</a>
 
 
       </div><!-- /.login-box-body -->
@@ -85,6 +104,17 @@
           increaseArea: '20%' // optional
         });
       });
+    function verificarMsg(){
+      var msg = document.getElementById("mensagem").innerHTML;      
+      if(msg == 1){
+          document.getElementById("cadastroSucesso").click();
+      } 
+    }
     </script>
+    
+    <a id="cadastroSucesso" href="#" data-toggle="modal" data-target="#myModal"></a> 
+
+    <p id="mensagem" style="" ><%= validacao.msg %> </p>
+
   </body>
 </html>

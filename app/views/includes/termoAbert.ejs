@@ -105,9 +105,14 @@
                       <input class="form-control" name="orcamentoEstimado" id="orcamentoProj" type="number"></input>
                     </div>
                     <div class="form-group col-md-12">
+                        
                       <label for="equipeProj" >Equipe</label>
                       <ul id="equipeProj">
+
+                        <% if(dadosTutor[0] != undefined) { %>  
+                        <li> <%= dadosTutor[0].nomeUsuario %></li>                        
                         <%
+                        }
                           var equipe = dadosTermoAbertura.equipe;
                           for(var i=0; i < equipe.length; i++){
                           %>

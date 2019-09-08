@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>SAGP | Login</title>
+    <title>SAGP | Cadastro</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -20,25 +20,22 @@
         <a href="../apresentacao/apresentacao.html"><b>SAGP</b></a> <!-- KL redireciona para a tela de apresentação inicial -->
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <% if(mensagem>0){ %>
-          <h1><%= mensagem %></h1>
-        <% } %>
-        <p class="login-box-msg">Página provisória de apresentação</p>
+        <p class="login-box-msg">Informe o tipo de cadastro</p>
         <form action="/autenticar" method="post">
 
           <div class="row">
 
             <div class="col-xs-12">
-              <a href="/cadastro_cliente" class="btn btn-primary btn-block btn-flat">Cadastrar Cliente</a>
+              <a href="/cadastro_cliente" class="btn btn-primary btn-block btn-flat">Cliente</a>
             </div><!-- /.col -->
             <div class="col-xs-12">
-                <a href="/cadastro_desenvolvedor" class="btn btn-primary btn-block btn-flat">Cadastrar Desenvolvedor</a>
+                <a href="/cadastro_desenvolvedor" class="btn btn-primary btn-block btn-flat">Desenvolvedor</a>
             </div><!-- /.col -->
             <div class="col-xs-12">
-                <a href="/cadastro_tutor" class="btn btn-primary btn-block btn-flat">Cadastrar Tutor</a>
+                <a href="/cadastro_tutor" class="btn btn-primary btn-block btn-flat">Tutor</a>
             </div><!-- /.col -->
             <div class="col-xs-12">
-                <a href="/login" class="btn btn-primary btn-block btn-flat">Login</a>
+                <a href="/login" class="btn btn-primary btn-block btn-flat">Voltar</a>
             </div><!-- /.col -->
           </div>
         </form>
