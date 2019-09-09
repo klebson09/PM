@@ -260,13 +260,22 @@ module.exports.respostaTermoDeAbertura = function(application, req, res){
 												throw error;
 											} else {
 												console.log("termoAbertura:respostaTermoDeAbertura - resultTimelineTermoAberturaAprovado = "+JSON.stringify(resultTimelineTermoAberturaAprovado));		
-										 		var data = {
-                            				 		resultado: "2",
-                             				    	mensagem: "TERMO DE ABERTURA APROVADO"
-                             			    	};	 
 
-                             					console.log("termoAbertura:respostaTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
-                      							res.send(data);  
+												//Notificando o tutor
+												console.log("termoAbertura:respostaTermoDeAbertura - Notificando o tutor");	
+												timelineDAO.timelineTermoAberturaAprovadoTutor(dadosProjetoEquipe, function(error, result){
+													if(error){
+														throw error;
+													} else {
+														var data = {
+		                            				 		resultado: "2",
+		                             				    	mensagem: "TERMO DE ABERTURA APROVADO"
+		                             			    	};	 
+
+		                             					console.log("termoAbertura:respostaTermoDeAbertura - APROVADO - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
+		                      							res.send(data); 
+													}
+												}); 
 											}
 										});			
 									}

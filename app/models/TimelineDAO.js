@@ -344,6 +344,22 @@ TimelineDAO.prototype.timelineEquipeVinculadaTutor= function(tutor, equipe, call
 	this._connection.query(sql, callback);
 }
 
+TimelineDAO.prototype.timelineTermoAberturaAprovadoTutor= function(equipe, callback){
+	console.log("TimelineDAO:timelineTermoAberturaAprovadoTutor - INICIO equipe "+JSON.stringify(equipe));
+	var idContaUsuario = equipe.idTutor;
+	var nomeEquipe = equipe.nomeEquipe;
+	var nomeProjeto = equipe.nomeProjeto;
+	var href = "/checkpoint";
+	var titulo = "A equipe "+nomeEquipe+" iniciou o projeto "+nomeProjeto;
+	var msg = "O cliente do projeto "+nomeProjeto+" aprovou o Termo de Abertura da equipe "+nomeEquipe+	". Clique em <b><a href="+href+">CHECKPOINTS</a></b> para acompanhar o status do projeto";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineTermoAberturaAprovadoTutor ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 
 /*--------------------- OBTER MENSAGENS TIMELINE --------------*/
 

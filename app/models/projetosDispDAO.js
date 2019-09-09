@@ -44,7 +44,7 @@ projetosDispDAO.prototype.consultarProjeto = function(idProjeto, callback){
 
 projetosDispDAO.prototype.consultarProjetoEquipe = function(idProjeto, callback){
   console.log("projetosDispDAO: consultarProjeto - ");
-  var sql = "SELECT projeto.nomeProjeto, equipe.nomeEquipe, equipe.idEquipe, projeto.idContaUsuario FROM projeto INNER JOIN equipe ON projeto.idEquipe = equipe.IdEquipe WHERE projeto.idProjeto = "+idProjeto;
+  var sql = "SELECT projeto.nomeProjeto, equipe.nomeEquipe, equipe.idEquipe, equipe.idTutor, projeto.idContaUsuario FROM projeto INNER JOIN equipe ON projeto.idEquipe = equipe.IdEquipe WHERE projeto.idProjeto = "+idProjeto;
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }
