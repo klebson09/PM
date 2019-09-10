@@ -70,6 +70,13 @@ projetosDispDAO.prototype.projetoAndamentoDev = function(idEquipe, callback){
   this._connection.query(sql, callback);
 }
 
+projetosDispDAO.prototype.projetoAndamentoTutor = function(idContaUsuario, callback){
+  console.log("projetosDispDAO:projetoAndamentoTutor - INICIO");
+  var sql = "SELECT projeto.idProjeto, equipe.* FROM projeto INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE equipe.idTutor = "+idContaUsuario+"  AND projeto.status = 'Em andamento'";
+  console.log("projetosDispDAO:projetoAndamentoTutor - sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
 projetosDispDAO.prototype.consultarStatusProjeto = function(idProjeto, callback){
   console.log("projetosDispDAO:consultarStatusProjeto - INICIO");
   var sql = "SELECT status FROM projeto WHERE idProjeto = "+idProjeto;

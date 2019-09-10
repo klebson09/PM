@@ -10,4 +10,11 @@ module.exports = function(application){
     	console.log(dadosForm);
     	application.app.controllers.cadastroTutor.cadastrar(application, req, res);
     });
+
+    application.post('/alterar_dados_tutor', function(req,res){
+        console.log("cheguei em /alterar_dados_tutor");
+        var dadosForm = req.body;
+        console.log(dadosForm);
+        application.app.controllers.cadastroTutor.alterar(application, req, res);
+    });
 }

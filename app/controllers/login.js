@@ -6,6 +6,74 @@ module.exports.pagLogin = function(application, req, res) {
 	});
 }
 
+module.exports.alterarDadosCadastrais = function(application, req, res) {
+	console.log("login.js:alterarDadosCadastrais INICIO");
+
+	var connection = application.config.dbConnection;
+	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
+	var idContaUsuario = req.session.idContaUsuario;
+	var tipoUsr = req.session.tipoUsuario;
+	var dadosUsr = [];
+
+	if(tipoUsr == 'C'){
+		usuarioDAO.obterDadosCliente(idContaUsuario, function(error, resultObterDadosCliente){
+			if(error){
+				throw error;
+			} else {
+				console.log("login.js:alterarDadosCadastrais -  resultObterDadosCliente = "+JSON.stringify(resultObterDadosCliente));
+				dadosUsr = resultObterDadosCliente[0];
+				res.render("cadastros/alterarCadastro", {
+					dadosUsuario: dadosUsr,
+					tipoUsuario: tipoUsr,
+					notificacao: req.session.notificacoes,
+					sessionNomeUsuario: req.session.nomeUsuario,
+				    sessionNomeTipoUsuario: req.session.tipoUsuario,
+					layout: 'includes/layoutIncludes'
+				});
+			}
+		});
+	} else if(tipoUsr == 'D'){
+		usuarioDAO.obterDadosDesenvolvedor(idContaUsuario, function(error, resultObterDadosDesenvolvedor){
+			if(error){
+				throw error;
+			} else {
+				console.log("login.js:alterarDadosCadastrais -  resultObterDadosDesenvolvedor = "+JSON.stringify(resultObterDadosDesenvolvedor));	
+				dadosUsr = resultObterDadosDesenvolvedor[0];
+				res.render("cadastros/alterarCadastro", {
+					dadosUsuario: dadosUsr,
+					tipoUsuario: tipoUsr,
+					notificacao: req.session.notificacoes,
+					sessionNomeUsuario: req.session.nomeUsuario,
+				    sessionNomeTipoUsuario: req.session.tipoUsuario,
+					layout: 'includes/layoutIncludes'
+				});
+
+			}
+		});
+
+	} else {
+		usuarioDAO.obterDadosTutor(idContaUsuario, function(error, resultObterDadosTutor){
+			if(error){
+				throw error;
+			} else {
+				console.log("login.js:alterarDadosCadastrais -  resultObterDadosTutor = "+JSON.stringify(resultObterDadosTutor));
+				dadosUsr = resultObterDadosTutor[0];
+				res.render("cadastros/alterarCadastro", {
+					dadosUsuario: dadosUsr,
+					tipoUsuario: tipoUsr,
+					notificacao: req.session.notificacoes,
+					sessionNomeUsuario: req.session.nomeUsuario,
+				    sessionNomeTipoUsuario: req.session.tipoUsuario,
+					layout: 'includes/layoutIncludes'
+				});
+
+			}
+		});
+	}
+
+
+}
+
 module.exports.autenticar = function(application, req, res) {
 	console.log("login.js:autenticar - INICIO");
 	var dadosFormLogin = req.body;
@@ -129,23 +197,35 @@ module.exports.autenticar = function(application, req, res) {
 								});
 
 							} else {
-								timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+								projetosDispDAO.projetoAndamentoTutor(req.session.idContaUsuario, function(error, resultProjetoAndamentoTutor){
 									if(error){
 										throw error;
-									} else {							
-										timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-											req.session.msgsTimeline = msgs;
-											console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
-											res.render("includes/timeLine", {
-												sessionNomeUsuario: req.session.nomeUsuario,
-												sessionNomeTipoUsuario: req.session.tipoUsuario,
-												notificacao: req.session.notificacoes,
-												data: req.session.msgsTimeline,
-												layout: 'includes/layoutIncludes'
-											});
-										});							
+									} else {
+										console.log("login.js:autenticar - resultProjetoAndamentoTutor = "+JSON.stringify(resultProjetoAndamentoTutor));
+										req.session.idProjeto = resultProjetoAndamentoTutor[0].idProjeto;
+										req.session.idEquipe = resultProjetoAndamentoTutor[0].idEquipe;
+										console.log("login.js:autenticar - req.session.idProjeto = "+req.session.idProjeto);
+										console.log("login.js:autenticar - req.session.idEquipe = "+req.session.idEquipe);
+											timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+												if(error){
+													throw error;
+												} else {							
+													timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+														req.session.msgsTimeline = msgs;
+														console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+														res.render("includes/timeLine", {
+															sessionNomeUsuario: req.session.nomeUsuario,
+															sessionNomeTipoUsuario: req.session.tipoUsuario,
+															notificacao: req.session.notificacoes,
+															data: req.session.msgsTimeline,
+															layout: 'includes/layoutIncludes'
+														});
+													});							
+												}
+											});				
 									}
-								});	
+
+								});
 							}
 						}
 							
