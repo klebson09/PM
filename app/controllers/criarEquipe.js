@@ -1,7 +1,7 @@
 module.exports.criarEqp = function(application, req, res){
   // res.render("includes/criarEquipe", {validacao:{}});
   if (req.session.autenticado) {
-    console.log("criarEqp");
+  console.log("**************************** criarEquipe.js:criarEqp  *********************************************");
     var connection = application.config.dbConnection;
     var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
     var resultadoDEV = [];
@@ -42,8 +42,58 @@ module.exports.criarEqp = function(application, req, res){
 
 }
 
+
+module.exports.visualizarEqp = function(application, req, res){
+  // res.render("includes/criarEquipe", {validacao:{}});
+  if (req.session.autenticado) {
+  console.log("**************************** criarEquipe.js:visualizarEqp  *********************************************");
+    var connection = application.config.dbConnection;
+    var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
+    var resultadoDEV = [];
+    var resultadoTutor = [];
+
+    UsuarioDAO.obterMembrosEquipe(function(erro, resultadoD){
+      console.log("callback obter membros equipe");
+      if(erro){
+        throw erro;
+      } else {
+          console.log("DEVs - "+JSON.stringify(resultadoD));
+          resultadoDEV = resultadoD;
+          console.log("Vai pegar o tutor");
+          UsuarioDAO.obterTutores(function(erro,resultadoT){
+              if(erro){
+                throw error;
+              } else {
+                console.log("Tutores - "+JSON.stringify(resultadoT));
+                resultadoTutor = resultadoT;
+                console.log("Vai responder");
+                res.render("includes/criarEqp3", {
+                  sessionNomeUsuario: req.session.nomeUsuario,
+                  sessionNomeTipoUsuario: req.session.tipoUsuario,
+                  notificacao: req.session.notificacoes,
+                  dataDEV: JSON.stringify(resultadoDEV),
+                  dataTutor: resultadoTutor,
+                  layout: 'includes/layoutIncludes'
+                  });
+              }
+          })
+      }
+    });
+
+
+  }else {
+    res.render('login/login', {validacao: {}});
+  }
+
+}
+
+
+
+
+
 module.exports.criarEqp2 = function(application, req, res){
   // res.render("includes/criarEquipe", {validacao:{}})
+  console.log("**************************** criarEquipe.js:criarEqp2  *********************************************");
 
   var connection = application.config.dbConnection;
   var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
@@ -59,10 +109,9 @@ module.exports.criarEqp2 = function(application, req, res){
 }
 
 module.exports.cadastrarEquipe = function(application, req, res){
-
+  console.log("**************************** criarEquipe.js:cadastrarEquipe  *********************************************");
     var equipe = req.body;
     var connection = application.config.dbConnection;
-    console.log("connection criada");
     var equipeDAO = new application.app.models.EquipeDAO(connection);
 
 

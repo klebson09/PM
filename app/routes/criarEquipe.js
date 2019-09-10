@@ -11,6 +11,11 @@ module.exports = function(application){
     console.log(req.body);
     application.app.controllers.criarEquipe.cadastrarEquipe(application, req, res);
 
+    application.get('/visualizar_equipe', function(req, res){
+    application.app.controllers.criarEquipe.visualizarEqp(application, req, res);
+  });
+
+
 
   });
 }
