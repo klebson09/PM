@@ -3,6 +3,21 @@
    console.log("-> this._connection = "+this._connection);
  }
 
+ TutorDAO.prototype.incluirDadosEducacionaisTutor = function(idContaUsuario, usuario, callback){
+      console.log("TutorDAO: incluirDadosEducacionaisTutor - idContaUsuario = "+idContaUsuario);
+      console.log("TutorDAO: incluirDadosEducacionaisTutor - usuario  = "+JSON.stringify(usuario));
+
+      var instituicaoEnsino = usuario.instituicaoEnsino;
+      var siape = usuario.siape;
+      var formacaoAcademica = usuario.formacaoAcademica;
+      var cargo = usuario.cargo;
+
+      var sqlDadosEducacionaisTutor = "INSERT INTO dados_educacionais_tutor (idContaUsuario, siape, instituicaoEnsino, formacaoAcademica, cargo)";
+      sqlDadosEducacionaisTutor += "VALUES ('"+idContaUsuario+"', '"+siape+"', '"+instituicaoEnsino+"', '"+formacaoAcademica+"', '"+cargo+"')";
+      console.log("TutorDAO: incluirDadosEducacionaisTutor - sqlDadosEducacionaisTutor "+sqlDadosEducacionaisTutor);
+      this._connection.query(sqlDadosEducacionaisTutor, callback);
+ }
+
  TutorDAO.prototype.incluirTutor = function(usuario, req, res, callback){
 
    var sqlContato = "INSERT INTO contato (telefone, celular, hangouts, skype)";
@@ -40,18 +55,7 @@
 
      sqlUsuario += "VALUES ('"+idContato+"', '"+email+"', '"+senha+"', '"+nome+"',  'T', 'F', '"+cpf+"')";
 
-     this._connection.query(sqlUsuario, function(err,result){
-     	if (err) throw err;
-
-	     console.log("insert USUARIO ok O/ -->>");
-	     var idUsuario = result.insertId;
-	     console.log(idUsuario);
-
-	     sqlDadosEducacionaisTutor += "VALUES ('"+idUsuario+"', '"+siape+"', '"+instituicaoEnsino+"', '"+formacaoAcademica+"',  '"+cargo+"')";
-
-	     this._connection.query(sqlDadosEducacionaisTutor, callback);
-
-     });
+     this._connection.query(sqlUsuario, callback);
 
    });
 

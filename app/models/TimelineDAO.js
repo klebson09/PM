@@ -313,7 +313,52 @@ TimelineDAO.prototype.timelineProjetoEncerrado = function(nomeProjeto, nomeEquip
 	this._connection.query(sql, callback);
 }
 
+/*---------------------------------TUTOR-------------------------------------------------------*/
 
+TimelineDAO.prototype.timelineIncluirTutor = function(tutor, callback){
+	console.log("TimelineDAO:timelineIncluirTutor - INICIO tutor "+tutor);
+	var idContaUsuario = tutor.idContaUsuario;
+	var usr = tutor.nomeUsuario;
+	var titulo = "Bem Vindo!";
+	var href = "/modelar_projeto";
+	var msg = "Olá <b>"+usr+"</b> seja bem vindo ao portal, aqui você terá a possibilidade de acompanhar e orientar as suas equipes de desenvolvedores. Aguarde um convite de uma equipe de desenvolvedores.";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineIncluirTutor ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineEquipeVinculadaTutor= function(tutor, equipe, callback){
+	console.log("TimelineDAO:timelineEquipeVinculadaTutor - INICIO tutor "+tutor);
+	var idContaUsuario = tutor.idContaUsuario;
+	var nomeEquipe = equipe.nomeEquipe;
+	var titulo = "Você foi vinculado a equipe "+nomeEquipe;
+	var msg = "A equipe "+nomeEquipe+" foi criada e você foi o escolhido para ser o tutor dela, a partir de agora você orientará os alunos desenvolvedores a fim de aplicarem os conceitos aprendidos durante o curso, gerando satisfação ao cliente. Você será notificado no momento que a equipe iniciar o desenvolvimento do projeto (após a aprovação do Termo de Abertura)";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineEquipeVinculadaTutor ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineTermoAberturaAprovadoTutor= function(equipe, callback){
+	console.log("TimelineDAO:timelineTermoAberturaAprovadoTutor - INICIO equipe "+JSON.stringify(equipe));
+	var idContaUsuario = equipe.idTutor;
+	var nomeEquipe = equipe.nomeEquipe;
+	var nomeProjeto = equipe.nomeProjeto;
+	var href = "/checkpoint";
+	var titulo = "A equipe "+nomeEquipe+" iniciou o projeto "+nomeProjeto;
+	var msg = "O cliente do projeto "+nomeProjeto+" aprovou o Termo de Abertura da equipe "+nomeEquipe+	". Clique em <b><a href="+href+">CHECKPOINTS</a></b> para acompanhar o status do projeto";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineTermoAberturaAprovadoTutor ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
 
 
 /*--------------------- OBTER MENSAGENS TIMELINE --------------*/
