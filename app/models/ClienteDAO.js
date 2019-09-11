@@ -67,9 +67,14 @@ ClienteDAO.prototype.alterarDadosCliente = function(idContaUsuario, usuario, cal
 
   //Dados da Conta
    var nome = usuario.nomeUsuario;
-   var cpf = usuario.cpf_cnpj
    var email = usuario.email;
-   var senha = usuario.senha;
+   var tipoPessoa = usuario.tipoPessoa;
+   var cpf_cnpj = "";
+   if(tipoPessoa == 'F'){
+      cpf_cnpj = usuario.cpf;
+   } else{
+      cpf_cnpj = usuario.cnpj;
+   }
 
    //Dados de Contato
    var idContato = usuario.idContato;
@@ -78,7 +83,7 @@ ClienteDAO.prototype.alterarDadosCliente = function(idContaUsuario, usuario, cal
    var github = usuario.github;
 
    //Consultas
-   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf_cnpj+"', email='"+email+"', tipoPessoa='"+tipoPessoa+"' WHERE idContaUsuario = "+idContaUsuario;   
    var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
 
    console.log("ClienteDAO: alterarDadosCliente - sqlAtualizarContaUsuario = "+sqlAtualizarContaUsuario);
