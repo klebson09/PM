@@ -59,6 +59,43 @@ ClienteDAO.prototype.incluirCliente = function(cliente, callback){
   });
 }
 
+ClienteDAO.prototype.alterarDadosCliente = function(idContaUsuario, usuario, callback){
+
+  console.log("ClienteDAO: alterarDadosCliente - INICIO");
+  console.log("ClienteDAO: alterarDadosCliente - idContaUsuario = "+idContaUsuario);
+  console.log("ClienteDAO: alterarDadosCliente - usuario = "+JSON.stringify(usuario))
+
+  //Dados da Conta
+   var nome = usuario.nomeUsuario;
+   var cpf = usuario.cpf_cnpj
+   var email = usuario.email;
+   var senha = usuario.senha;
+
+   //Dados de Contato
+   var idContato = usuario.idContato;
+   var telefone = usuario.telefone;
+   var celular = usuario.celular;
+   var github = usuario.github;
+
+   //Consultas
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
+
+   console.log("ClienteDAO: alterarDadosCliente - sqlAtualizarContaUsuario = "+sqlAtualizarContaUsuario);
+   console.log("ClienteDAO: alterarDadosCliente - sqlAtualizarContato = "+sqlAtualizarContato);
+
+   //Executando update conta do usuário
+  this._connection.query(sqlAtualizarContaUsuario, function(error, resultContaUsuario){
+     if(error){
+       throw error;
+     } else{
+       console.log("ClienteDAO: alterarDadosDesenvolvedor - conta do usuario OK ");
+       this._connection.query(sqlAtualizarContato, callback);
+     }
+   });
+
+}
+
 
 module.exports = function(){
   return ClienteDAO;

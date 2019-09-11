@@ -74,3 +74,34 @@ module.exports.inclCliente = function(application, req, res){
 	});
 	// res.send('tudo ok para criar a sessão');
 }
+
+module.exports.alterarCliente = function(application, req, res){
+
+  console.log("cadastroCliente:alterarCliente - INICIO");
+
+  var dadosCliente = req.body;
+  console.log("cadastroCliente:alterarCliente - dadosCliente = "+JSON.stringify(dadosCliente));
+  var connection = application.config.dbConnection;
+  var clienteDAO = new application.app.models.ClienteDAO(connection);
+  var cryptoPM = new application.app.models.CryptoPM();
+  console.log("cadastroCliente:alterarCliente - connection = "+connection);
+  console.log("cadastroCliente:alterarCliente - clienteDAO = "+clienteDAO);
+  console.log("cadastroCliente:alterarCliente - cryptoPM = "+cryptoPM);
+
+  console.log("cadastroCliente:alterarCliente - iniciando encriptação...")
+  dadosCliente.senha = cryptoPM.crypt(dadosCliente.senha);
+  console.log("cadastroCliente:alterarCliente - dados encriptados =  "+dadosCliente.senha);
+
+  clienteDAO.alterarDadosCliente(req.session.idContaUsuario, dadosCliente, function(error, resultAlterarDadosCliente){
+
+    if(error){
+      throw error;
+    } else {
+        console.log("cadastroCliente:alterarCliente - contato OK ");
+        console.log("cadastroCliente:alterarCliente - resultAlterarDadosCliente =  "+JSON.stringify(resultAlterarDadosCliente));
+        console.log("cadastroCliente:alterarCliente - Dados do Cliente alterados com sucesso");
+        res.send("Dados do usuário atualizados com sucesso!");
+    }
+
+  });
+}

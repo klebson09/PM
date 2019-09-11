@@ -61,6 +61,59 @@
 
 }//
 
+TutorDAO.prototype.alterarDadosTutor = function(idContaUsuario, usuario, callback){
+   console.log("TutorDAO: alterarDadosTutor - INICIO");
+   console.log("TutorDAO: alterarDadosTutor - idContaUsuario = "+idContaUsuario);
+   console.log("TutorDAO: alterarDadosTutor - usuario = "+JSON.stringify(usuario));
+
+
+   //Dados da Conta
+   var nome = usuario.nomeUsuario;
+   var cpf = usuario.cpf_cnpj
+   var email = usuario.email;
+   var senha = usuario.senha;
+
+   //Dados de Contato
+   var idContato = usuario.idContato;
+   var telefone = usuario.telefone;
+   var celular = usuario.celular;
+   var github = usuario.github;
+
+   //Dados Educacionais
+   var idDadosEducacionaisTutor = usuario.idDadosEducacionaisTutor;
+   var instituicaoEnsino = usuario.instituicaoEnsino;
+   var siape = usuario.siape;
+   var formacaoAcademica = usuario.formacaoAcademica;
+   var cargo = usuario.cargo;
+
+   //Consultas
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
+   var sqlAtualizarDadosEducacionaisTutor = "UPDATE dados_educacionais_tutor SET instituicaoEnsino='"+instituicaoEnsino+"', siape='"+siape+"', formacaoAcademica='"+formacaoAcademica+"', cargo='"+cargo+"' WHERE idDadosEducacionaisTutor = "+idDadosEducacionaisTutor;   
+
+   console.log("TutorDAO: alterarDadosTutor - sqlAtualizarContaUsuario = "+sqlAtualizarContaUsuario);
+   console.log("TutorDAO: alterarDadosTutor - sqlAtualizarContato = "+sqlAtualizarContato);
+   console.log("TutorDAO: alterarDadosTutor - sqlAtualizarDadosEducacionaisTutor = "+sqlAtualizarDadosEducacionaisTutor);
+
+   //Executando update conta do usuário
+    this._connection.query(sqlAtualizarContaUsuario, function(error, resultContaUsuario){
+      if(error){
+        throw error;
+      } else{
+        console.log("TutorDAO: alterarDadosTutor - conta do usuario OK ");
+         this._connection.query(sqlAtualizarContato, function(error, resultContato){
+           if(error){
+              throw error;
+            } else{
+              console.log("TutorDAO: alterarDadosTutor - contato OK ");
+              this._connection.query(sqlAtualizarDadosEducacionaisTutor, callback);  
+            }
+         }); 
+      }
+    });
+
+}
+
 
  module.exports = function(){
    return TutorDAO;

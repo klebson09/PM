@@ -65,6 +65,7 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    //Dados da Conta
    var nome = usuario.nomeUsuario;
    var cpf = usuario.cpf_cnpj
+   var email = usuario.email;
    var dataNascimento = usuario.dataNascimento;
    var senha = usuario.senha;
 
@@ -72,7 +73,6 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    var idContato = usuario.idContato;
    var telefone = usuario.telefone;
    var celular = usuario.celular;
-   var email = usuario.email;
    var github = usuario.github;
 
    //Dados Educacionais
@@ -85,8 +85,8 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    var declaracaoMatricula = usuario.declaracaoMatricula;
 
    //Consultas
-   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', dataNascimento='"+dataNascimento+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
-   var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', celular='"+email+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', dataNascimento='"+dataNascimento+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
    var sqlAtualizarDadosEducacionaisDev = "UPDATE dados_educacionais_desenvolvedor SET instituicaoEnsino='"+instituicaoEnsino+"', matricula='"+matricula+"', curso='"+curso+"', turno='"+turno+"', periodo='"+periodo+"', declaracaoMatricula='"+declaracaoMatricula+"' WHERE idDadosEducacionaisDesenvolvedor = "+idDadosEducacionaisDesenvolvedor;   
 
    console.log("DesenvolvedorDAO: alterarDadosDesenvolvedor - sqlAtualizarContaUsuario = "+sqlAtualizarContaUsuario);
@@ -104,7 +104,7 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
               throw error;
             } else{
               console.log("DesenvolvedorDAO: alterarDadosDesenvolvedor - contato OK ");
-              this._connection.query(sqlAtualizarContato, callback);  
+              this._connection.query(sqlAtualizarDadosEducacionaisDev, callback);  
             }
          }); 
       }
