@@ -17,12 +17,52 @@
     <link href="tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css" rel="stylesheet">
   </head>
   <body class="skin-green">
+
+
     <!-- Site wrapper -->
     <div class="wrapper">
+
+
       <!-- Right side column. Contains the navbar and content of the page -->
       <div class="content-wrapper">
 
-          <div id="myModal" class="modal modal-dialog fade-in" role="dialog">
+        <!-- Main content -->
+        <section class="content">
+
+         <!-- <div id="modalAlert" class="modal modal-danger fade-in" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Atenção</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><small>Necessário confirmar a senha para confirmar a alteração dos dados cadastrais</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+
+         <div id="myModal2" class="modal modal-danger fade-in" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Atenção</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><small>Necessário confirmar a senha para confirmar a alteração dos dados cadastrais</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>  -->
+
+
+         <div id="alertAlterarDados" class="modal modal-dialog fade-in" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -39,7 +79,7 @@
             </div>
         </div>
 
-         <div id="myModal2" class="modal modal-danger fade-in" role="dialog">
+         <div id="erroSenha" class="modal modal-danger fade-in" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -56,8 +96,7 @@
         </div>  
 
 
-        <!-- Main content -->
-        <section class="content">
+
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
@@ -101,6 +140,9 @@
                       <input type="password" id="cSenhaUsuario" class="form-control" />
                     </div>
 
+                    <input type="hidden" name="idContato" value="<%= dadosUsuario.idContato %>" />
+              
+
               
                     <div class="form-group col-md-12">
                       <input type="button" id="btnAlterarDados"  class="submit action-button btn  btn-success col-md-offset-5" value="Enviar" onclick="alertAlterarDados()" />
@@ -114,7 +156,7 @@
 
             </form>
 
-             <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#myModal"></a> 
+             <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#modalAlert"></a> 
              <a id="erroSenha" href="#" data-toggle="modal" data-target="#myModal2"></a> 
           </div>
         </div>
@@ -170,9 +212,7 @@
 
     <script>
       function submeterForm(){
-        var senha = document.getElementById("senhaUsuario").value;
-        var csenha = document.getElementById("cSenhaUsuario").value;
-        if(senha == csenha){
+        if(validarSenha()){
             document.getElementById("msform").submit();
         } else {
             document.getElementById("erroSenha").click();
@@ -182,6 +222,12 @@
 
       function alertAlterarDados(){
         document.getElementById('askAlterarDados').click();
+      }
+
+      function validarSenha(){
+        var senha = document.getElementById("senhaUsuario").value;
+        var csenha = document.getElementById("cSenhaUsuario").value;
+        return senha == csenha;
       }
 
     </script>

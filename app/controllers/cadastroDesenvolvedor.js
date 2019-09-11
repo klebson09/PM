@@ -63,3 +63,36 @@ module.exports.cadastrar = function(application, req, res){
 
   });
 }
+
+module.exports.alterar = function(application, req, res){
+
+  console.log("cadastroDesenvolvedor:alterar - INICIO");
+
+  var dadosDesenvolvedor = req.body;
+  console.log("cadastroDesenvolvedor:alterar - dadosDesenvolvedor = "+JSON.stringify(dadosDesenvolvedor));
+  var connection = application.config.dbConnection;
+  var desenvolvedorDAO = new application.app.models.DesenvolvedorDAO(connection);
+  var cryptoPM = new application.app.models.CryptoPM();
+  console.log("cadastroDesenvolvedor:alterar - connection = "+connection);
+  console.log("cadastroDesenvolvedor:alterar - desenvolvedorDAO = "+desenvolvedorDAO);
+  console.log("cadastroDesenvolvedor:alterar - cryptoPM = "+cryptoPM);
+
+  console.log("cadastroDesenvolvedor:alterar - iniciando encriptação...")
+  dadosDesenvolvedor.senha = cryptoPM.crypt(dadosDesenvolvedor.senha);
+  console.log("cadastroDesenvolvedor:alterar - dados encriptados =  "+dadosDesenvolvedor.senha);
+
+  desenvolvedorDAO.alterarDadosDesenvolvedor(req.session.idContaUsuario, dadosDesenvolvedor, function(error, resultAlterarDadosDesenvolvedor){
+
+    if(error){
+      throw error;
+    } else {
+        console.log("cadastroDesenvolvedor:alterar - dados educacionais OK ");
+        console.log("cadastroDesenvolvedor:alterar - resultAlterarDadosDesenvolvedor =  "+JSON.stringify(resultAlterarDadosDesenvolvedor));
+        console.log("cadastroDesenvolvedor:alterar - Dados do Desenvolvedor alterados com sucesso");
+        res.send("Dados do usuário atualizados com sucesso!");
+    }
+
+  });
+
+
+}

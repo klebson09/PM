@@ -16,14 +16,14 @@
     <link href="tabulator-master/dist/css/bootstrap/tabulator_bootstrap4.min.css" rel="stylesheet">
     <link href="tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css" rel="stylesheet">
   </head>
-  <body class="skin-green">
+  <body class="skin-green" >
     <!-- Site wrapper -->
     <div class="wrapper">
       <!-- Right side column. Contains the navbar and content of the page -->
       <div class="content-wrapper">
 
-          <div id="myModal" class="modal modal-dialog fade-in" role="dialog">
-            <div class="modal-dialog">
+          <div id="alertAlterarDados" class="modal modal-warning fade-in" role="dialog">
+          <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Atenção</h5>
@@ -32,14 +32,15 @@
                         <p><small>Confirmar alteração dos dados?</small></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline pull-left " onclick="submeterForm()">Sim</button>
-                        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Não</button>
+                        <button type="button" class="btn btn-primary btn-outline pull-left "  data-dismiss="modal" onclick="submeterForm()">Sim</button>
+                        <button type="button" class="btn btn-default btn-outline pull-right" data-dismiss="modal">Não</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
 
-         <div id="myModal2" class="modal modal-danger fade-in" role="dialog">
+
+         <div id="alertErroSenha" class="modal modal-danger fade-in" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,14 +56,13 @@
             </div>
         </div>  
 
-
         <!-- Main content -->
         <section class="content">
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
 
-                <form id="msform" action="/alterar_dados_desenvolvedor" method="post" >
+                <form id="msform" action="/alterar_dados_desenvolvedor" method="post" onsubmit="alertAlterarDados()">
                   <!-- fieldsets -->
                   <fieldset>
                     <!-- <div class="box box-success"> -->
@@ -82,7 +82,7 @@
 
                     <div class="form-group col-md-12">
                       <label for="dataNascimentoUsuario">Data de Nascimento</label>
-                      <input class="form-control" name="dataNascimentoUsuario" id="dataNascimentoUsuario" type="date" value="<%= dadosUsuario.dataNascimento  %>"/>
+                      <input class="form-control" name="dataNascimento" id="dataNascimentoUsuario" type="date" value="<%= dadosUsuario.dataNascimento  %>"/>
                     </div>
 
                     <div class="form-group col-md-12">
@@ -101,7 +101,7 @@
                       <label for="githubUsuario">GitHub</label>
                       <input type="text" id="githubUsuario" name="github" class="form-control" value="<%= dadosUsuario.github %>" required />
                     </div> 
-                    <h2>Dados Educacionais</h2>     
+                    <div class="col-md-12"><h4 style="margin-bottom: 3%">Dados Educacionais</h4></div>
                     <div class="form-group col-md-12">
                       <label for="instEnsinoUsuario">Instituição de Ensino</label>
                       <input type="text" id="instEnsinoUsuario" name="instituicaoEnsino" class="form-control" value="<%= dadosUsuario.instituicaoEnsino %>" required />
@@ -145,12 +145,12 @@
                       <input type="file" id="declrMatriculaUsuario" name="declaracaoMatricula" class="form-control" value="<%= dadosUsuario.declaracaoMatricula %>"  />
                     </div>  
                     <div class="form-group col-md-12">
-                      <label for="senhaUsuario">Senha</label>
-                      <input type="password" id="senhaUsuario" name="senha" class="form-control" value="<%= dadosUsuario.senha %>" required />
+                      <label for="senhaUsr">Senha</label>
+                      <input type="password" id="senhaUsr" name="senha" class="form-control" value="<%= dadosUsuario.senha %>" required />
                     </div>
                     <div class="form-group col-md-12">
-                      <label for="cSenhaUsuario">Confirmar Senha</label>
-                      <input type="hidden" id="cSenhaUsuario" class="form-control" />
+                      <label for="cSenhaUsr">Confirmar Senha</label>
+                      <input type="password" id="cSenhaUsr" class="form-control" />
                     </div>
 
               
@@ -164,10 +164,13 @@
 
               </fieldset>
 
+              <input type="hidden" name="idContato" value="<%= dadosUsuario.idContato %>" />
+              <input type="hidden" name="idDadosEducacionaisDesenvolvedor" value="<%= dadosUsuario.idDadosEducacionaisDesenvolvedor %>" />
+
             </form>
 
-             <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#myModal"></a> 
-             <a id="erroSenha" href="#" data-toggle="modal" data-target="#myModal2"></a> 
+             <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#alertAlterarDados"></a> 
+             <a id="erroSenha" href="#" data-toggle="modal" data-target="#alertErroSenha"></a> 
           </div>
         </div>
 
@@ -221,10 +224,10 @@
     <script type="text/javascript" src="moment/moment.js"></script>
 
     <script>
-      function submeterForm(){
-        var senha = document.getElementById("senhaUsuario").value;
-        var csenha = document.getElementById("cSenhaUsuario").value;
-        if(senha == csenha){
+
+       function submeterForm(){
+        if(validarSenha()){
+            alert("senha valida");
             document.getElementById("msform").submit();
         } else {
             document.getElementById("erroSenha").click();
@@ -235,6 +238,13 @@
       function alertAlterarDados(){
         document.getElementById('askAlterarDados').click();
       }
+
+      function validarSenha(){
+        var senha = document.getElementById("senhaUsr").value;
+        var csenha = document.getElementById("cSenhaUsr").value;
+        return senha == csenha;
+      }
+
 
     </script>
   </body>

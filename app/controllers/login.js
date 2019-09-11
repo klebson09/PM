@@ -39,6 +39,9 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 			} else {
 				console.log("login.js:alterarDadosCadastrais -  resultObterDadosDesenvolvedor = "+JSON.stringify(resultObterDadosDesenvolvedor));	
 				dadosUsr = resultObterDadosDesenvolvedor[0];
+				var dataNascimentoDev = dadosUsr.dataNascimento;
+				dadosUsr.dataNascimento = formatarData(dataNascimentoDev);
+
 				res.render("cadastros/alterarCadastro", {
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
@@ -197,35 +200,74 @@ module.exports.autenticar = function(application, req, res) {
 								});
 
 							} else {
-								projetosDispDAO.projetoAndamentoTutor(req.session.idContaUsuario, function(error, resultProjetoAndamentoTutor){
-									if(error){
-										throw error;
-									} else {
-										console.log("login.js:autenticar - resultProjetoAndamentoTutor = "+JSON.stringify(resultProjetoAndamentoTutor));
-										req.session.idProjeto = resultProjetoAndamentoTutor[0].idProjeto;
-										req.session.idEquipe = resultProjetoAndamentoTutor[0].idEquipe;
-										console.log("login.js:autenticar - req.session.idProjeto = "+req.session.idProjeto);
-										console.log("login.js:autenticar - req.session.idEquipe = "+req.session.idEquipe);
-											timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
-												if(error){
-													throw error;
-												} else {							
-													timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-														req.session.msgsTimeline = msgs;
-														console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
-														res.render("includes/timeLine", {
-															sessionNomeUsuario: req.session.nomeUsuario,
-															sessionNomeTipoUsuario: req.session.tipoUsuario,
-															notificacao: req.session.notificacoes,
-															data: req.session.msgsTimeline,
-															layout: 'includes/layoutIncludes'
-														});
-													});							
-												}
-											});				
-									}
-
-								});
+								if(req.session.tipoUsuario == 'T'){
+									projetosDispDAO.projetoAndamentoTutor(req.session.idContaUsuario, function(error, resultProjetoAndamentoTutor){
+										if(error){
+											throw error;
+										} else {
+											if(resultProjetoAndamentoTutor[0] != undefined && resultProjetoAndamentoTutor[0] != null){
+												console.log("login.js:autenticar - resultProjetoAndamentoTutor = "+JSON.stringify(resultProjetoAndamentoTutor));
+												req.session.idProjeto = resultProjetoAndamentoTutor[0].idProjeto;
+												req.session.idEquipe = resultProjetoAndamentoTutor[0].idEquipe;
+												console.log("login.js:autenticar - req.session.idProjeto = "+req.session.idProjeto);
+												console.log("login.js:autenticar - req.session.idEquipe = "+req.session.idEquipe);
+												timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+														if(error){
+															throw error;
+														} else {							
+															timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+																req.session.msgsTimeline = msgs;
+																console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+																res.render("includes/timeLine", {
+																	sessionNomeUsuario: req.session.nomeUsuario,
+																	sessionNomeTipoUsuario: req.session.tipoUsuario,
+																	notificacao: req.session.notificacoes,
+																	data: req.session.msgsTimeline,
+																	layout: 'includes/layoutIncludes'
+															});
+														});							
+													}
+												});	
+											} else {
+												timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+														if(error){
+															throw error;
+														} else {							
+															timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+																req.session.msgsTimeline = msgs;
+																console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+																res.render("includes/timeLine", {
+																	sessionNomeUsuario: req.session.nomeUsuario,
+																	sessionNomeTipoUsuario: req.session.tipoUsuario,
+																	notificacao: req.session.notificacoes,
+																	data: req.session.msgsTimeline,
+																	layout: 'includes/layoutIncludes'
+															});
+														});							
+													}
+												});	
+											}			
+										}
+									});
+								} else {
+									timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+										if(error){
+											throw error;
+										} else {							
+											timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+												req.session.msgsTimeline = msgs;
+												console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+												res.render("includes/timeLine", {
+													sessionNomeUsuario: req.session.nomeUsuario,
+													sessionNomeTipoUsuario: req.session.tipoUsuario,
+													notificacao: req.session.notificacoes,
+													data: req.session.msgsTimeline,
+													layout: 'includes/layoutIncludes'
+												});
+											});							
+										}
+									});	
+								}
 							}
 						}
 							
@@ -472,5 +514,13 @@ module.exports.alteracaoSenha = function(application, req, res) {
 
 
 
+}
+
+function formatarData(dataPrazoEstimado){
+	var dia  = dataPrazoEstimado.getDate().toString().padStart(2, '0');
+    var mes  = (dataPrazoEstimado.getMonth()+1).toString().padStart(2, '0'); 
+    var ano  = dataPrazoEstimado.getFullYear();
+	console.log("termoAbertura:formatarData - dataPrazoEstimado = "+dataPrazoEstimado);
+	return ano+"-"+mes+"-"+dia;
 }
 
