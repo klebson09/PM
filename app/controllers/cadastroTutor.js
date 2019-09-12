@@ -71,14 +71,11 @@ module.exports.alterar = function(application, req, res){
   console.log("cadastroTutor:alterar - dadosTutor = "+JSON.stringify(dadosTutor));
   var connection = application.config.dbConnection;
   var tutorDAO = new application.app.models.TutorDAO(connection);
-  var cryptoPM = new application.app.models.CryptoPM();
+  var timelineDAO = new application.app.models.TimelineDAO(connection);
+  var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+
   console.log("cadastroTutor:alterar - connection = "+connection);
   console.log("cadastroTutor:alterar - tutorDAO = "+tutorDAO);
-  console.log("cadastroTutor:alterar - cryptoPM = "+cryptoPM);
-
-  console.log("cadastroTutor:alterar - iniciando encriptação...")
-  dadosTutor.senha = cryptoPM.crypt(dadosTutor.senha);
-  console.log("cadastroTutor:alterar - dados encriptados =  "+dadosTutor.senha);
 
   tutorDAO.alterarDadosTutor(req.session.idContaUsuario, dadosTutor, function(error, resultAlterarDadosTutor){
 
@@ -88,7 +85,33 @@ module.exports.alterar = function(application, req, res){
         console.log("cadastroTutor:alterar - dados educacionais OK ");
         console.log("cadastroTutor:alterar - resultAlterarDadosTutor =  "+JSON.stringify(resultAlterarDadosTutor));
         console.log("cadastroTutor:alterar - Dados do Tutor alterados com sucesso");
-        res.send("Dados do usuário atualizados com sucesso!");
+
+        timelineDAO.timelineDadosCadastraisAlterados(req.session.idContaUsuario, function(error, resultTimelineDadosCadastraisAlterados){
+          if(error){
+            throw error;
+          } else{
+            console.log("cadastroTutor:alterar - resultTimelineDadosCadastraisAlterados =  "+JSON.stringify(resultTimelineDadosCadastraisAlterados));
+            timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+              if(error){
+                throw error;
+              } else {
+                timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+                  req.session.msgsTimeline = msgs;
+                  console.log("cadastroTutor:alterar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+                  res.render("includes/timeLine", {
+                    sessionNomeUsuario: req.session.nomeUsuario,
+                    sessionNomeTipoUsuario: req.session.tipoUsuario,
+                    notificacao: req.session.notificacoes,
+                    data: req.session.msgsTimeline,
+                    layout: 'includes/layoutIncludes'
+                  });
+                });
+              }
+            });
+          }
+
+      });
+
     }
 
   });

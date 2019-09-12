@@ -22,7 +22,7 @@
       <!-- Right side column. Contains the navbar and content of the page -->
       <div class="content-wrapper">
 
-          <div id="myModal" class="modal modal-dialog fade-in" role="dialog">
+          <<div id="alterarDadosModal" class="modal modal-warning fade-in" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -32,28 +32,27 @@
                         <p><small>Confirmar alteração dos dados?</small></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline pull-left " onclick="submeterForm()">Sim</button>
+                        <button type="button" class="btn btn-outline pull-left " data-dismiss="modal" onclick="submeterForm()">Sim</button>
                         <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Não</button>
                     </div>
                 </div>
             </div>
         </div>
 
-         <div id="myModal2" class="modal modal-danger fade-in" role="dialog">
+         <div id="erroModal" class="modal modal-danger fade-in" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Atenção</h5>
                     </div>
-                    <div class="modal-body">
-                        <p><small>Necessário confirmar a senha para confirmar a alteração dos dados cadastrais</small></p>
+                    <div class="modal-body" id="msgsErro">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>   
 
 
         <!-- Main content -->
@@ -62,7 +61,7 @@
             <div class="col-md-offset-2 col-md-8">
               <div class="box box-success">
 
-                <form id="msform" action="/alterar_dados_tutor" method="post" >
+                <form id="formAlterarDadosTut" action="/alterar_dados_tutor" method="post" >
                   <!-- fieldsets -->
                   <fieldset>
                     <!-- <div class="box box-success"> -->
@@ -76,20 +75,20 @@
 
 
                     <div class="form-group  col-md-12 ">
-                      <label for="cpfUsuario">CPF</label>
-                      <input type="text" id="cpfUsuario" name="cpf_cnpj" class="form-control" value="<%= dadosUsuario.cpf_cnpj %>" required />
+                      <label for="cpf">CPF</label>
+                      <input type="text" id="cpf" name="cpf_cnpj" class="form-control" value="<%= dadosUsuario.cpf_cnpj %>" required />
                     </div>
                     <div class="form-group col-md-12">
-                      <label for="telefoneUsuario">Telefone</label>
-                      <input type="text" id="telefoneUsuario" name="telefone" class="form-control" value="<%= dadosUsuario.telefone %>"  />
+                      <label for="telefone">Telefone</label>
+                      <input type="text" id="telefone" name="telefone" class="form-control" value="<%= dadosUsuario.telefone %>"  />
                     </div>
                     <div class="form-group col-md-12">
-                      <label for="celularUsuario">Celular</label>
-                      <input type="text" id="celularUsuario" name="celular" class="form-control" value="<%= dadosUsuario.celular %>"  />
+                      <label for="celular">Celular</label>
+                      <input type="text" id="celular" name="celular" class="form-control" value="<%= dadosUsuario.celular %>"  />
                     </div>
                     <div class="form-group col-md-12">
-                      <label for="emailUsuario">E-mail</label>
-                      <input type="text" id="emailUsuario" name="email" class="form-control" value="<%= dadosUsuario.email %>" required />
+                      <label for="email">E-mail</label>
+                      <input type="text" id="email" name="email" class="form-control" value="<%= dadosUsuario.email %>" required />
                     </div>  
                     <div class="col-md-12" style="margin-bottom: 2%"><h4>Dados Educacionais</h4></div>     
                     <div class="form-group col-md-12">
@@ -105,17 +104,14 @@
                       <input type="text" id="formacaoAcademicaUsuario" name="formacaoAcademica" class="form-control" value="<%= dadosUsuario.formacaoAcademica %>" required />
                     </div> 
                     <div class="form-group col-md-12">
-                      <label for="cargoUsuario">Cargo</label>
-                      <input type="text" id="cargoUsuario" name="cargo" class="form-control" value="<%= dadosUsuario.cargo %>" required />
+                      <label for="cargo">Cargo</label>
+                      <select id="cargo" name="cargo" class="form-control" value="<%= dadosUsuario.cargo %>">
+                          <option value="Professor">Professor</option>
+                          <option value="Gestor">Gestor</option>
+                          <option value="AlunoVeterano">Aluno Veterano</option>
+                          <option value="Outros">Outros</option>
+                      </select>
                     </div> 
-                    <div class="form-group col-md-12">
-                      <label for="senhaUsuario">Senha</label>
-                      <input type="password" id="senhaUsuario" name="senha" class="form-control" value="<%= dadosUsuario.senha %>" required />
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="cSenhaUsuario">Confirmar Senha</label>
-                      <input type="password" id="cSenhaUsuario" class="form-control" />
-                    </div>
 
                     <input type="hidden" name="idContato" value="<%= dadosUsuario.idContato %>" />
                     <input type="hidden" name="idDadosEducacionaisTutor" value="<%= dadosUsuario.idDadosEducacionaisTutor %>" />
@@ -133,8 +129,10 @@
 
             </form>
 
-             <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#myModal"></a> 
-             <a id="erroSenha" href="#" data-toggle="modal" data-target="#myModal2"></a> 
+            <input type="hidden" id="cargoSelect" value="<%= dadosUsuario.cargo %>" />
+
+            <a id="askAlterarDados" href="#" data-toggle="modal" data-target="#alterarDadosModal"></a> 
+             <a id="erroModalLink" href="#" data-toggle="modal" data-target="#erroModal"></a> 
           </div>
         </div>
 
@@ -143,17 +141,16 @@
 
       </div>
       <!-- jQuery -->
-      <script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
-      <!-- jQuery easing plugin -->
-      <script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
+      <!--<script src="http://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+
+      <script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script> -->
       <script src="js/script_multiform.js" type="text/javascript"></script>
 
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
 
-    <script src="plugins/jQuery/jQuery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
-    <!-- Bootstrap 3.3.2 JS -->
+    <!--<script src="plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.min.js"></script>-->
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- FastClick -->
     <script src='plugins/fastclick/fastclick.min.js'></script>
@@ -187,25 +184,117 @@
 
     <script type="text/javascript" src="moment/moment.js"></script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+
+    <script src="js/valida_cpf_cnpj.js" type="text/javascript"></script>
+
     <script>
+      
+      var mensagensErro = document.getElementById("msgsErro");
+
       function submeterForm(){
-        if(validarSenha()){
-            document.getElementById("msform").submit();
+        if(validarCampos()){
+            document.getElementById("formAlterarDadosTut").submit();
         } else {
-            document.getElementById("erroSenha").click();
+            document.getElementById("erroModalLink").click();
         }
 
       }
 
+      function validarCampos(){
+        var cpfValido = validarCPF();
+        var emailValido = validarEmail();
+        return cpfValido && emailValido;      
+      }
+
+      function adicionarMensagemErro(msg){
+
+         var p = document.createElement("p");
+         var small = document.createElement("small");
+         var msgErro = document.createTextNode(msg);
+         small.append(msgErro);
+         p.append(small);
+
+         return p;
+      }
+
+
+      function validarCPF(){
+        var ehValido = valida_cpf(document.getElementById("cpf").value);
+        
+        if(!ehValido) {
+          mensagensErro.append(adicionarMensagemErro(" CPF Inválido"));
+        }
+        return ehValido;
+      }
+
+      function validarEmail(){
+        var field = document.getElementById("email");
+        var usuario = field.value.substring(0, field.value.indexOf("@"));
+        var dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
+
+        if(usuario != '' && dominio != ''){
+
+          if ((usuario.length >=1) &&
+          (dominio.length >=3) &&
+          (usuario.search("@")==-1) &&
+          (dominio.search("@")==-1) &&
+          (usuario.search(" ")==-1) &&
+          (dominio.search(" ")==-1) &&
+          (dominio.search(".")!=-1) &&
+          (dominio.indexOf(".") >=1) &&
+          (dominio.lastIndexOf(".") < dominio.length - 1)) {
+            return true;
+          }
+          else{
+            mensagensErro.append(adicionarMensagemErro("E-mail Inválido"));
+            return false;
+          }
+        } else{
+          mensagensErro.append(adicionarMensagemErro("E-mail Inválido"));
+          return false;
+        }
+      }
+
       function alertAlterarDados(){
+        limparMensagensErro();
         document.getElementById('askAlterarDados').click();
       }
 
-      function validarSenha(){
-        var senha = document.getElementById("senhaUsuario").value;
-        var csenha = document.getElementById("cSenhaUsuario").value;
-        return senha == csenha;
+      function limparMensagensErro(){
+          while (mensagensErro.firstChild) {
+            mensagensErro.removeChild(mensagensErro.firstChild);
+          }
       }
+
+      //Máscaras dos campos
+          $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            var $cpf = $("#cpf");
+            $cpf.mask('000.000.000-00', {reverse: false});
+
+            var $telefone = $("#telefone");
+            $telefone.mask('(00)0000-0000', {reverse: false});
+
+            var $celular = $("#celular");
+            $celular.mask('(00)00000-0000', {reverse: false});
+
+            atualizarCampoSelect("cargo"); 
+
+          });
+
+          function atualizarCampoSelect(elemento){
+            var options = document.getElementById(elemento).options;
+            var valorElemento = document.getElementById(elemento+"Select").value;
+
+            for(var i=0; i<options.length; i++){
+              if(options[i].value == valorElemento){
+                options.value = valorElemento;
+                options[i].selected = true;
+                break;
+              }
+            }
+          } 
 
     </script>
   </body>

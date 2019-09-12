@@ -71,7 +71,6 @@ TutorDAO.prototype.alterarDadosTutor = function(idContaUsuario, usuario, callbac
    var nome = usuario.nomeUsuario;
    var cpf = usuario.cpf_cnpj
    var email = usuario.email;
-   var senha = usuario.senha;
 
    //Dados de Contato
    var idContato = usuario.idContato;
@@ -87,7 +86,7 @@ TutorDAO.prototype.alterarDadosTutor = function(idContaUsuario, usuario, callbac
    var cargo = usuario.cargo;
 
    //Consultas
-   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"' WHERE idContaUsuario = "+idContaUsuario;   
    var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
    var sqlAtualizarDadosEducacionaisTutor = "UPDATE dados_educacionais_tutor SET instituicaoEnsino='"+instituicaoEnsino+"', siape='"+siape+"', formacaoAcademica='"+formacaoAcademica+"', cargo='"+cargo+"' WHERE idDadosEducacionaisTutor = "+idDadosEducacionaisTutor;   
 

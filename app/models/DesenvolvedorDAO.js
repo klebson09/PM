@@ -67,7 +67,6 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    var cpf = usuario.cpf_cnpj
    var email = usuario.email;
    var dataNascimento = usuario.dataNascimento;
-   var senha = usuario.senha;
 
    //Dados de Contato
    var idContato = usuario.idContato;
@@ -85,7 +84,7 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    var declaracaoMatricula = usuario.declaracaoMatricula;
 
    //Consultas
-   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', dataNascimento='"+dataNascimento+"', senha='"+senha+"' WHERE idContaUsuario = "+idContaUsuario;   
+   var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', dataNascimento='"+dataNascimento+"' WHERE idContaUsuario = "+idContaUsuario;   
    var sqlAtualizarContato = "UPDATE contato SET telefone='"+telefone+"', celular='"+celular+"', gitHub='"+github+"' WHERE idContato = "+idContato;   
    var sqlAtualizarDadosEducacionaisDev = "UPDATE dados_educacionais_desenvolvedor SET instituicaoEnsino='"+instituicaoEnsino+"', matricula='"+matricula+"', curso='"+curso+"', turno='"+turno+"', periodo='"+periodo+"', declaracaoMatricula='"+declaracaoMatricula+"' WHERE idDadosEducacionaisDesenvolvedor = "+idDadosEducacionaisDesenvolvedor;   
 
