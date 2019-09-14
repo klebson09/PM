@@ -52,23 +52,16 @@ module.exports.autenticar = function(application, req, res) {
 			if (result[0] != undefined) {
 				console.log(result[0].nomeUsuario);
 
-				req.session.autenticado = true;
-				req.session.idContaUsuario = result[0].idContaUsuario;
-				req.session.tipoUsuario = result[0].tipoUsuario;
-				req.session.nomeUsuario = result[0].nomeUsuario;
-				req.session.email = result[0].email;
-				req.session.idEquipe = 0;
-				req.session.idProjeto = 0;
+				req.session.autenticado = true; req.session.idContaUsuario =
+				result[0].idContaUsuario; req.session.tipoUsuario = result[0].tipoUsuario;
+				req.session.nomeUsuario = result[0].nomeUsuario; req.session.email =
+				result[0].email; req.session.idEquipe = 0; req.session.idProjeto = 0;
 				req.session.dataCadastro = new Date(result[0].dataCadastro);
-				req.session.dataCadastroExtenso =  "";
-				req.session.horaCadastroExtenso =  "";
-				req.session.notificacoes = [{
-					mensagem: "Nenhuma notificação",
-					link: "#",
-					tipo: "#"
-				}];
-				req.session.msgsTimeline = [];
-
+				req.session.dataCadastroExtenso =  ""; req.session.horaCadastroExtenso = 
+				""; req.session.notificacoes = [{ mensagem: "Nenhuma notificação", link:
+				"#", tipo: "#" }]; req.session.msgsTimeline = [];
+				console.log("@@req.session.idContaUsuario = "+req.session.idContaUsuario);
+				//console.log("@@req.session.idContaUsuario = "+req.session.idContaUsuario);
 				console.log("tipoUsuario = "+req.session.tipoUsuario);
 				console.log("nomeUsuario = "+req.session.nomeUsuario);
 				console.log("dataCadastroJS = "+req.session.dataCadastro);
@@ -128,24 +121,35 @@ module.exports.autenticar = function(application, req, res) {
 									}	
 								});
 
+							
 							} else {
-								timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+								equipeDAO.verificarEquipeVinculadoTutor(req.session.idContaUsuario, function(error, resultVerificarEquipeVinculadoTutor){
 									if(error){
 										throw error;
-									} else {							
-										timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
-											req.session.msgsTimeline = msgs;
-											console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
-											res.render("includes/timeLine", {
-												sessionNomeUsuario: req.session.nomeUsuario,
-												sessionNomeTipoUsuario: req.session.tipoUsuario,
-												notificacao: req.session.notificacoes,
-												data: req.session.msgsTimeline,
-												layout: 'includes/layoutIncludes'
-											});
-										});							
+									} else {
+										console.log("login.js:autenticar -resultVerificarEquipeVinculadoTutor = "+ JSON.stringify(resultVerificarEquipeVinculadoTutor));
+										req.session.idEquipe = resultVerificarEquipeVinculadoTutor[0].idEquipe;
+										timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+											if(error){
+												throw error;
+											} else {							
+												timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+													req.session.msgsTimeline = msgs;
+													console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+													res.render("includes/timeLine", {
+														sessionNomeUsuario: req.session.nomeUsuario,
+														sessionNomeTipoUsuario: req.session.tipoUsuario,
+														notificacao: req.session.notificacoes,
+														data: req.session.msgsTimeline,
+														layout: 'includes/layoutIncludes'
+													});
+												});							
+											}
+										});	
 									}
-								});	
+								});
+
+								
 							}
 						}
 							

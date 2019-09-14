@@ -1,0 +1,95 @@
+<!-- Right side column. Contains the navbar and content of the page -->
+<div class="content-wrapper">
+
+  <div id="modalErro" class="modal modal-danger fade-in" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Atenção</h5>
+                </div>
+                <div class="modal-body">
+                    <p><small>Selecione os membros da equipe e o tutor</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>   
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <div class="box box-success">
+          <form id="msform" action="/criar_equipe_post" method="post" >
+          <!-- fieldsets -->
+          <fieldset>            
+             <!-- <div class="box box-success"> -->
+            <h2 class="fs-title col-md-offset-1" id="tituloForm">Visualizar Equipe </h2>
+            <!-- <h3 class="fs-subtitle">This is step 1</h3> -->
+            <div class="form-group  col-md-12 ">
+               <input type="text" class="form-control" name="nomeEquipe" placeholder="Nome da equipe" readonly value="<%= dataDEV[0].nomeEquipe %>"  />
+                </div>
+     <div class="form-group col-md-12">
+      <textarea class="form-control" name="descrEquipe" id="descrEquipe" rows="3" readonly><%= dataDEV[0].descricao %></textarea>
+    </div>
+
+
+
+
+
+      <div class="row">
+
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Membros da Equipe</h3>
+
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table" id="tabelaMembros">
+                <tbody id="tabelaMembrosCorpo">
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                </tr>
+                <tr>
+                  <td><%= dataTutor.nomeUsuario %></td>
+                  <td><%= dataTutor.email %></td>
+                  <td><span class="badge bg-red">Tutor</span></td>
+
+                </tr>
+                <tr>
+                  <% for( var i=0; i < dataDEV.length; i++ ){ %>
+                  <td><%= dataDEV[i].nomeUsuario %></td>
+                  <td><%= dataDEV[i].email %></td>
+                  <td><span class="badge bg-blue">Dev</span></td>
+
+                </tr>
+                <% } %>
+
+                  
+              </tbody>
+            </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </div>
+        <!-- /.col -->
+      </div>
+                 
+            </fieldset>
+
+         </form>
+       </div>
+     </div>
+      </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+ <a id="msgErroTutorDevs" href="#" data-toggle="modal" data-target="#modalErro"></a> 

@@ -50,7 +50,7 @@ EquipeDAO.prototype.validarEquipeTutor = function(idEquipe, callback){
 }
 
 EquipeDAO.prototype.verificarUsuarioVinculadoEquipe = function(idContaUsuario, callback){
-  var sqlVerificarUsuarioVinculadoEquipe = "SELECT me.*, eq.* FROM membrosEquipe me INNER JOIN equipe eq ON me.equipe_IdEquipe = eq.idEquipe WHERE me.conta_usuario_idContaUsuario = "+idContaUsuario;;
+  var sqlVerificarUsuarioVinculadoEquipe = "SELECT me.*, eq.* FROM membrosEquipe me INNER JOIN equipe eq ON me.equipe_IdEquipe = eq.idEquipe WHERE me.conta_usuario_idContaUsuario = "+idContaUsuario;
    this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
 }
 
@@ -63,8 +63,8 @@ EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){
 
 EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
   console.log("EquipeDAO:obterMembrosEquipe - INICIO");
-  var sqlObterMembrosEquipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe WHERE membrosequipe.equipe_idEquipe = "+idEquipe+" AND projeto.status != 'Concluído'";
-   console.log("EquipeDAO:obterMembrosEquipe - sqlObterMembrosEquipe = "+sqlObterMembrosEquipe);
+  var sqlObterMembrosEquipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe  INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"' AND projeto.status != 'Concluído'";   
+  console.log("EquipeDAO:obterMembrosEquipe - sqlObterMembrosEquipe = "+sqlObterMembrosEquipe);
   this._connection.query(sqlObterMembrosEquipe, callback);
 }
 
@@ -74,7 +74,13 @@ EquipeDAO.prototype.obterTutorEquipe = function(idEquipe, callback){
   console.log("EquipeDAO:obterMembrosEquipe - sqlObterMembrosEquipe = "+sqlObterTutor);
   this._connection.query(sqlObterTutor, callback);
 }
-//
+EquipeDAO.prototype.verificarEquipeVinculadoTutor = function(idContaUsuario, callback){
+  console.log("EquipeDAO:verificarEquipeVinculadoTutor - INICIO");
+
+  var sqlVerificarEquipeVinculadoTutor = "SELECT idEquipe, conta_usuario.nomeUsuario, conta_usuario.email FROM pm.equipe INNER JOIN conta_usuario ON equipe.idTutor = conta_usuario.idContaUsuario WHERE idTutor = '"+idContaUsuario+"' LIMIT 1";
+  console.log("EquipeDAO:verificarEquipeVinculadoTutor - sqlVerificarEquipeVinculadoTutor = "+sqlVerificarEquipeVinculadoTutor);
+  this._connection.query(sqlVerificarEquipeVinculadoTutor, callback);
+}
 
 module.exports = function(){
   return EquipeDAO;

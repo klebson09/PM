@@ -10,12 +10,11 @@ module.exports = function(application){
   application.post('/criar_equipe_post', function(req, res){
     console.log(req.body);
     application.app.controllers.criarEquipe.cadastrarEquipe(application, req, res);
+  });
 
     application.get('/visualizar_equipe', function(req, res){
-    application.app.controllers.criarEquipe.visualizarEqp(application, req, res);
+      console.log("**************************** rota criarEquipe:visualizar_equipe  *********************************************");
+    application.app.controllers.criarEquipe.visualizarEquipe(application, req, res);
   });
 
-
-
-  });
 }

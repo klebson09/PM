@@ -43,47 +43,74 @@ module.exports.criarEqp = function(application, req, res){
 }
 
 
-module.exports.visualizarEqp = function(application, req, res){
+module.exports.visualizarEquipe = function(application, req, res){
   // res.render("includes/criarEquipe", {validacao:{}});
-  if (req.session.autenticado) {
-  console.log("**************************** criarEquipe.js:visualizarEqp  *********************************************");
+  
+  console.log("**************************** criarEquipe.js:visualizarEquipe  *********************************************");
     var connection = application.config.dbConnection;
     var UsuarioDAO = new application.app.models.UsuarioDAO(connection);
+    var EquipeDAO  = new application.app.models.EquipeDAO(connection); //obterMembrosEquipe
     var resultadoDEV = [];
     var resultadoTutor = [];
 
-    UsuarioDAO.obterMembrosEquipe(function(erro, resultadoD){
-      console.log("callback obter membros equipe");
+    EquipeDAO.obterMembrosEquipe(req.session.idEquipe, function(erro, resultObterMembrosEquipe){
+      console.log("--------------------------------------------------------------");
+      console.log("criarEquipe.js: resultObterMembrosEquipe - "+JSON.stringify(resultObterMembrosEquipe) );
+      var idTutorEquipe = resultObterMembrosEquipe[0].idTutor;
+      console.log("@@--------------------------------------------------------------");
+      console.log("criarEquipe.js: idTutorEquipe - "+idTutorEquipe );
+
       if(erro){
         throw erro;
       } else {
-          console.log("DEVs - "+JSON.stringify(resultadoD));
-          resultadoDEV = resultadoD;
+          console.log("resultObterMembrosEquipe - ");
+          EquipeDAO.verificarEquipeVinculadoTutor(idTutorEquipe, function(erro, resultVerificarEquipeVinculadoTutor ){
+               console.log("--------------------------------------------------------------");
+               console.log("criarEquipe.js: resultVerificarEquipeVinculadoTutor - "+JSON.stringify(resultVerificarEquipeVinculadoTutor) );
+
+            if(erro){
+              throw erro;
+            } else {
+              var resultadoTutor = resultVerificarEquipeVinculadoTutor[0];
+              console.log("resultVerificarEquipeVinculadoTutor - resultadoTutor "+JSON.stringify(resultadoTutor));
+                
+
+                res.render("includes/visualizarEquipe", {
+                  sessionNomeUsuario: req.session.nomeUsuario,
+                  sessionNomeTipoUsuario: req.session.tipoUsuario,
+                  notificacao: req.session.notificacoes,
+                  dataDEV: resultObterMembrosEquipe,
+                  dataTutor: resultadoTutor,
+                  layout: 'includes/layoutIncludes'
+                  });
+            }
+
+          });
+
+      /*
+          console.log("resultObterMembrosEquipe - "+JSON.stringify(resultObterMembrosEquipe));
+          resultMembrosEqp = resultObterMembrosEquipe;
           console.log("Vai pegar o tutor");
-          UsuarioDAO.obterTutores(function(erro,resultadoT){
+          EquipeDAO.obterTutorEquipe(function(erro,resultObterTutorEquipe){
               if(erro){
                 throw error;
               } else {
                 console.log("Tutores - "+JSON.stringify(resultadoT));
                 resultadoTutor = resultadoT;
                 console.log("Vai responder");
-                res.render("includes/criarEqp3", {
+                res.render("includes/visualizarEquipe", {
                   sessionNomeUsuario: req.session.nomeUsuario,
                   sessionNomeTipoUsuario: req.session.tipoUsuario,
-                  notificacao: req.session.notificacoes,
-                  dataDEV: JSON.stringify(resultadoDEV),
+                  dataDEV: JSON.stringify(resultObterMembrosEquipe),
                   dataTutor: resultadoTutor,
                   layout: 'includes/layoutIncludes'
                   });
               }
-          })
+          });*/
       }
     });
 
 
-  }else {
-    res.render('login/login', {validacao: {}});
-  }
 
 }
 
