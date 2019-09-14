@@ -10,6 +10,13 @@ module.exports = function(application){
     	console.log(dadosForm);
     	application.app.controllers.cadastroDesenvolvedor.cadastrar(application, req, res);
     });
+
+     application.post('/alterar_dados_desenvolvedor', function(req,res){
+        console.log("cheguei em /alterar_dados_desenvolvedor");
+        var dadosForm = req.body;
+        console.log(dadosForm);
+        application.app.controllers.cadastroDesenvolvedor.alterar(application, req, res);
+    });
 }
 
 

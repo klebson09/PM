@@ -74,3 +74,58 @@ module.exports.inclCliente = function(application, req, res){
 	});
 	// res.send('tudo ok para criar a sessão');
 }
+
+module.exports.alterarCliente = function(application, req, res){
+
+  console.log("cadastroCliente:alterarCliente - INICIO");
+
+  var dadosCliente = req.body;
+  console.log("cadastroCliente:alterarCliente - dadosCliente = "+JSON.stringify(dadosCliente));
+  var connection = application.config.dbConnection;
+  var clienteDAO = new application.app.models.ClienteDAO(connection);
+  var timelineDAO = new application.app.models.TimelineDAO(connection);
+  var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
+
+  console.log("cadastroCliente:alterarCliente - connection = "+connection);
+  console.log("cadastroCliente:alterarCliente - clienteDAO = "+clienteDAO);
+  
+  clienteDAO.alterarDadosCliente(req.session.idContaUsuario, dadosCliente, function(error, resultAlterarDadosCliente){
+
+    if(error){
+      throw error;
+    } else {
+        console.log("cadastroCliente:alterarCliente - contato OK ");
+        console.log("cadastroCliente:alterarCliente - resultAlterarDadosCliente =  "+JSON.stringify(resultAlterarDadosCliente));
+        console.log("cadastroCliente:alterarCliente - Dados do Cliente alterados com sucesso");
+		
+		timelineDAO.timelineDadosCadastraisAlterados(req.session.idContaUsuario, function(error, resultTimelineDadosCadastraisAlterados){
+
+				if(error){
+					throw error;
+				} else{
+					console.log("cadastroCliente:alterarCliente - resultTimelineDadosCadastraisAlterados =  "+JSON.stringify(resultTimelineDadosCadastraisAlterados));
+					timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+						if(error){
+							throw error;
+						} else {
+							timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+								req.session.msgsTimeline = msgs;
+								console.log("cadastroCliente:alterarCliente - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+								res.render("includes/timeLine", {
+									sessionNomeUsuario: req.session.nomeUsuario,
+									sessionNomeTipoUsuario: req.session.tipoUsuario,
+									notificacao: req.session.notificacoes,
+									data: req.session.msgsTimeline,
+									layout: 'includes/layoutIncludes'
+								});
+							});
+						}
+					});
+				}
+
+		});
+
+    }
+
+  });
+}

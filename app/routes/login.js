@@ -31,4 +31,9 @@
     application.app.controllers.login.alteracaoSenha(application, req, res);
    });
 
+    application.get('/alterar_dados_cadastrais', function(req, res){
+    console.log("**************************** login:rota - alterar_dados_cadastrais  *********************************************");
+    application.app.controllers.login.alterarDadosCadastrais(application, req, res);
+   });
+
 }

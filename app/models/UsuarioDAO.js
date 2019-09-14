@@ -62,6 +62,30 @@ UsuarioDAO.prototype.obterFlagAlteracaoSenhaUsuario = function(email, callback){
   this._connection.query(sql, callback);
 }
 
+UsuarioDAO.prototype.obterDadosCliente = function(idContaUsuario, callback){
+  console.log("UsuarioDAO: obterDadosCliente --> idContaUsuario "+idContaUsuario);
+  console.log("UsuarioDAO:obterDadosCliente INICIO")
+  var sql = "SELECT conta_usuario.*, contato.* FROM conta_usuario INNER JOIN contato ON conta_usuario.idContato = contato.idContato WHERE conta_usuario.idContaUsuario = "+idContaUsuario;
+  console.log("UsuarioDAO:obterDadosCliente - sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
+UsuarioDAO.prototype.obterDadosDesenvolvedor = function(idContaUsuario, callback){
+  console.log("UsuarioDAO: obterDadosDesenvolvedor --> idContaUsuario "+idContaUsuario);
+  console.log("UsuarioDAO:obterDadosDesenvolvedor INICIO")
+  var sql = "SELECT conta_usuario.*, contato.*, dados_educacionais_desenvolvedor.* FROM conta_usuario INNER JOIN contato ON conta_usuario.idContato = contato.idContato INNER JOIN dados_educacionais_desenvolvedor ON conta_usuario.idContaUsuario = dados_educacionais_desenvolvedor.idContaUsuario WHERE conta_usuario.idContaUsuario = "+idContaUsuario;
+  console.log("UsuarioDAO:obterDadosDesenvolvedor - sql = "+sql);
+  this._connection.query(sql, callback); 
+}
+
+UsuarioDAO.prototype.obterDadosTutor = function(idContaUsuario, callback){
+  console.log("UsuarioDAO: obterDadosTutor --> idContaUsuario "+idContaUsuario);
+  console.log("UsuarioDAO:obterDadosTutor INICIO")
+  var sql = "SELECT conta_usuario.*, contato.*, dados_educacionais_tutor.* FROM conta_usuario INNER JOIN contato ON conta_usuario.idContato = contato.idContato INNER JOIN dados_educacionais_tutor ON conta_usuario.idContaUsuario = dados_educacionais_tutor.idContaUsuario WHERE conta_usuario.idContaUsuario = "+idContaUsuario;
+  console.log("UsuarioDAO:obterDadosTutor - sql = "+sql);
+  this._connection.query(sql, callback); 
+}
+
 
 module.exports = function(){
   return UsuarioDAO;

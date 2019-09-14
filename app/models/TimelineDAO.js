@@ -3,6 +3,20 @@ function TimelineDAO(connection){
 	this._connection = connection();
 }
 
+/*--------------------------------USUARIO----------------------------------------*/
+TimelineDAO.prototype.timelineDadosCadastraisAlterados = function(idContaUsuario, callback){
+	console.log("TimelineDAO:timelineDadosCadastraisAlterados - INICIO  ");
+	var titulo = "Dados Cadastrais alterados com sucesso!";
+	var msg = "Seu cadastro foi atualizado com sucesso no sistema";
+	var icon = "fa fa-envelope bg-blue";
+
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineDadosCadastraisAlterados ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+
 /*--------------------------------CLIENTE -------------------------------------*/
 
 TimelineDAO.prototype.timelineIncluirCliente = function(cliente, callback){
