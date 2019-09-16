@@ -25,6 +25,10 @@ module.exports.exibirTimeLine = function(application, req, res){
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
 	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
 
+	if(req.session.idContaUsuario == undefined){
+		res.render('login/login', {validacao: {}});
+	}
+
   if(req.session.tipoUsuario != 'D'){
 		timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
 			if(error){

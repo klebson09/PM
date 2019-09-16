@@ -52,9 +52,17 @@ propostaDAO.prototype.insertProposta = function(res, req, callback){
 
 propostaDAO.prototype.obterPropostasProjeto = function(idProjeto, callback){
 
-  var sqlPropostasProjeto = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe WHERE proposta.idProjeto = '+idProjeto;
+  var sqlPropostasProjeto = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback, proposta.status ,projeto.nomeProjeto FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe INNER JOIN projeto ON proposta.idProjeto = projeto.idProjeto WHERE proposta.idProjeto = '+idProjeto;
   console.log("sqlPropostasProjeto = "+sqlPropostasProjeto);
   this._connection.query(sqlPropostasProjeto, callback);
+
+}
+
+propostaDAO.prototype.obterPropostasCliente = function(idContaUsuario, callback){
+
+  var sqlPropostasCliente = 'SELECT proposta.idProjeto, proposta.idProposta, proposta.idEquipe, equipe.nomeEquipe, proposta.apresentacao, proposta.duvidas, proposta.feedback, proposta.status ,projeto.nomeProjeto FROM proposta INNER JOIN equipe  ON proposta.idEquipe = equipe.idEquipe INNER JOIN projeto ON proposta.idProjeto = projeto.idProjeto WHERE projeto.idContaUsuario = '+idContaUsuario+' ORDER BY proposta.idProposta DESC';
+  console.log("sqlPropostasProjeto = "+sqlPropostasCliente);
+  this._connection.query(sqlPropostasCliente, callback);
 
 }
 
@@ -74,18 +82,9 @@ propostaDAO.prototype.verificarPropostasProjetoAprovada = function(idProjeto, ca
 
 }
 
-propostaDAO.prototype.enviarRespostaProp = function(req, callback){
-  var respostaMsg = req.body.respostaMsg;
-//  var resposta = req.body.resposta;
-  var idProposta = req.body.idProposta;
-  // var status = "Recusado";
-  console.log("@@enviarRespostaProp==>"+respostaMsg+"idProposta==>"+idProposta);
-  // if(resposta == "Aceito"){
-  //   status = "Aceito";
-  // }
-
-  // var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta ='"+idProposta+"')";
-  var updatePropostaSql = "UPDATE `proposta` SET `feedback` = '"+respostaMsg+"' WHERE (`idProposta` ='"+idProposta+"')";
+propostaDAO.prototype.enviarRespostaProp = function(idProposta, feedback ,callback){
+  console.log("@@enviarRespostaProp==>"+feedback+"idProposta==>"+idProposta);
+  var updatePropostaSql = "UPDATE `proposta` SET `feedback` = '"+feedback+"' WHERE (`idProposta` ='"+idProposta+"')";
   console.log("@@enviarRespostaProp@@"+updatePropostaSql);
   this._connection.query(updatePropostaSql, callback);
 }

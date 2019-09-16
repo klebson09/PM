@@ -58,14 +58,14 @@ projetosDispDAO.prototype.atualizarStatusProjeto = function(idProjeto, idEquipe,
 
 projetosDispDAO.prototype.projetoAndamentoCliente = function(idContaUsuario, callback){
   console.log("projetosDispDAO:projetoAndamentoCliente - INICIO");
-  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idContaUsuario = "+idContaUsuario+" AND projeto.status != 'Concluído'";
+  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idContaUsuario = "+idContaUsuario+" AND projeto.status != 'Finalizado'";
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }
 
 projetosDispDAO.prototype.projetoAndamentoDev = function(idEquipe, callback){
   console.log("projetosDispDAO:projetoAndamentoDev - INICIO");
-  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idEquipe = "+idEquipe+" AND projeto.status != 'Concluído'";
+  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idEquipe = "+idEquipe+" AND projeto.status != 'Finalizado'";
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }

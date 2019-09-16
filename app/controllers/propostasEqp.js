@@ -4,7 +4,43 @@ module.exports.listarPropostasProjeto = function(application, req, res){
 
   var connection = application.config.dbConnection;
   var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+  var propostaDAO = new application.app.models.propostaDAO(connection);
   var projetosPropostas = [];
+  
+  propostaDAO.obterPropostasCliente(req.session.idContaUsuario, function(error, resultObterPropostasCliente){
+
+    if(error){
+      throw error;
+    } else {
+      projetosPropostas = resultObterPropostasCliente;
+
+      console.log("propostasEqp:listarPropostasProjeto - propostas = "+JSON.stringify(resultObterPropostasCliente));
+
+      projetosPropostas = resultObterPropostasCliente;
+
+      console.log("propostasEqp:listarPropostasProjeto - projetosPropostas.length = "+projetosPropostas.length);
+      console.log("propostasEqp:listarPropostasProjeto - projetosPropostas[0] = "+JSON.stringify(projetosPropostas[0]));
+
+      //console.log("propostasEqp:listarPropostasProjeto - projetosPropostas = "+JSON.stringify(projetosPropostas));
+
+      res.render("includes/propostasEqp", {
+        idProjetoUsuario: req.session.idProjeto,
+        idEquipeUsuario: req.session.idEquipe,
+        idTermoAberturaUsuario: req.session.idTermoAbertura, 
+        sessionNomeUsuario: req.session.nomeUsuario,
+        sessionNomeTipoUsuario: req.session.tipoUsuario,
+        data: projetosPropostas,
+        notificacao: req.session.notificacoes,
+        layout: 'includes/layoutIncludes'
+      });
+
+    }
+
+  });
+
+
+  /*
+
 
   projetosDispDAO.verificarProjetosCliente(req.session.idContaUsuario, function(error, result){
     console.log("CALLBACK projetosDispDAO.verificarProjetosCliente");
@@ -14,7 +50,7 @@ module.exports.listarPropostasProjeto = function(application, req, res){
       throw error;
     } else {
       var i=0;
-      var propostaDAO = new application.app.models.propostaDAO(connection);
+
       console.log("PROJETO(S) RESGATADO(S) COM SUCESSO");
       console.log(JSON.stringify(result));
 
@@ -35,46 +71,82 @@ module.exports.listarPropostasProjeto = function(application, req, res){
             console.log("result = "+JSON.stringify(result)+"\n");
             console.log("projeto.propostas = "+JSON.stringify(projeto.propostas)+"\n");
             projetosPropostas.push(projeto);
-
-            console.log("projetosPropostas = "+JSON.stringify(projetosPropostas));
-
-            res.render("includes/propostasEqp", {
-              idProjetoUsuario: req.session.idProjeto,
-              idEquipeUsuario: req.session.idEquipe,
-              idTermoAberturaUsuario: req.session.idTermoAbertura, 
-              sessionNomeUsuario: req.session.nomeUsuario,
-              sessionNomeTipoUsuario: req.session.tipoUsuario,
-              data: projetosPropostas,
-              nomeProj: nomeProjeto,
-              notificacao: req.session.notificacoes,
-              layout: 'includes/layoutIncludes'
-            });
-
           }
 
         });
 
       }
+
+      console.log("projetosPropostas = "+JSON.stringify(projetosPropostas));
+
+      res.render("includes/propostasEqp", {
+        idProjetoUsuario: req.session.idProjeto,
+        idEquipeUsuario: req.session.idEquipe,
+        idTermoAberturaUsuario: req.session.idTermoAbertura, 
+        sessionNomeUsuario: req.session.nomeUsuario,
+        sessionNomeTipoUsuario: req.session.tipoUsuario,
+        data: projetosPropostas,
+        nomeProj: nomeProjeto,
+        notificacao: req.session.notificacoes,
+        layout: 'includes/layoutIncludes'
+      });
+
     }
-  });
+  }); */
 
 }
 
 module.exports.enviarRespostaProposta = function(application, req, res){
-  console.log("===req.body==>>>"+req.body);
+  console.log("===req.body==>>>"+JSON.stringify(req.body));
   var connection = application.config.dbConnection;
   var propostaDAO = new application.app.models.propostaDAO(connection);
+  var idProposta = req.body.idProposta;
+  var feedback = req.body.feedback;
+  var idEquipe = req.body.idEquipe;
+  var nomeProjeto = req.body.nomeProjeto
+  var nomeEquipe = req.body.nomeEquipe;
+  var timelineDAO = new application.app.models.TimelineDAO(connection);
 
-  propostaDAO.enviarRespostaProp(req, function(error, result){
+  propostaDAO.enviarRespostaProp(idProposta, feedback, function(error, result){
 
     if(error){
       throw error;
     } else {
       console.log("RESPOSTA ENVIADA COM SUCESSO!");
-      res.send("RESPOSTA ENVIADA COM SUCESSO!");
+      
+        timelineDAO.timelineRespostaPropostaEnviada(req.session.idContaUsuario, nomeEquipe, function(result, resultTimelineRespostaPropostaEnviada){
+
+          if(error){
+            throw error;
+          } else {
+
+            timelineDAO.timelineRespostaPropostaRecebida(idEquipe, function(result, resultTimelineRespostaPropostaRecebida){
+
+               if(error){
+                  throw error;
+               } else {
+                  var data = {
+                       resultado: "2",
+                       mensagem: "RESPOSTA ENVIADA COM SUCESSO"
+                  }
+
+                  console.log("RESPOSTA ENVIADA COM SUCESSO")
+                  res.send(data); 
+               }
+
+            })
+
+          }
+
+        })
+
+
+      1
     }
   });
 }
+
+
 module.exports.aprovarProposta = function(application, req, res){
  var connection = application.config.dbConnection;
  var propostaDAO = new application.app.models.propostaDAO(connection);
