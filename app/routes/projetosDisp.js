@@ -10,4 +10,13 @@ module.exports = function(application){
       //console.log("idProjeto -+-+-+-+>>>??"+JSON.stringify(req.body) );
       application.app.controllers.projetosDisp.candidatarse(application, req, res);
     });
+     application.get('/encerrar_negociacao', function(req, res){
+      //console.log("idProjeto -+-+-+-+>>>??"+JSON.stringify(req.body) );
+      application.app.controllers.projetosDisp.encerrarNegociacaoProjeto(application, req, res);
+    });
+
+      application.post('/encerrar_negociacao_projeto', function(req, res){
+      //console.log("idProjeto -+-+-+-+>>>??"+JSON.stringify(req.body) );
+      application.app.controllers.projetosDisp.encerrarNegociacaoProjetoDefinitivo(application, req, res);
+    });
 }

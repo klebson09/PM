@@ -23,6 +23,8 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				console.log("login.js:alterarDadosCadastrais -  resultObterDadosCliente = "+JSON.stringify(resultObterDadosCliente));
 				dadosUsr = resultObterDadosCliente[0];
 				res.render("cadastros/alterarCadastro", {
+					idProjetoUsuario: req.session.idProjeto,
+		            idEquipeUsuario: req.session.idEquipe,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -43,6 +45,8 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				dadosUsr.dataNascimento = formatarData(dataNascimentoDev);
 
 				res.render("cadastros/alterarCadastro", {
+					idProjetoUsuario: req.session.idProjeto,
+					idEquipeUsuario: req.session.idEquipe,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -62,6 +66,8 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				console.log("login.js:alterarDadosCadastrais -  resultObterDadosTutor = "+JSON.stringify(resultObterDadosTutor));
 				dadosUsr = resultObterDadosTutor[0];
 				res.render("cadastros/alterarCadastro", {
+					idProjetoUsuario: req.session.idProjeto,
+					idEquipeUsuario: req.session.idEquipe,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -130,6 +136,7 @@ module.exports.autenticar = function(application, req, res) {
 				req.session.email = result[0].email;
 				req.session.idEquipe = 0;
 				req.session.idProjeto = 0;
+				req.session.idTermoAbertura = 0;
 				req.session.dataCadastro = new Date(result[0].dataCadastro);
 				req.session.dataCadastroExtenso =  "";
 				req.session.horaCadastroExtenso =  "";
@@ -172,7 +179,7 @@ module.exports.autenticar = function(application, req, res) {
 										if(resultProjetoAndamentoDev[0] != undefined && resultProjetoAndamentoDev[0] != null){
 
 											req.session.idProjeto = resultProjetoAndamentoDev[0].idProjeto;
-
+											req.session.idTermoAbertura = resultProjetoAndamentoDev[0].idTermoAbertura;		
 											console.log("login.js:autenticar - req.session.idProjeto DEV = "+req.session.idProjeto);
 
 										}
@@ -186,6 +193,9 @@ module.exports.autenticar = function(application, req, res) {
 													req.session.msgsTimeline = msgs;
 													console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 													res.render("includes/timeLine", {
+														idProjetoUsuario: req.session.idProjeto,
+													    idEquipeUsuario: req.session.idEquipe,
+													    idTermoAberturaUsuario: req.session.idTermoAbertura,
 														sessionNomeUsuario: req.session.nomeUsuario,
 														sessionNomeTipoUsuario: req.session.tipoUsuario,
 														notificacao: req.session.notificacoes,
@@ -205,18 +215,20 @@ module.exports.autenticar = function(application, req, res) {
 										if(error){
 											throw error;
 										} else {
-											req.session.idEquipe = resultVerificarEquipeVinculadoTutor[0].idEquipe;
-											projetosDispDAO.projetoAndamentoTutor(req.session.idContaUsuario, function(error, resultProjetoAndamentoTutor){
-												if(error){
-													throw error;
-												} else {
-													if(resultProjetoAndamentoTutor[0] != undefined && resultProjetoAndamentoTutor[0] != null){
-														console.log("login.js:autenticar - resultProjetoAndamentoTutor = "+JSON.stringify(resultProjetoAndamentoTutor));
-														req.session.idProjeto = resultProjetoAndamentoTutor[0].idProjeto;
-														req.session.idEquipe = resultProjetoAndamentoTutor[0].idEquipe;
-														console.log("login.js:autenticar - req.session.idProjeto = "+req.session.idProjeto);
-														console.log("login.js:autenticar - req.session.idEquipe = "+req.session.idEquipe);
-														timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+											if(resultVerificarEquipeVinculadoTutor[0] != undefined && resultVerificarEquipeVinculadoTutor[0] != null){
+												req.session.idEquipe = resultVerificarEquipeVinculadoTutor[0].idEquipe;
+												projetosDispDAO.projetoAndamentoTutor(req.session.idContaUsuario, function(error, resultProjetoAndamentoTutor){
+													if(error){
+														throw error;
+													} else {
+														if(resultProjetoAndamentoTutor[0] != undefined && resultProjetoAndamentoTutor[0] != null){
+															console.log("login.js:autenticar - resultProjetoAndamentoTutor = "+JSON.stringify(resultProjetoAndamentoTutor));
+															req.session.idProjeto = resultProjetoAndamentoTutor[0].idProjeto;
+															req.session.idEquipe = resultProjetoAndamentoTutor[0].idEquipe;
+															req.session.idTermoAbertura = resultProjetoAndamentoTutor[0].idTermoAbertura;
+															console.log("login.js:autenticar - req.session.idProjeto = "+req.session.idProjeto);
+															console.log("login.js:autenticar - req.session.idEquipe = "+req.session.idEquipe);
+															timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
 																if(error){
 																	throw error;
 																} else {							
@@ -224,6 +236,9 @@ module.exports.autenticar = function(application, req, res) {
 																		req.session.msgsTimeline = msgs;
 																		console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 																		res.render("includes/timeLine", {
+																			idProjetoUsuario: req.session.idProjeto,
+																			idEquipeUsuario: req.session.idEquipe,
+																			idTermoAberturaUsuario: req.session.idTermoAbertura,
 																			sessionNomeUsuario: req.session.nomeUsuario,
 																			sessionNomeTipoUsuario: req.session.tipoUsuario,
 																			notificacao: req.session.notificacoes,
@@ -242,6 +257,9 @@ module.exports.autenticar = function(application, req, res) {
 																		req.session.msgsTimeline = msgs;
 																		console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 																		res.render("includes/timeLine", {
+																			idProjetoUsuario: req.session.idProjeto,
+																			idEquipeUsuario: req.session.idEquipe,
+																			idTermoAberturaUsuario: req.session.idTermoAbertura,
 																			sessionNomeUsuario: req.session.nomeUsuario,
 																			sessionNomeTipoUsuario: req.session.tipoUsuario,
 																			notificacao: req.session.notificacoes,
@@ -254,6 +272,28 @@ module.exports.autenticar = function(application, req, res) {
 													}			
 												}
 											});
+										  } else {
+										  	timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
+												if(error){
+													throw error;
+												} else {							
+													timeLineAnalisador.tratarMsgs(resultTimelineObterMsgs, function(msgs){
+														req.session.msgsTimeline = msgs;
+														console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
+														res.render("includes/timeLine", {
+															idProjetoUsuario: req.session.idProjeto,
+															idEquipeUsuario: req.session.idEquipe,
+															idTermoAberturaUsuario: req.session.idTermoAbertura,
+															sessionNomeUsuario: req.session.nomeUsuario,
+															sessionNomeTipoUsuario: req.session.tipoUsuario,
+															notificacao: req.session.notificacoes,
+															data: req.session.msgsTimeline,
+															layout: 'includes/layoutIncludes'
+														});
+													});							
+												}
+											});	
+										  }
 										}
 									});
 								} else {
@@ -265,6 +305,9 @@ module.exports.autenticar = function(application, req, res) {
 												req.session.msgsTimeline = msgs;
 												console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 												res.render("includes/timeLine", {
+													idProjetoUsuario: req.session.idProjeto,
+													idEquipeUsuario: req.session.idEquipe,
+													idTermoAberturaUsuario: req.session.idTermoAbertura,
 													sessionNomeUsuario: req.session.nomeUsuario,
 													sessionNomeTipoUsuario: req.session.tipoUsuario,
 													notificacao: req.session.notificacoes,
@@ -288,9 +331,12 @@ module.exports.autenticar = function(application, req, res) {
 							throw error;
 						} else {
 							if(resultProjetoAndamentoCliente[0] != undefined && resultProjetoAndamentoCliente[0] != null){
+								
 								req.session.idProjeto = resultProjetoAndamentoCliente[0].idProjeto;
+								req.session.idTermoAbertura = resultProjetoAndamentoCliente[0].idTermoAbertura;
 
 								console.log("login.js:autenticar - req.session.idProjeto CLIENTE = "+req.session.idProjeto);
+								console.log("login.js:autenticar - resultProjetoAndamentoCliente = "+JSON.stringify(resultProjetoAndamentoCliente));
 							}
 							
 							timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
@@ -305,6 +351,9 @@ module.exports.autenticar = function(application, req, res) {
 										console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 
 										res.render("includes/timeLine", {
+											idProjetoUsuario: req.session.idProjeto,
+											idEquipeUsuario: req.session.idEquipe,
+											idTermoAberturaUsuario: req.session.idTermoAbertura,
 											sessionNomeUsuario: req.session.nomeUsuario,
 											sessionNomeTipoUsuario: req.session.tipoUsuario,
 											notificacao: req.session.notificacoes,

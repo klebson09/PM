@@ -30,6 +30,9 @@ module.exports.consultarCheckpoints = function(application, req, res){
 							console.log("############# checkpoint:consultarTermoAbertura - checkpoints = "+ JSON.stringify(checkpoints) );
 							
 							res.render("includes/checkpoint", {
+								idProjetoUsuario: req.session.idProjeto,
+                  				idEquipeUsuario: req.session.idEquipe,
+                  				idTermoAberturaUsuario: req.session.idTermoAbertura,
 								sessionNomeUsuario: req.session.nomeUsuario,
 								sessionNomeTipoUsuario: req.session.tipoUsuario,
 								notificacao: req.session.notificacoes,
@@ -108,6 +111,9 @@ module.exports.atualizarCheckpointsProjeto = function(application, req, res){
 																		req.session.msgsTimeline = msgs;
 																		console.log("checkpoint:atualizarCheckpointsProjeto - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 																		res.render("includes/timeLine", {
+																			idProjetoUsuario: req.session.idProjeto,
+																			idEquipeUsuario: req.session.idEquipe,
+																			idTermoAberturaUsuario: req.session.idTermoAbertura,
 																			sessionNomeUsuario: req.session.nomeUsuario,
 																			sessionNomeTipoUsuario: req.session.tipoUsuario,
 																			notificacao: req.session.notificacoes,
@@ -153,6 +159,9 @@ module.exports.consultarCheckpointsProjeto = function(application, req, res){
 					console.log("############# checkpoint:consultarTermoAbertura - checkpoints = "+ JSON.stringify(checkpoints) );
 							
 					res.render("includes/checkpointEdit", {
+							idProjetoUsuario: req.session.idProjeto,
+							idEquipeUsuario: req.session.idEquipe,
+							idTermoAberturaUsuario: req.session.idTermoAbertura,
 							sessionNomeUsuario: req.session.nomeUsuario,
 							sessionNomeTipoUsuario: req.session.tipoUsuario,
 							notificacao: req.session.notificacoes,

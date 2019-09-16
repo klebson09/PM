@@ -1,5 +1,8 @@
 module.exports.modelarProj = function(application, req, res){
 		res.render('includes/modelarProj',{
+			idProjetoUsuario: req.session.idProjeto,
+		    idEquipeUsuario: req.session.idEquipe,
+		    idTermoAberturaUsuario: req.session.idTermoAbertura, 
 			sessionNomeUsuario: req.session.nomeUsuario,
 			sessionNomeTipoUsuario: req.session.tipoUsuario,
 			notificacao: req.session.notificacoes,
@@ -30,6 +33,7 @@ module.exports.criarProj = function(application, req, res){
 			//res.render("includes/projetosDisp", { data: JSON.stringify(res) });			
 			var timeLineAnalisador 	= new application.app.models.timeLineAnalisador(connection);
 			var idProjeto = result.insertId;
+			req.session.idProjeto = idProjeto;
 
 			projetosDispDAO.consultarProjeto(idProjeto, function(error, resultProjeto){
 				if(error){
@@ -50,6 +54,9 @@ module.exports.criarProj = function(application, req, res){
 										req.session.msgsTimeline = msgs;
 										console.log("modelarProjeto:criarProjeto - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 										res.render("includes/timeLine", {
+											idProjetoUsuario: req.session.idProjeto,
+										    idEquipeUsuario: req.session.idEquipe,
+										    idTermoAberturaUsuario: req.session.idTermoAbertura, 
 											sessionNomeUsuario: req.session.nomeUsuario,
 											sessionNomeTipoUsuario: req.session.tipoUsuario,
 											notificacao: req.session.notificacoes,

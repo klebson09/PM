@@ -112,6 +112,9 @@ module.exports.alterarCliente = function(application, req, res){
 								req.session.msgsTimeline = msgs;
 								console.log("cadastroCliente:alterarCliente - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 								res.render("includes/timeLine", {
+									idProjetoUsuario: req.session.idProjeto,
+                  					idEquipeUsuario: req.session.idEquipe,
+                  					idTermoAberturaUsuario: req.session.idTermoAbertura,
 									sessionNomeUsuario: req.session.nomeUsuario,
 									sessionNomeTipoUsuario: req.session.tipoUsuario,
 									notificacao: req.session.notificacoes,

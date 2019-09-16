@@ -174,6 +174,17 @@ TimelineDAO.prototype.timelineEncerrarProjeto = function(nomeProjeto, nomeEquipe
 	this._connection.query(sql, callback);
 }
 
+TimelineDAO.prototype.timelineEncerrarNegociacaoCliente = function(idContaUsuario, nomeEquipe, nomeProjeto, callback){
+	console.log("TimelineDAO:timelineEncerrarNegociacaoCliente - INICIO idContaUsuario "+idContaUsuario);
+	var titulo = "Negociações Encerradas";
+	var msg = "Você encerrou as negociações com a equipe <b>"+ nomeEquipe +"</b> para o projeto <b>"+nomeProjeto+"</b>. Aguarde novas propostas!";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idContaUsuario, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idContaUsuario+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineEncerrarNegociacaoCliente ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
 /*--------------------- DESENVOLVEDOR --------------------- */
 
 TimelineDAO.prototype.timelineIncluirDev = function(desenvolvedor, callback){
@@ -324,6 +335,17 @@ TimelineDAO.prototype.timelineProjetoEncerrado = function(nomeProjeto, nomeEquip
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
 	console.log("TimelineDAO:timelineProjetoEncerrado ====>> sql "+sql);
+	this._connection.query(sql, callback);
+}
+
+TimelineDAO.prototype.timelineNegociacaoEncerrada = function(idEquipe, nomeProjeto, callback){
+	console.log("TimelineDAO:timelineNegociacaoEncerrada - INICIO idEquipe "+idEquipe);
+	var titulo = "Cliente encerrou negociações";
+	var msg = "O cliente encerrou as negociações para o "+nomeProjeto+". A equipe está liberada para realizar outras propostas";
+	var icon = "fa fa-envelope bg-blue";
+	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
+	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
+	console.log("TimelineDAO:timelineNegociacaoEncerrada ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 

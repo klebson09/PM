@@ -68,6 +68,13 @@ EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
   this._connection.query(sqlObterMembrosEquipe, callback);
 }
 
+EquipeDAO.prototype.obterMembrosEquipeTutor = function(idEquipe, callback){
+  console.log("EquipeDAO:obterMembrosEquipeTutor - INICIO");
+  var sqlObterMembrosEquipeTutor = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN equipe ON membrosequipe.equipe_idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"'";   
+  console.log("EquipeDAO:obterMembrosEquipeTutor - sqlObterMembrosEquipeTutor = "+sqlObterMembrosEquipeTutor);
+  this._connection.query(sqlObterMembrosEquipeTutor, callback);
+}
+
 EquipeDAO.prototype.obterTutorEquipe = function(idEquipe, callback){
   console.log("EquipeDAO:obterTutorEquipe - INICIO");
   var sqlObterTutor = "SELECT * FROM conta_usuario INNER JOIN equipe ON conta_usuario.idContaUsuario = equipe.idTutor WHERE equipe.idEquipe = "+idEquipe;

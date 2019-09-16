@@ -8,7 +8,9 @@ TermoAberturaDAO.prototype.criarTermoAbertura = function(termoAbertura, callback
 
   console.log("************criar Termo de Abertura***************");
 
-  var idProjeto = termoAbertura.idProjeto;
+  console.log("TermoAberturaDAO:criarTermoAbertura - termoAbertura = "+JSON.stringify(termoAbertura))
+
+  var idProjeto = termoAbertura.idProjeto; 
   var tituloProjeto = termoAbertura.nomeProjeto;
   var objetivo = termoAbertura.objetivoProjeto;
   var escopo = termoAbertura.escopoProjeto;

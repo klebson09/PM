@@ -39,6 +39,9 @@ module.exports.listarPropostasProjeto = function(application, req, res){
             console.log("projetosPropostas = "+JSON.stringify(projetosPropostas));
 
             res.render("includes/propostasEqp", {
+              idProjetoUsuario: req.session.idProjeto,
+              idEquipeUsuario: req.session.idEquipe,
+              idTermoAberturaUsuario: req.session.idTermoAbertura, 
               sessionNomeUsuario: req.session.nomeUsuario,
               sessionNomeTipoUsuario: req.session.tipoUsuario,
               data: projetosPropostas,

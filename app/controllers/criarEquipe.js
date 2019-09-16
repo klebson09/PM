@@ -23,6 +23,9 @@ module.exports.criarEqp = function(application, req, res){
                 resultadoTutor = resultadoT;
                 console.log("Vai responder");
                 res.render("includes/criarEqp3", {
+                  idProjetoUsuario: req.session.idProjeto,
+                  idEquipeUsuario: req.session.idEquipe, 
+                  idTermoAberturaUsuario: req.session.idTermoAbertura, 
                   sessionNomeUsuario: req.session.nomeUsuario,
                   sessionNomeTipoUsuario: req.session.tipoUsuario,
                   notificacao: req.session.notificacoes,
@@ -53,7 +56,7 @@ module.exports.visualizarEquipe = function(application, req, res){
     var resultadoDEV = [];
     var resultadoTutor = [];
 
-    EquipeDAO.obterMembrosEquipe(req.session.idEquipe, function(erro, resultObterMembrosEquipe){
+    EquipeDAO.obterMembrosEquipeTutor(req.session.idEquipe, function(erro, resultObterMembrosEquipe){
       console.log("--------------------------------------------------------------");
       console.log("criarEquipe.js: resultObterMembrosEquipe - "+JSON.stringify(resultObterMembrosEquipe) );
       var idTutorEquipe = resultObterMembrosEquipe[0].idTutor;
@@ -76,6 +79,9 @@ module.exports.visualizarEquipe = function(application, req, res){
                 
 
                 res.render("includes/visualizarEquipe", {
+                  idProjetoUsuario: req.session.idProjeto,
+                  idEquipeUsuario: req.session.idEquipe,
+                  idTermoAberturaUsuario: req.session.idTermoAbertura, 
                   sessionNomeUsuario: req.session.nomeUsuario,
                   sessionNomeTipoUsuario: req.session.tipoUsuario,
                   notificacao: req.session.notificacoes,
@@ -198,6 +204,9 @@ module.exports.cadastrarEquipe = function(application, req, res){
 
 
                                     res.render("includes/timeLine", {
+                                      idProjetoUsuario: req.session.idProjeto,
+                                      idEquipeUsuario: req.session.idEquipe,
+                                      idTermoAberturaUsuario: req.session.idTermoAbertura, 
                                       sessionNomeUsuario: req.session.nomeUsuario,
                                       sessionNomeTipoUsuario: req.session.tipoUsuario,
                                       notificacao: req.session.notificacoes,

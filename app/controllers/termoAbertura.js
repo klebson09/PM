@@ -34,6 +34,9 @@ module.exports.termoDeAbertura = function(application, req, res){
 							var dadosPj = resultConsultarProjeto[0];
 
 								res.render("includes/termoAbertura", {
+										idProjetoUsuario: req.session.idProjeto,
+										idEquipeUsuario: req.session.idEquipe,
+										idTermoAberturaUsuario: req.session.idTermoAbertura, 
 					        			sessionNomeUsuario: req.session.nomeUsuario,
 				            			sessionNomeTipoUsuario: req.session.tipoUsuario,
 				            			notificacao: req.session.notificacoes,
@@ -71,6 +74,7 @@ module.exports.criarTermoDeAbertura = function(application, req, res){
 			console.log("TERMO DE ABERTURA CADASTRADO COM SUCESSO");
 			console.log("Cadastrando Checkpoints....");
 
+			req.session.idTermoAbertura = result.insertId;
 			var idProjeto = termoAbertura.idProjeto
 			var checkpointDAO = new application.app.models.CheckpointDAO(connection);
 
@@ -111,6 +115,9 @@ module.exports.criarTermoDeAbertura = function(application, req, res){
 																req.session.msgsTimeline = msgs;
 																console.log("propostasEqp:criarTermoAbertura - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 																res.render("includes/timeLine", {
+																	idProjetoUsuario: req.session.idProjeto,
+													    			idEquipeUsuario: req.session.idEquipe,
+													    			idTermoAberturaUsuario: req.session.idTermoAbertura, 
 																	sessionNomeUsuario: req.session.nomeUsuario,
 																	sessionNomeTipoUsuario: req.session.tipoUsuario,
 																	notificacao: req.session.notificacoes,
@@ -188,9 +195,13 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 							membrosEquipe = resultObterMembrosEquipe;
 							
 								res.render("includes/termoAberturaCliente", {
+									idProjetoUsuario: req.session.idProjeto,
+									idEquipeUsuario: req.session.idEquipe,
+									idTermoAberturaUsuario: req.session.idTermoAbertura, 
 									sessionNomeUsuario: req.session.nomeUsuario,
 									sessionNomeTipoUsuario: req.session.tipoUsuario,
 									notificacao: req.session.notificacoes,
+									statusTA: statusTermoAbertura,
 									dadosTA: termoAbertura,
 									dadosCP: checkpoints,
 									dadosEQP: membrosEquipe,
@@ -374,6 +385,9 @@ module.exports.consultarEdicaoTermoDeAbertura = function(application, req, res){
 
 							
 								res.render("includes/termoAberturaClienteEditar", {
+									idProjetoUsuario: req.session.idProjeto,
+									idEquipeUsuario: req.session.idEquipe,
+									idTermoAberturaUsuario: req.session.idTermoAbertura, 
 									sessionNomeUsuario: req.session.nomeUsuario,
 									sessionNomeTipoUsuario: req.session.tipoUsuario,
 									notificacao: req.session.notificacoes,
@@ -431,6 +445,9 @@ console.log("************termoAbertura.js:editarTermoDeAbertura INICIO**********
 					if(error){
 						throw error;
 					} else {
+
+						entregaveis = JSON.parse(entregaveis);
+
 						checkpointDAO.criarCheckpoints(entregaveis, idProjeto, function(erro, resultCriarCheckpoints){
 							if(erro){
 								throw erro;
@@ -467,6 +484,9 @@ console.log("************termoAbertura.js:editarTermoDeAbertura INICIO**********
 																			req.session.msgsTimeline = msgs;
 																			console.log("termoAbertura.js:atualizarTermoAbertura - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 																			res.render("includes/timeLine", {
+																				idProjetoUsuario: req.session.idProjeto,
+													    						idEquipeUsuario: req.session.idEquipe,
+													    						idTermoAberturaUsuario: req.session.idTermoAbertura, 	
 																				sessionNomeUsuario: req.session.nomeUsuario,
 																				sessionNomeTipoUsuario: req.session.tipoUsuario,
 																				notificacao: req.session.notificacoes,

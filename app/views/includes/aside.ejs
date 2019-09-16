@@ -1,8 +1,8 @@
-<% var dev = [{"icon":"fa fa-code","texto":"Novos Projetos","link":"/projeto_disp"},{"icon":"fa fa-search","texto":"Buscar Equipes","link":"/buscar_eqp"},{"icon":"fa fa-group","texto":"Criar Equipe","link":"/criar_equipe"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/consultar_checkpoints"}];
+<% var dev = [{"icon":"fa fa-code","texto":"Novos Projetos","link":"/projeto_disp"},{"icon":"fa fa-group","texto":"Criar Equipe","link":"/criar_equipe"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/consultar_checkpoints"}];
 
-var cli = [{"icon":"fa fa-edit","texto":"Modelar Projeto","link":"/modelar_projeto"}, {"icon":"fa fa-envelope","texto":"Propostas das Equipes","link":"/propostas_projeto"},{"icon":"fa  fa-file-text-o","texto":"Termos de Abertura","link":"/termo_abertura"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/checkpoint"}];
+var cli = [{"icon":"fa fa-edit","texto":"Modelar Projeto","link":"/modelar_projeto"}, {"icon":"fa fa-envelope","texto":"Propostas das Equipes","link":"/propostas_projeto"},{"icon":"fa  fa-file-text-o","texto":"Termos de Abertura","link":"/consultar_termo_abertura"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/checkpoint"}];
 
-var tut = [{"icon":"fa fa-group","texto":"Visualizar Equipe","link":"/visualizar_equipe"},{"icon":"fa fa-files-o","texto":"Visualizar Projetos","link":"/projeto_disp"},{"icon":"fa fa-file-text-o","texto":"Termos de Abertura","link":"/termo_abertura"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/consultar_checkpoints"}]; 
+var tut = [{"icon":"fa fa-group","texto":"Visualizar Equipe","link":"/visualizar_equipe"},{"icon":"fa fa-file-text-o","texto":"Termos de Abertura","link":"/consultar_termo_abertura"},{"icon":"fa fa-check","texto":"Checkpoints","link":"/consultar_checkpoints"}]; 
 
 var menuUsr = []; %>
 
@@ -41,9 +41,98 @@ var menuUsr = []; %>
     <ul class="sidebar-menu">
       <li class="header">MENU PRINCIPAL</li>
         <li><a href="/homeTimeLine"><i class="fa fa-clock-o"></i>Linha do Tempo</a></li>
-        <% for(var i=0; i< menuUsr.length; i++){ %>
-        <li><a href="<%- menuUsr[i].link  %>"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
-        <% }%>
+  <% for(var i=0; i< menuUsr.length; i++){ %>
+
+
+        <% if (sessionNomeTipoUsuario == 'C'){  %>
+
+           <% if(menuUsr[i].link == '/modelar_projeto' && idProjetoUsuario != 0 ){  %>
+
+              <li><a href="javascript:alert('Cliente já modelou projeto')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>
+              <% continue; %>
+
+           <% } %>  
+
+          <% if(menuUsr[i].link == '/propostas_projeto' && idProjetoUsuario == 0 ){  %>
+
+               <li><a href="javascript:alert('Cliente ainda não modelou projeto')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+              <% continue; %>
+
+          <% } %>  
+
+           <% if(menuUsr[i].link == '/consultar_termo_abertura' && (idTermoAberturaUsuario == 0 || idTermoAberturaUsuario == null) ){  %>
+
+               <li><a href="javascript:alert('Não há Termo de Abertura cadastrado para o projeto modelado')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+              <% continue; %>
+
+          <% } %>  
+
+           <% if(menuUsr[i].link == '/checkpoint' && (idTermoAberturaUsuario == 0 || idTermoAberturaUsuario == null) ){  %>
+
+              <li><a href="javascript:alert('Não há Termo de Abertura cadastrado para o projeto modelado')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+              <% continue; %>
+
+          <% } %>  
+
+        <% } %>
+
+        <% if (sessionNomeTipoUsuario == 'D'){  %>
+
+          <% if(menuUsr[i].link == '/projeto_disp' && idEquipeUsuario == 0 ){  %>
+            <li><a href="javascript:alert('Desenvolvedor não é membro de uma equipe')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+            <% continue; %>
+
+           <% } %> 
+
+           <% if(menuUsr[i].link == '/criar_equipe' && idEquipeUsuario != 0 ){  %>
+            <li><a href="javascript:alert('Desenvolvedor já é membro de uma equipe')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+            <% continue; %>
+
+           <% } %> 
+
+            <% if(menuUsr[i].link == '/consultar_checkpoints' && (idTermoAberturaUsuario == 0 || idTermoAberturaUsuario == null) ){  %>
+
+              <li><a href="javascript:alert('Equipe não possui nenhum projeto em andamento')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>
+             <% continue; %>
+
+           <% } %>
+
+
+        <% } %>
+
+        <% if (sessionNomeTipoUsuario == 'T'){
+
+          if(menuUsr[i].link == '/visualizar_equipe' && idEquipeUsuario == 0 ){  %>
+
+               
+            <li><a href="javascript:alert('Tutor ainda não esta vinculado a uma equipe')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>   
+
+            <% continue; %>
+
+         
+            
+          <% } else if(menuUsr[i].link == '/consultar_termo_abertura' && idProjetoUsuario == 0) { %>
+
+             <li><a href="javascript:alert('Equipe não possui ainda projeto em andamento')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>
+
+             <% continue; %>
+
+          <% } else if(menuUsr[i].link == '/consultar_checkpoints' && idProjetoUsuario == 0) { %>
+
+             <li><a href="javascript:alert('Equipe não possui ainda projeto em andamento')"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>
+
+             <% continue; %>
+
+          <% } %>  
+
+      <%  } %>
+
+
+        <li><a href="<%- menuUsr[i].link  %>"><i class="<%- menuUsr[i].icon  %>"></i><%- menuUsr[i].texto %></a></li>
+
+
+
+ <% }%>
     </ul>
   </section>
   <!-- /.sidebar -->

@@ -3,6 +3,9 @@ module.exports.viewTimeLine = function(application, req, res){
 	if (req.session.autenticado) {
 		console.log("=====>>>> timeLine controller no if");
 		res.render("includes/timeLine", {
+				idProjetoUsuario: req.session.idProjeto,
+				idEquipeUsuario: req.session.idEquipe,
+				idTermoAberturaUsuario: req.session.idTermoAbertura, 
 	        	sessionNomeUsuario: req.session.nomeUsuario,
             	sessionNomeTipoUsuario: req.session.tipoUsuario,
             	notificacao: req.session.notificacoes,
@@ -22,7 +25,7 @@ module.exports.exibirTimeLine = function(application, req, res){
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
 	var timeLineAnalisador = new application.app.models.timeLineAnalisador(connection);
 
-  if(req.session.tipoUsuario == 'C'){
+  if(req.session.tipoUsuario != 'D'){
 		timelineDAO.timelineObterMsgs(req.session.idContaUsuario, function(error, resultTimelineObterMsgs){
 			if(error){
 				throw error;
@@ -31,6 +34,9 @@ module.exports.exibirTimeLine = function(application, req, res){
 					req.session.msgsTimeline = msgs;
 					console.log("timeLine.js:exibirTimeLine - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 					res.render("includes/timeLine", {
+						idProjetoUsuario: req.session.idProjeto,
+						idEquipeUsuario: req.session.idEquipe,
+						idTermoAberturaUsuario: req.session.idTermoAbertura, 
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
 						notificacao: req.session.notificacoes,
@@ -49,6 +55,9 @@ module.exports.exibirTimeLine = function(application, req, res){
 					req.session.msgsTimeline = msgs;
 					console.log("login.js:autenticar - req.session.msgsTimeline = "+JSON.stringify(req.session.msgsTimeline))
 					res.render("includes/timeLine", {
+						idProjetoUsuario: req.session.idProjeto,
+						idEquipeUsuario: req.session.idEquipe,
+						idTermoAberturaUsuario: req.session.idTermoAbertura, 
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
 						notificacao: req.session.notificacoes,
@@ -84,6 +93,9 @@ module.exports.listTimeLineClient = function(application, req, res){
 					//res.render("includes/projetosDisp", { data: JSON.stringify(res) });
 
 					res.render("includes/timeLine", {
+						idProjetoUsuario: req.session.idProjeto,
+						idEquipeUsuario: req.session.idEquipe,
+						idTermoAberturaUsuario: req.session.idTermoAbertura, 
 						sessionNomeUsuario: req.session.nomeUsuario,
 						sessionNomeTipoUsuario: req.session.tipoUsuario,
 						notificacao: req.session.notificacoes,

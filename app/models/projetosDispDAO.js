@@ -58,21 +58,21 @@ projetosDispDAO.prototype.atualizarStatusProjeto = function(idProjeto, idEquipe,
 
 projetosDispDAO.prototype.projetoAndamentoCliente = function(idContaUsuario, callback){
   console.log("projetosDispDAO:projetoAndamentoCliente - INICIO");
-  var sql = "SELECT idProjeto FROM projeto WHERE idContaUsuario = "+idContaUsuario+" AND status != 'Concluído'";
+  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idContaUsuario = "+idContaUsuario+" AND projeto.status != 'Concluído'";
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }
 
 projetosDispDAO.prototype.projetoAndamentoDev = function(idEquipe, callback){
   console.log("projetosDispDAO:projetoAndamentoDev - INICIO");
-  var sql = "SELECT idProjeto FROM projeto WHERE idEquipe = "+idEquipe+" AND status != 'Concluído'";
+  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura FROM projeto LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE idEquipe = "+idEquipe+" AND projeto.status != 'Concluído'";
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }
 
 projetosDispDAO.prototype.projetoAndamentoTutor = function(idContaUsuario, callback){
   console.log("projetosDispDAO:projetoAndamentoTutor - INICIO");
-  var sql = "SELECT projeto.idProjeto, equipe.* FROM projeto INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE equipe.idTutor = "+idContaUsuario+"  AND projeto.status = 'Em andamento'";
+  var sql = "SELECT projeto.idProjeto, termo_abertura.idTermoAbertura , equipe.* FROM projeto INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe LEFT JOIN termo_abertura ON projeto.idProjeto = termo_abertura.idProjeto WHERE equipe.idTutor = "+idContaUsuario+"  AND projeto.status = 'Em andamento'";
   console.log("projetosDispDAO:projetoAndamentoTutor - sql = "+sql);
   this._connection.query(sql, callback);
 }
@@ -80,6 +80,13 @@ projetosDispDAO.prototype.projetoAndamentoTutor = function(idContaUsuario, callb
 projetosDispDAO.prototype.consultarStatusProjeto = function(idProjeto, callback){
   console.log("projetosDispDAO:consultarStatusProjeto - INICIO");
   var sql = "SELECT status FROM projeto WHERE idProjeto = "+idProjeto;
+  console.log("sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
+projetosDispDAO.prototype.encerrarNegociacao = function(idProjeto, status, callback){
+  console.log("projetosDispDAO:encerrarNegociacao - INICIO");
+  var sql = "UPDATE projeto SET status = '"+status+ "', idEquipe = null WHERE idProjeto = "+idProjeto;
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }
