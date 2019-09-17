@@ -229,11 +229,16 @@ TimelineDAO.prototype.timelineEnviarProposta = function(projeto, idEquipe, callb
 	this._connection.query(sql, callback);
 }
 
-TimelineDAO.prototype.timelinePropostaAprovada = function(nomeProjeto, idEquipe, callback){
+TimelineDAO.prototype.timelinePropostaAprovada = function(nomeProjeto, idEquipe, feedback ,callback){
 	console.log("TimelineDAO:timelinePropostaAprovada - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Cliente aprovou sua proposta para o projeto "+nomeProjeto;
 	var href = "/termo_abertura";
-	var msg = "Boas noticias, o cliente aceitou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", vocês devem negociar todos os termos e formaliza-los no Termo de Abertura. Clique em <b><a href="+href+">TERMO DE ABERTURA</a></b> para redigir o termo de abertura para a analise posterior do cliente";
+	var msg = "Boas noticias, o cliente aceitou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", vocês devem negociar todos os termos e formaliza-los no Termo de Abertura. Clique em <b><a href="+href+">TERMO DE ABERTURA</a></b> para redigir o termo de abertura para a analise posterior do cliente.";
+
+	if(feedback != ""){
+		msg = msg + " Segue mensagem do cliente: <b><i>"+feedback+"</i></b>";
+	}
+
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";
@@ -241,11 +246,16 @@ TimelineDAO.prototype.timelinePropostaAprovada = function(nomeProjeto, idEquipe,
 	this._connection.query(sql, callback);
 }
 
-TimelineDAO.prototype.timelinePropostaRecusada = function(nomeProjeto, idEquipe, callback){
+TimelineDAO.prototype.timelinePropostaRecusada = function(nomeProjeto, idEquipe, feedback, callback){
 	console.log("TimelineDAO:timelinePropostaRecusada - INICIO nomeProjeto "+nomeProjeto);
 	var titulo = "Cliente recusou sua proposta para o projeto "+nomeProjeto;
 	var href = "/projeto_disp";
 	var msg = "O cliente recusou a proposta inicial de sua equipe para desenvolver o projeto "+nomeProjeto+", você pode formalizar uma nova proposta para o mesmo projeto ou outro projeto. Clique em <b><a href="+href+">PROJETOS DISPONIVEIS</a></b> para analisar os projetos ainda disponíveis";
+
+	if(feedback != ""){
+		msg = msg + " Segue mensagem do cliente: <b><i>"+feedback+"</i></b>";
+	}
+
 	var icon = "fa fa-envelope bg-blue";
 	var sql = "INSERT INTO timeline_msg (idEquipe, tituloMensagem, mensagem, icon)";
 	sql += " VALUES ('"+idEquipe+"', '"+titulo+"', '"+msg+"', '"+icon+"')";

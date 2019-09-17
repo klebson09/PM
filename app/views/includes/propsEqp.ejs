@@ -73,7 +73,7 @@
               <table class="table table-hover">
                 <tbody><tr>
                   <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Projeto</font></font></th>
-                  <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nome da Equipe</font></font></th>
+                  <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Equipe</font></font></th>
                   <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Apresentação</font></font></th>
                   <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Dúvidas</font></font></th>
                   <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Resposta</font></font></th>
@@ -144,9 +144,10 @@
     var nomeProj = document.getElementById("nomeProjeto").value;
     var idEqp = document.getElementById("idEquipe").value;
     var nomeEqp = document.getElementById("nomeEquipe").value;
+    var resp = document.getElementById("feedback").value;
 
     console.log("O/ btnRecusar ");
-    $.post( "/aprovar_proposta", { idProposta: idProp, status: "Recusado", idProjeto: idProj, idEquipe: idEqp, nomeEquipe: nomeEqp, nomeProjeto: nomeProj},
+    $.post( "/aprovar_proposta", { idProposta: idProp, status: "Recusado", idProjeto: idProj, idEquipe: idEqp, nomeEquipe: nomeEqp, nomeProjeto: nomeProj, feedback: resp},
     function(data){
 
        console.log("resultado = "+data.resultado);
@@ -157,6 +158,8 @@
 
       } );
   }
+
+
   function btnAprovar() {
 
     var idProp = document.getElementById("idPropostaProjeto").value;
@@ -164,10 +167,11 @@
     var nomeProj = document.getElementById("nomeProjeto").value;
     var idEqp = document.getElementById("idEquipe").value;
     var nomeEqp = document.getElementById("nomeEquipe").value;
+    var resp = document.getElementById("feedback").value;
     //  alert(value);
       // document.getElementById("idProposta").setAttribute('value',value);
       // console.log("O/ btnAprovar "+evtId.target.id);
-      $.post( "/aprovar_proposta", { idProposta: idProp, status: "Aprovada", idProjeto: idProj, idEquipe: idEqp }, function(data){
+      $.post( "/aprovar_proposta", { idProposta: idProp, status: "Aprovada", idProjeto: idProj, idEquipe: idEqp, feedback: resp}, function(data){
 
         console.log("resultado = "+data.resultado);
 

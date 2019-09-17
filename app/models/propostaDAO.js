@@ -94,10 +94,12 @@ propostaDAO.prototype.aprovarProp = function(req, callback){
 //  var resposta = req.body.resposta;DSSDA
   var idProposta = req.body.idProposta;
   // var status = "Recusado";
+  var feedback = req.body.feedback;
+
   console.log("@@status==>"+status+"idProposta==>"+idProposta);
 
   // var updatePropostaSql = "UPDATE proposta SET status,feedback VALUES('"+status+"', '"+respostaMsg+"') WHERE idProposta ='"+idProposta+"')";
-  var updatePropostaSql = "UPDATE `proposta` SET `status` = '"+status+"' WHERE (`idProposta` ='"+idProposta+"')";
+  var updatePropostaSql = "UPDATE `proposta` SET `status` = '"+status+"', `feedback` = '"+feedback+"' WHERE (`idProposta` ='"+idProposta+"')";
   console.log("@@updatePropostaSql@@"+updatePropostaSql);
   this._connection.query(updatePropostaSql, callback);
 }

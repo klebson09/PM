@@ -193,7 +193,7 @@ module.exports.aprovarProposta = function(application, req, res){
                     if(error){
                       throw error;
                     } else {
-                      timelineDAO.timelinePropostaAprovada(dadosProjetoEquipe.nomeProjeto, req.body.idEquipe, function(error, resultTimelinePropostaAprovada){
+                      timelineDAO.timelinePropostaAprovada(dadosProjetoEquipe.nomeProjeto, req.body.idEquipe, req.body.feedback , function(error, resultTimelinePropostaAprovada){
 
                         if(error){
                           throw error;
@@ -248,7 +248,7 @@ module.exports.aprovarProposta = function(application, req, res){
             if(error){
                  throw error;
                } else {
-                 timelineDAO.timelinePropostaRecusada(nomeProjeto, req.body.idEquipe, function(error, resultTimelinePropostaAprovada){
+                 timelineDAO.timelinePropostaRecusada(nomeProjeto, req.body.idEquipe, req.body.feedback , function(error, resultTimelinePropostaAprovada){
 
                    if(error){
                      throw error;
