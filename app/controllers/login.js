@@ -25,6 +25,7 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				res.render("cadastros/alterarCadastro", {
 					idProjetoUsuario: req.session.idProjeto,
 		            idEquipeUsuario: req.session.idEquipe,
+		            idTermoAberturaUsuario: req.session.idTermoAbertura,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -47,6 +48,7 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				res.render("cadastros/alterarCadastro", {
 					idProjetoUsuario: req.session.idProjeto,
 					idEquipeUsuario: req.session.idEquipe,
+					idTermoAberturaUsuario: req.session.idTermoAbertura,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -68,6 +70,7 @@ module.exports.alterarDadosCadastrais = function(application, req, res) {
 				res.render("cadastros/alterarCadastro", {
 					idProjetoUsuario: req.session.idProjeto,
 					idEquipeUsuario: req.session.idEquipe,
+					idTermoAberturaUsuario: req.session.idTermoAbertura,
 					dadosUsuario: dadosUsr,
 					tipoUsuario: tipoUsr,
 					notificacao: req.session.notificacoes,
@@ -326,7 +329,8 @@ module.exports.autenticar = function(application, req, res) {
 				}else if (req.session.tipoUsuario == 'C'){
 					console.log("Verificando se o usuário cliente tem um projeto associado");
 
-					projetosDispDAO.projetoAndamentoCliente(req.session.idContaUsuario, function(error, resultProjetoAndamentoCliente){
+					//projetosDispDAO.projetoAndamentoCliente(req.session.idContaUsuario, function(error, resultProjetoAndamentoCliente){
+						projetosDispDAO.projetoAndamentoCliente("NaN", function(error, resultProjetoAndamentoCliente){
 						if(error){
 							throw error;
 						} else {

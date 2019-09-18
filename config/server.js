@@ -47,6 +47,9 @@ app.use(bodyParser.urlencoded({extended: true})); // quando tiver um post em alg
 /*configurar o middleware express-validator */
 app.use(expressValidator());
 
+var cluster = require('cluster');
+var domain = require('domain');
+
 
 
 /*configurar o middleware express-session */
