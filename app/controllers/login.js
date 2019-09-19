@@ -150,14 +150,7 @@ module.exports.autenticar = function(application, req, res) {
 				}];
 				req.session.msgsTimeline = [];
 
-				console.log("tipoUsuario = "+req.session.tipoUsuario);
-				console.log("nomeUsuario = "+req.session.nomeUsuario);
-				console.log("dataCadastroJS = "+req.session.dataCadastro);
 
-
-				console.log("dataCadastroDATA = "+req.session.dataCadastro.getDate());
-				console.log("dataCadastroMES = "+req.session.dataCadastro.getMonth());
-				console.log("dataCadastroANO = "+req.session.dataCadastro.getFullYear());
 			}
 
 			if (req.session.autenticado) {
