@@ -3,10 +3,10 @@ var mysql = require('mysql');
 // Conexão com o banco myslq
 var connMysql =function(){
   return mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'pm'
+    host: 'xxx',
+    user: 'xxx',
+    password: 'xxx',
+    database: 'xxx'
   });
 }
 
