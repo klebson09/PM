@@ -23,7 +23,7 @@ EquipeDAO.prototype.cadEquipe = function(equipe, idAdmEqp ,callback){
     this._connection.query(sqlInsertEquipe, callback)
 }
 
-EquipeDAO.prototype.cadmembrosequipe = function(membrosequipe, idEquipe, callback){
+EquipeDAO.prototype.cadMembrosEquipe = function(membrosequipe, idEquipe, callback){
   console.log("Inserindo membros na equipe");
 
   var sqlInsertmembrosequipe = "INSERT INTO membrosequipe (conta_usuario_idContaUsuario, equipe_idEquipe) VALUES (";
