@@ -281,7 +281,11 @@ module.exports.finalizarProjeto = function(application, req, res){
 									var data = {
 	                        			resultado: "1",
                              			mensagem: "PROJETO FINALIZADO COM SUCESSO"
-                       				};	 
+                       				};
+
+                       				//Resetando as variáveis de sessão
+                       				req.session.idProjeto = 0;
+                       				req.session.idTermoAbertura = 0;
 
                              		console.log("checkpoint:finalizarProjeto - ENVIANDO RESPOSTA A VIEW!!!!!!!!!!!!!!!!!!!!!!!")
                       				res.send(data);  
