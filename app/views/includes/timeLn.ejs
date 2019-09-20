@@ -299,13 +299,15 @@ function desativarLinks(){
 
  for(var i=1; i<elementosLinksTimeline.length; i++){
   if(elementosLinksTimeline[i].getElementsByTagName("a")[0] != undefined){
-    elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttribute("href", "#");
-    var att1 = document.createAttribute("data-toggle");       // Create a "class" attribute
-    att1.value = "modal";
-    var att2 = document.createAttribute("data-target");       // Create a "class" attribute
-    att2.value = "#myModal";                             // Set the value of the class attribute
-    elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttributeNode(att1);  
-    elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttributeNode(att2); 
+    if(elementosLinksTimeline[i].getElementsByTagName("a")[0].getAttribute("href") != "/consultar_checkpoints"){
+       elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttribute("href", "#");
+       var att1 = document.createAttribute("data-toggle");       // Create a "class" attribute
+       att1.value = "modal";
+       var att2 = document.createAttribute("data-target");       // Create a "class" attribute
+       att2.value = "#myModal";                             // Set the value of the class attribute
+       elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttributeNode(att1);  
+       elementosLinksTimeline[i].getElementsByTagName("a")[0].setAttributeNode(att2); 
+    }
     //data-target="#myModal"
   } 
  }
