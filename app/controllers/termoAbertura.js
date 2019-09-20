@@ -189,25 +189,40 @@ module.exports.consultarTermoDeAbertura = function(application, req, res){
 						if(error){
 							throw error;
 						} else {
-							console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
 
-							var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterMembrosEquipe};
-							membrosEquipe = resultObterMembrosEquipe;
+							equipeDAO.obterTutorEquipe(termoAbertura.idEquipe, function(error, resultObterTutorEquipe){
+
+								if(error){
+									throw error;
+								} else {
+									console.log("termoAbertura.js: resultObterTutorEquipe - "+JSON.stringify(resultObterTutorEquipe) );
+									var dadosT = resultObterTutorEquipe;
+
+									console.log("#############3termoAbertura:consultarTermoAbertura - statusTermoAbertura = "+statusTermoAbertura);
+
+									var dados = {"idProjeto":req.session.idProjeto,"equipe":resultObterMembrosEquipe};
+									membrosEquipe = resultObterMembrosEquipe;
 							
-								res.render("includes/termoAberturaCliente", {
-									idProjetoUsuario: req.session.idProjeto,
-									idEquipeUsuario: req.session.idEquipe,
-									idTermoAberturaUsuario: req.session.idTermoAbertura, 
-									sessionNomeUsuario: req.session.nomeUsuario,
-									sessionNomeTipoUsuario: req.session.tipoUsuario,
-									notificacao: req.session.notificacoes,
-									statusTA: statusTermoAbertura,
-									dadosTA: termoAbertura,
-									dadosCP: checkpoints,
-									dadosEQP: membrosEquipe,
-									dadosTermoAbertura: dados,
-									layout: 'includes/layoutIncludes'
-								});							
+									res.render("includes/termoAberturaCliente", {
+										idProjetoUsuario: req.session.idProjeto,
+										idEquipeUsuario: req.session.idEquipe,
+										idTermoAberturaUsuario: req.session.idTermoAbertura, 
+										sessionNomeUsuario: req.session.nomeUsuario,
+										sessionNomeTipoUsuario: req.session.tipoUsuario,
+										notificacao: req.session.notificacoes,
+										statusTA: statusTermoAbertura,
+										dadosTA: termoAbertura,
+										dadosCP: checkpoints,
+										dadosEQP: membrosEquipe,
+										dadosTermoAbertura: dados,
+				            			dadosTutor: dadosT,
+										layout: 'includes/layoutIncludes'
+									});
+
+
+								}	
+
+							});							
 						}	
 
 					});					

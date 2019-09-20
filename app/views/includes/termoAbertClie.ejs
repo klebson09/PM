@@ -118,13 +118,15 @@
                         </div><!-- /.box -->
                       </div>
                     </div>
-                   
-
+              
                     <div class="form-group col-md-12">
                       <label for="equipeProj" >Equipe</label>
                       <ul id="equipeProj">
+                        <% if(dadosTutor[0] != undefined) { %>  
+                        <li> <%= dadosTutor[0].nomeUsuario %></li>                        
                         <%
-                          var equipe = dadosEQP; 
+                        }
+                          var equipe = dadosTermoAbertura.equipe;
                           for(var i=0; i < equipe.length; i++){
                           %>
                            <li><%= equipe[i].nomeUsuario %></li>
