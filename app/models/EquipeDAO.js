@@ -61,14 +61,14 @@ EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){
   this._connection.query(sqlObterDadosEquipe, callback);
 }
 
-EquipeDAO.prototype.obtermembrosequipe = function(idEquipe, callback){
+EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
   console.log("EquipeDAO:obtermembrosequipe - INICIO");
   var sqlObtermembrosequipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe  INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"' AND projeto.status != 'Concluído'";   
   console.log("EquipeDAO:obtermembrosequipe - sqlObtermembrosequipe = "+sqlObtermembrosequipe);
   this._connection.query(sqlObtermembrosequipe, callback);
 }
 
-EquipeDAO.prototype.obtermembrosequipeTutor = function(idEquipe, callback){
+EquipeDAO.prototype.obterMembrosEquipeTutor = function(idEquipe, callback){
   console.log("EquipeDAO:obtermembrosequipeTutor - INICIO");
   var sqlObtermembrosequipeTutor = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN equipe ON membrosequipe.equipe_idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"'";   
   console.log("EquipeDAO:obtermembrosequipeTutor - sqlObtermembrosequipeTutor = "+sqlObtermembrosequipeTutor);
