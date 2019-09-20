@@ -3,10 +3,10 @@ var mysql = require('mysql');
 // Conexão com o banco myslq
 var connMysql =function(){
   return mysql.createConnection({
-    host: 'xxx',
-    user: 'xxx',
-    password: 'xxx',
-    database: 'xxx'
+    host: 'mysql.projectmarketplace.kinghost.net',
+    user: 'projectmar_add1',
+    password: 'root321',
+    database: 'projectmarketp'
   });
 }
 
