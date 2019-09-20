@@ -37,7 +37,7 @@ projetosDispDAO.prototype.criarProjeto = function(dadosProjeto, idUsuario, callb
 
 projetosDispDAO.prototype.consultarProjeto = function(idProjeto, callback){
   console.log("projetosDispDAO: consultarProjeto - ");
-  var sql = "SELECT * FROM pm.projeto INNER JOIN plataforma ON projeto.idPlataforma = plataforma.idPlataforma WHERE idProjeto = "+idProjeto;
+  var sql = "SELECT * FROM projeto INNER JOIN plataforma ON projeto.idPlataforma = plataforma.idPlataforma WHERE idProjeto = "+idProjeto;
   console.log("sql = "+sql);
   this._connection.query(sql, callback);
 }

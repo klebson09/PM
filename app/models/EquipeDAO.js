@@ -84,7 +84,7 @@ EquipeDAO.prototype.obterTutorEquipe = function(idEquipe, callback){
 EquipeDAO.prototype.verificarEquipeVinculadoTutor = function(idContaUsuario, callback){
   console.log("EquipeDAO:verificarEquipeVinculadoTutor - INICIO");
 
-  var sqlVerificarEquipeVinculadoTutor = "SELECT idEquipe, conta_usuario.nomeUsuario, conta_usuario.email FROM pm.equipe INNER JOIN conta_usuario ON equipe.idTutor = conta_usuario.idContaUsuario WHERE idTutor = '"+idContaUsuario+"' LIMIT 1";
+  var sqlVerificarEquipeVinculadoTutor = "SELECT idEquipe, conta_usuario.nomeUsuario, conta_usuario.email FROM equipe INNER JOIN conta_usuario ON equipe.idTutor = conta_usuario.idContaUsuario WHERE idTutor = '"+idContaUsuario+"' LIMIT 1";
   console.log("EquipeDAO:verificarEquipeVinculadoTutor - sqlVerificarEquipeVinculadoTutor = "+sqlVerificarEquipeVinculadoTutor);
   this._connection.query(sqlVerificarEquipeVinculadoTutor, callback);
 }

@@ -411,14 +411,14 @@ TimelineDAO.prototype.timelineTermoAberturaAprovadoTutor= function(equipe, callb
 
 TimelineDAO.prototype.timelineObterMsgs = function(idContaUsuario, callback){
 	console.log("TimelineDAO:timelineObterMsgs - INICIO cliente "+idContaUsuario);
-	var sql = "SELECT * FROM pm.timeline_msg WHERE idContaUsuario = "+idContaUsuario+" ORDER BY dataHora DESC";
+	var sql = "SELECT * FROM timeline_msg WHERE idContaUsuario = "+idContaUsuario+" ORDER BY dataHora DESC";
 	console.log("TimelineDAO:timelineObterMsgs ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
 
 TimelineDAO.prototype.timelineObterMsgsEquipe = function(idEquipe, idContaUsuario ,callback){
 	console.log("TimelineDAO:timelineObterMsgsEquipe - INICIO idEquipe "+idEquipe);
-	var sql = "SELECT * FROM pm.timeline_msg WHERE idEquipe = "+idEquipe+" OR idContaUsuario = "+idContaUsuario+" ORDER BY dataHora DESC";
+	var sql = "SELECT * FROM timeline_msg WHERE idEquipe = "+idEquipe+" OR idContaUsuario = "+idContaUsuario+" ORDER BY dataHora DESC";
 	console.log("TimelineDAO:timelineObterMsgs ====>> sql "+sql);
 	this._connection.query(sql, callback);
 }
