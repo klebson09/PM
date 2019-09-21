@@ -87,21 +87,27 @@
                   <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=proposta.apresentacao %></font></font></td>
                   <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=proposta.duvidas %></font></font></td>
                   <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%= proposta.feedback %></font></font></td>
-
                   <% if(proposta.status == 'Aberta') { %> 
-
                   <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
                     
                     <button id="btnResponder" type="button" class="btn btn-danger btn-sm"  value="<%=proposta.idProposta;%>" onclick="btnIdProposta('<%= proposta.idProposta %>', '<%= proposta.nomeEquipe %>', '<%= proposta.idEquipe %>', '<%= proposta.nomeProjeto %>', '<%= proposta.idProjeto %>')">Responder</button>
-
                   </font></font></td>
-
                   <% } else { %>
 
-                  <td><span class="label label-success"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%= proposta.status %></font></font></span></td>
+                    <% if(proposta.status == 'Recusado') { %>
+
+                      <td><span class="label label-danger"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%= proposta.status %></font></font></span></td>
+
+                    <% } %>
+
+                    <% if(proposta.status == 'Aprovada') { %>
+
+
+                      <td><span class="label label-success"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%= proposta.status %></font></font></span></td>
+
+                    <% } %>
 
                   <% } %>
-
                 </tr>
                 <% } %>
               </tbody></table>

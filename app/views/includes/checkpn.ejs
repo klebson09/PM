@@ -60,7 +60,15 @@
                               <td><%= checkpoints[i].descricao %></td>
                               <td><%= checkpoints[i].dataInicial %></td>
                               <td><%= checkpoints[i].dataFinal %></td>
-                              <td><span class="label label-success"><%= checkpoints[i].status %></span></td>
+
+                              <% if(checkpoints[i].status == 'A iniciar'){ %><td><span class="label label-info"><%= checkpoints[i].status %></span></td><% } %>
+                              <% if(checkpoints[i].status == 'Pausado'){ %><td><span class="label label-danger"><%= checkpoints[i].status %></span></td> <% } %>
+                              <% if(checkpoints[i].status == 'Em execução'){ %><td><span class="label label-warning"><%= checkpoints[i].status %></span></td> <% } %>
+                              <% if(checkpoints[i].status == 'Finalizado'){ %><td><span class="label label-success"><%= checkpoints[i].status %></span></td> <% } %>
+
+                              
+
+
                               <td><%= checkpoints[i].observacoes %></td>
                             </tr>
                             <%
