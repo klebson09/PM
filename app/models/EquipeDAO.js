@@ -1,6 +1,3 @@
-var sqlValidarEquipeTutor = "SELECT * FROM membrosequipe INNER JOIN conta_usuario ON membrosequipe.conta_usuario_idContaUsuario = conta_usuario.idContaUsuario INNER JOIN equipe ON  membrosequipe.equipe_idEquipe = equipe.idEquipe";
-var sqlVerificarUsuarioVinculadoEquipe = "SELECT * FROM membrosequipe WHERE conta_usuario_idContaUsuario = ";
-
 function EquipeDAO(connection){
   this._connection = connection();
 }
@@ -44,14 +41,9 @@ EquipeDAO.prototype.cadMembrosEquipe = function(membrosequipe, idEquipe, callbac
   this._connection.query(sqlInsertmembrosequipe, callback)
 }
 
-EquipeDAO.prototype.validarEquipeTutor = function(idEquipe, callback){
-   sqlValidarEquipeTutor += " WHERE conta_usuario.tipoUsuario = 'T' AND membrosequipe.equipe_idEquipe ='"+idEquipe+"' AND equipe.status = 'Ativo'";
-   this._connection.query(sqlValidarEquipeTutor, callback);
-}
-
 EquipeDAO.prototype.verificarUsuarioVinculadoEquipe = function(idContaUsuario, callback){
   var sqlVerificarUsuarioVinculadoEquipe = "SELECT me.*, eq.* FROM membrosequipe me INNER JOIN equipe eq ON me.equipe_IdEquipe = eq.idEquipe WHERE me.conta_usuario_idContaUsuario = "+idContaUsuario;
-   this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
+  this._connection.query(sqlVerificarUsuarioVinculadoEquipe, callback);
 }
 
 EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){

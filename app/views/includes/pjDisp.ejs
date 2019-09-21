@@ -118,26 +118,4 @@ for(var i=0; i < data.length; i++){
       document.getElementById("idProjeto").setAttribute('value',value);
   }
 
-  $('#msform').submit(function(e){
-
-    $.ajax({
-        type: 'GET',
-        url: 'http://localhost:3000/validar_equipe_tutor',
-        dataType: 'json'
-      }).done(function(data){
-        var resultado = data.resultado;
-        console.log("resultado = "+resultado);
-        if(resultado == '0'){
-          window.alert(data.mensagem);
-          return false;
-        } else{
-            console.log("EQUIPE COM TUTOR - VALIDADA");
-        }
-        //
-      }).fail(function(data){
-        window.alert(data.mensagem);
-      })
-
-  })
-
   </script>

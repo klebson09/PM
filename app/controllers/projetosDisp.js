@@ -135,36 +135,8 @@ module.exports.candidatarse = function(application, req, res){
 			}
 		});
 	}else {
-
 		res.render('login/login', {validacao: {}});
-
 	}
-}
-
-module.exports.validarEquipeTutor = function(application, req, res){
-
-	var data = {
-		resultado: "1",
-		mensagem: "Equipe precisa se vincular a um tutor para se candidatar aos projetos"
-	};
-
-	var connection = application.config.dbConnection;
-	var equipeDAO = new application.app.models.EquipeDAO(connection);
-
-	equipeDAO.validarEquipeTutor(req.session.equipe, function(error, resultado){
-		if(error){
-			throw error;
-			data.mensagem = "ERRO INTERNO";
-		} else {
-			if(resultado[0] != undefined){
-				data.resultado = "1";
-				data.mensagem = "OK";
-			}
-		}
-	})
-
-	res.send(data);
-
 }
 
 module.exports.encerrarNegociacaoProjeto = function(application, req, res){
