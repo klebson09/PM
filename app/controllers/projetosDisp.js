@@ -191,7 +191,7 @@ module.exports.encerrarNegociacaoProjetoDefinitivo = function(application, req, 
 			throw error;
 		} else {
 			console.log("projetosDisp:encerrarNegociacaoProjetoDefinitivo - NEGOCIAÇÕES ENCERRADAS");
-
+			req.session.idTermoAbertura = 0;
 			timelineDAO.timelineEncerrarNegociacaoCliente(req.session.idContaUsuario, nomeEquipe, nomeProjeto, function(error, resultEncerrarNegociacaoCliente){
 				if(error){
 					throw error;
