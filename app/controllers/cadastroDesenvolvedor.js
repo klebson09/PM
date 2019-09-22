@@ -10,6 +10,7 @@ module.exports.cadastrar = function(application, req, res){
 	console.log(dadosFormCadastroDesenvolvedor);
 	var connection = application.config.dbConnection;
 	var DesenvolvedorDAO = new application.app.models.DesenvolvedorDAO(connection);
+  var usuarioDAO = new application.app.models.UsuarioDAO(connection);
   var cryptoPM = new application.app.models.CryptoPM();
 	console.log("connection = "+connection);
 	console.log("DesenvolvedorDAO = "+DesenvolvedorDAO);
@@ -19,49 +20,87 @@ module.exports.cadastrar = function(application, req, res){
   dadosFormCadastroDesenvolvedor.senha = cryptoPM.crypt(dadosFormCadastroDesenvolvedor.senha);
   console.log("cadastroDesenvolvedor:cadastrar - dados encriptados =  "+dadosFormCadastroDesenvolvedor.senha);
 
+  usuarioDAO.verificarEmailUsuario(dadosFormCadastroDesenvolvedor.email, function(error, resultVerificarEmailUsuario){
 
-	 DesenvolvedorDAO.incluirDev(dadosFormCadastroDesenvolvedor, function(error, resultIncluirDev){  
-    var usuarioDAO = new application.app.models.UsuarioDAO(connection);
-    var timelineDAO = new application.app.models.TimelineDAO(connection);
-    var idContaUsuario = resultIncluirDev.insertId;
-    console.log("cadastroDesenvolvedor:incluirDev idContaUsuario "+idContaUsuario);
-
-
-
-    if(error){
+      if(error){
         throw error;
-      }else{       
-        DesenvolvedorDAO.incluirDadosEducacionaisDev(idContaUsuario, dadosFormCadastroDesenvolvedor, function(error, resultDadosEducacionaisDev){
-          if(error){
-            throw error;
-          }else{
-            console.log("cadastroDesenvolvedor:incluirDev incluirDadosEducacionaisDev resultDadosEducacionaisDev "+JSON.stringify(resultDadosEducacionaisDev) );
-            usuarioDAO.obterContaUsuario(idContaUsuario, function(error, resultObterContaUsuario){      
-              if(error){
-                throw error;
-              }else{
-                console.log("cadastroDesenvolvedor:inclCliente resultObterContaUsuario "+ JSON.stringify(resultObterContaUsuario));
-                timelineDAO.timelineIncluirDev(resultObterContaUsuario[0], function(error, resultTimelineIncluirDev){     
-                  if(error){
-                    throw error;
-                  }else{
-                    console.log("cadastroDesenvolvedor:timelineIncluirDev resultTimelineIncluirDev "+ JSON.stringify(resultTimelineIncluirDev));
-                    var mensagem = {
-                      msg: 1
-                    };
-                    res.render("login/login",{validacao:mensagem});
-                  }
-                });
+      } else {
 
-              }
-          
-            });
-          }
-        });
+        if(resultVerificarEmailUsuario.length > 0){
+                //E-mail já existe na base
+                var mensagem = [{
+                     idMsg: 1,
+                     msg: "E-mail informado já está sendo utilizado"
+                 }];
+                 res.render("cadastros/cadastroDesenvolvedor", {validacao:mensagem});
+        } else {
+          //Verificando se CPF/CNPJ informado já existe na base
+          usuarioDAO.verificarCPFCNPJUsuario(dadosFormCadastroDesenvolvedor.cpf, function(error, resultVerificarCPFCNPJUsuario){
 
-      }//fim else incluirDev   
+            if(error){
+              throw error;
+            } else {
 
-  });
+              if(resultVerificarCPFCNPJUsuario.length > 0){
+                //CPF/CNPJ já existe na base
+                var mensagem = [{
+                     idMsg: 2,
+                     msg: "CPF/CNPJ informado já está sendo utilizado"
+                 }];
+                 res.render("cadastros/cadastroDesenvolvedor", {validacao:mensagem});
+             } else {
+                //OK.. pode incluir o DEV
+                   DesenvolvedorDAO.incluirDev(dadosFormCadastroDesenvolvedor, function(error, resultIncluirDev){  
+
+                      var timelineDAO = new application.app.models.TimelineDAO(connection);
+                      var idContaUsuario = resultIncluirDev.insertId;
+                      
+                      console.log("cadastroDesenvolvedor:incluirDev idContaUsuario "+idContaUsuario);
+
+                      if(error){
+                          throw error;
+                      }else{       
+                          DesenvolvedorDAO.incluirDadosEducacionaisDev(idContaUsuario, dadosFormCadastroDesenvolvedor, function(error, resultDadosEducacionaisDev){
+                            if(error){
+                              throw error;
+                            }else{
+                              console.log("cadastroDesenvolvedor:incluirDev incluirDadosEducacionaisDev resultDadosEducacionaisDev "+JSON.stringify(resultDadosEducacionaisDev) );
+                              usuarioDAO.obterContaUsuario(idContaUsuario, function(error, resultObterContaUsuario){      
+                                if(error){
+                                  throw error;
+                                }else{
+                                  console.log("cadastroDesenvolvedor:inclCliente resultObterContaUsuario "+ JSON.stringify(resultObterContaUsuario));
+                                  timelineDAO.timelineIncluirDev(resultObterContaUsuario[0], function(error, resultTimelineIncluirDev){     
+                                    if(error){
+                                      throw error;
+                                    }else{
+                                      console.log("cadastroDesenvolvedor:timelineIncluirDev resultTimelineIncluirDev "+ JSON.stringify(resultTimelineIncluirDev));
+                                      var mensagem = {
+                                        msg: 1
+                                      };
+                                      res.render("login/login",{validacao:mensagem});
+                                    }
+                                  });
+
+                                }
+                            
+                              });
+                            }
+                          });
+
+                        }//fim else incluirDev   
+
+                    });                
+             }
+            }
+
+          });                   
+        }
+
+      }
+
+   });   
+
 }
 
 module.exports.alterar = function(application, req, res){

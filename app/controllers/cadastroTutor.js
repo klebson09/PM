@@ -9,6 +9,7 @@ module.exports.cadastrar = function(application, req, res){
 	console.log(dadosFormCadastroTutor);
 	var connection = application.config.dbConnection;
 	var TutorDAO = new application.app.models.TutorDAO(connection);
+  var usuarioDAO = new application.app.models.UsuarioDAO(connection);
 	var timelineDAO = new application.app.models.TimelineDAO(connection);
 	var usuarioDAO = new application.app.models.UsuarioDAO(connection);
 	console.log("connection = "+connection);
@@ -17,49 +18,84 @@ module.exports.cadastrar = function(application, req, res){
 	var cryptoPM = new application.app.models.CryptoPM();
 
 	console.log("cadastroTutor:cadastrar - iniciando encriptação...")
-  	dadosFormCadastroTutor.senha = cryptoPM.crypt(dadosFormCadastroTutor.senha);
-  	console.log("cadastroTutor:cadastrar - dados encriptados =  "+dadosFormCadastroTutor.senha);
+  dadosFormCadastroTutor.senha = cryptoPM.crypt(dadosFormCadastroTutor.senha);
+  console.log("cadastroTutor:cadastrar - dados encriptados =  "+dadosFormCadastroTutor.senha);
 
-	TutorDAO.incluirTutor(dadosFormCadastroTutor, req, res, function(error, resultIncluirTutor){
+  usuarioDAO.verificarEmailUsuario(dadosFormCadastroTutor.email, function(error, resultVerificarEmailUsuario){
 
-		if(error){
-			throw error;
-		} else {
-			var idContaUsuario = resultIncluirTutor.insertId;
-			console.log("cadastroTutor:cadastrar - idContaUsuario =  "+idContaUsuario);
-			console.log("cadastroTutor:cadastrar - dadosFormCadastroTutor =  "+JSON.stringify(dadosFormCadastroTutor));
-			TutorDAO.incluirDadosEducacionaisTutor(idContaUsuario, dadosFormCadastroTutor, function(error, resultDadosEducacionaisTutor){
+    if(error){
+        throw error;
+    } else {
+      if(resultVerificarEmailUsuario.length > 0){
+        //E-mail já existe na base
+        var mensagem = [{
+             idMsg: 1,
+             msg: "E-mail informado já está sendo utilizado"
+         }];
+         res.render("cadastros/cadastroTutor", {validacao:mensagem});
+      } else {
+        usuarioDAO.verificarCPFCNPJUsuario(dadosFormCadastroTutor.cpf_cnpj, function(error, resultVerificarCPFCNPJUsuario){
 
-				if(error){
-					throw error;
-				} else {
-					console.log("cadastroTutor:cadastrar incluirDadosEducacionaisTutor resultDadosEducacionaisTutor "+JSON.stringify(resultDadosEducacionaisTutor));
-					usuarioDAO.obterContaUsuario(idContaUsuario, function(error, resultObterContaUsuario){
+          if(error){
+            throw error;
+          } else {
+            if(resultVerificarCPFCNPJUsuario.length > 0){
+                //CPF/CNPJ já existe na base
+                var mensagem = [{
+                     idMsg: 2,
+                     msg: "CPF/CNPJ informado já está sendo utilizado"
+                 }];
+                 res.render("cadastros/cadastroTutor", {validacao:mensagem});
+            } else {
+              //OK... pode incluir o Tutor
+              TutorDAO.incluirTutor(dadosFormCadastroTutor, req, res, function(error, resultIncluirTutor){
 
-						if(error){
-							throw error;
-						} else {
-							console.log("cadastroTutor:cadastrar resultObterContaUsuario "+ JSON.stringify(resultObterContaUsuario));
-							timelineDAO.timelineIncluirTutor(resultObterContaUsuario[0], function(error, resultTimelineIncluirTutor){
+                if(error){
+                  throw error;
+                } else {
+                  var idContaUsuario = resultIncluirTutor.insertId;
+                  console.log("cadastroTutor:cadastrar - idContaUsuario =  "+idContaUsuario);
+                  console.log("cadastroTutor:cadastrar - dadosFormCadastroTutor =  "+JSON.stringify(dadosFormCadastroTutor));
+                  TutorDAO.incluirDadosEducacionaisTutor(idContaUsuario, dadosFormCadastroTutor, function(error, resultDadosEducacionaisTutor){
 
-								if(error){
-									throw error;
-								} else {
-									console.log("cadastroTutor:cadastrar resultTimelineIncluirTutor = "+ JSON.stringify(resultTimelineIncluirTutor));
-									var mensagem = {
-						                msg: 1
-						            };
-						            res.render("login/login",{validacao:mensagem});
-								}
-							});
-						}	
+                    if(error){
+                      throw error;
+                    } else {
+                      console.log("cadastroTutor:cadastrar incluirDadosEducacionaisTutor resultDadosEducacionaisTutor "+JSON.stringify(resultDadosEducacionaisTutor));
+                      usuarioDAO.obterContaUsuario(idContaUsuario, function(error, resultObterContaUsuario){
 
-				});
-			}
-		});
+                        if(error){
+                          throw error;
+                        } else {
+                          console.log("cadastroTutor:cadastrar resultObterContaUsuario "+ JSON.stringify(resultObterContaUsuario));
+                          timelineDAO.timelineIncluirTutor(resultObterContaUsuario[0], function(error, resultTimelineIncluirTutor){
 
-		}
-	});
+                            if(error){
+                              throw error;
+                            } else {
+                              console.log("cadastroTutor:cadastrar resultTimelineIncluirTutor = "+ JSON.stringify(resultTimelineIncluirTutor));
+                              var mensagem = {
+                                        msg: 1
+                                    };
+                                    res.render("login/login",{validacao:mensagem});
+                            }
+                          });
+                        } 
+
+                    });
+                  }
+                });
+
+                }
+              });
+            }
+          }
+
+        });
+      }
+    }
+
+  });
 
 }
 

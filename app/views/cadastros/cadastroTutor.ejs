@@ -55,8 +55,20 @@
         <input id="skype"  type="text" class="form-control tooltipStyle emailValidar" maxlength="60"  name="skype"  placeholder="Skype" onblur="validarEmail(this, 'outlook.com', false)" data-toggle="tooltip" data-placement="bottom" title="Deve ser um email do Outlook" />
       </div> -->
 
-      <input type="button" name="proximo" class=" next action-button btn  btn-success" value="Próximo" align="center"/>
+      <input type="button" name="proximo" class=" next action-button btn  btn-success" value="Próximo" align="center"/><br><br>
       <!-- </div> -->
+      <% if(validacao.length > 0 ){%>
+          <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+            <ul>
+              <% for(var i=0; i < validacao.length; i++){ %>
+                <li> <%=validacao[i].msg %>
+                  <% } %>
+                </ul>
+
+              </div>
+              <% } %>
     </fieldset>
     <fieldset>
       <h2 class="fs-title">Dados Educacional</h2>
@@ -94,6 +106,7 @@
 
 <!-- ------------------------------   obs  ------------------------------
 ADD UMA NOVA ETAPA COM AS EXPERIENCIAS DOS ALUNOS EX. SISTEMAS DESENVOLVIDOS, TECNOLOGIA QUE JÁ ESTODOU -->
+
 <fieldset>
   <h2 class="fs-title">Conta</h2>
   <div class="form-group col-md-12 ">

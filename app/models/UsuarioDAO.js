@@ -15,6 +15,20 @@ UsuarioDAO.prototype.autenticar = function(usuario, callback){
 
 }
 
+UsuarioDAO.prototype.verificarEmailUsuario = function(email, callback){
+  console.log("UsuarioDAO:verificarEmailUsuario - INICIO");
+  var sql =  "SELECT * FROM conta_usuario WHERE conta_usuario.email = '"+email+"'";
+  console.log("UsuarioDAO:verificarEmailUsuario - sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
+UsuarioDAO.prototype.verificarCPFCNPJUsuario = function(cpf_cnpj, callback){
+  console.log("UsuarioDAO:verificarCPFCNPJUsuario - INICIO");
+  var sql =  "SELECT * FROM conta_usuario WHERE conta_usuario.cpf_cnpj = '"+cpf_cnpj+"'";
+  console.log("UsuarioDAO:verificarCPFCNPJUsuario - sql = "+sql);
+  this._connection.query(sql, callback);
+}
+
 UsuarioDAO.prototype.obterMembrosEquipe = function(callback){
   console.log("OBTER MEMBROS DA EQUIPE");
   var sql =  "SELECT idContaUsuario, nomeUsuario, email, tipoUsuario FROM conta_usuario LEFT JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario WHERE tipoUsuario = 'D' AND NOT EXISTS (SELECT * FROM membrosequipe WHERE membrosequipe.conta_usuario_idContaUsuario = conta_usuario.idContaUsuario)";
