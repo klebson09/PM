@@ -362,11 +362,11 @@
 
       function submeterForm(){
 
-        limparMensagensErro();
-
         console.log("checkpnEdt:submeterForm ");
 
         var prazosEstimadosProjeto = document.getElementById("prazosEstimadosProj");
+
+        limparMensagensErro();
        
         if(prazosEstimadosProjeto.value.includes("/")){
           prazosEstimadosProjeto.value  = moment(prazosEstimadosProjeto.value,"DD/MM/YYYY").format("YYYY-MM-DD");

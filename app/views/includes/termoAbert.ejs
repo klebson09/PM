@@ -298,24 +298,24 @@
 
         limparMensagensErro();
 
-        for(i=0;i<data.length;i++){
-          data[i].dataInicial = moment(data[i].dataInicial,"DD/MM/YYYY").format("YYYY-MM-DD");
-          data[i].dataFinal = moment(data[i].dataFinal,"DD/MM/YYYY").format("YYYY-MM-DD");    
-        }
-
         var formEhValido = validarCampos(data);
         console.log("formEhValido = "+formEhValido);
 
         if(formEhValido){
-           var dataJSON = JSON.stringify(data); 
+
+            for(i=0;i<data.length;i++){
+              data[i].dataInicial = moment(data[i].dataInicial,"DD/MM/YYYY").format("YYYY-MM-DD");
+              data[i].dataFinal = moment(data[i].dataFinal,"DD/MM/YYYY").format("YYYY-MM-DD");    
+            }
+
+            var dataJSON = JSON.stringify(data); 
             var tableDataEntr = document.getElementById("tableDataEntr");
             tableDataEntr.setAttribute("value",dataJSON);
            $("#msform").submit();
+
         } else {
            document.getElementById("alertErroModal").click();
         } 
-
-       
       }
 
       function validarCampos(data){

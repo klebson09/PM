@@ -175,6 +175,7 @@ module.exports.encerrarNegociacaoProjetoDefinitivo = function(application, req, 
 
 	var connection = application.config.dbConnection;
 	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
+	var termoAberturaDAO = new application.app.models.termoAberturaDAO(connection);
 	var nomeEquipe = req.body.nomeEqp;
 	var nomeProjeto = req.body.nomeProj;
 	var idEquipe = req.body.idEqp;
@@ -190,31 +191,37 @@ module.exports.encerrarNegociacaoProjetoDefinitivo = function(application, req, 
 		if(error){
 			throw error;
 		} else {
-			console.log("projetosDisp:encerrarNegociacaoProjetoDefinitivo - NEGOCIAÇÕES ENCERRADAS");
-			req.session.idTermoAbertura = 0;
-			timelineDAO.timelineEncerrarNegociacaoCliente(req.session.idContaUsuario, nomeEquipe, nomeProjeto, function(error, resultEncerrarNegociacaoCliente){
-				if(error){
+			termoAberturaDAO.deletarTermoAbertura(req.session.idTermoAbertura, function(error, resultDeletarTermoAbertura){
+
+				if (error) {
 					throw error;
 				} else {
+					console.log("projetosDisp:encerrarNegociacaoProjetoDefinitivo - TERMO DE ABERTURA DELETADO");
+					console.log("projetosDisp:encerrarNegociacaoProjetoDefinitivo - NEGOCIAÇÕES ENCERRADAS");
+					req.session.idTermoAbertura = 0;
 
-					timelineDAO.timelineNegociacaoEncerrada(idEquipe, nomeProjeto, function(error, resultNegociacaoEncerrada){
+					timelineDAO.timelineEncerrarNegociacaoCliente(req.session.idContaUsuario, nomeEquipe, nomeProjeto, function(error, resultEncerrarNegociacaoCliente){
 						if(error){
 							throw error;
 						} else {
-							
-							var data = {
-								status: 1
-						    }
+							timelineDAO.timelineNegociacaoEncerrada(idEquipe, nomeProjeto, function(error, resultNegociacaoEncerrada){
+								if(error){
+									throw error;
+								} else {
+									
+									var data = {
+										status: 1
+								    }
 
-							res.send(data);
-					}
-				});
-			}
-		})
+									res.send(data);
+								}
+							});
+						}
+					});
+				}
+			});
+		}
 
-	}
-
-});
-
+	});
 
 }

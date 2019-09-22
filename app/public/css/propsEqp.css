@@ -5,4 +5,12 @@ table font{
 
 #btnResponder{
 display: inline-block !important;
+background-color: darkblue;
+color: #fff;
+border: none;
+}
+
+#btnResponder:hover{
+background-color: darkcyan;
+color: #fff;
 }

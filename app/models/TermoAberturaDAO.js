@@ -74,6 +74,18 @@ TermoAberturaDAO.prototype.atualizarTermoAbertura = function(termoAbertura, call
   this._connection.query(atualizarTermoAbertura, callback);
 }
 
+TermoAberturaDAO.prototype.deletarTermoAbertura = function(idTermoAbertura, callback){
+
+  console.log("TermoAberturaDAO:deletarTermoAbertura - INICIO");
+  console.log("TermoAberturaDAO:deletarTermoAbertura - idTermoAbertura = "+idTermoAbertura);
+
+  var sqlDeletarTermoAbertura = "DELETE FROM termo_abertura WHERE idTermoAbertura = "+idTermoAbertura;
+
+  console.log("TermoAberturaDAO:deletarTermoAbertura - sqlDeletarTermoAbertura = "+sqlDeletarTermoAbertura);
+
+  this._connection.query(sqlDeletarTermoAbertura, callback);  
+}
+
 module.exports = function(){
   return TermoAberturaDAO;
 }

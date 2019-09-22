@@ -55,7 +55,7 @@ EquipeDAO.prototype.obterDadosEquipe = function(idEquipe, callback){
 
 EquipeDAO.prototype.obterMembrosEquipe = function(idEquipe, callback){
   console.log("EquipeDAO:obtermembrosequipe - INICIO");
-  var sqlObtermembrosequipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe  INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"' AND projeto.status != 'Concluído'";   
+  var sqlObtermembrosequipe = "SELECT * FROM conta_usuario INNER JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario INNER JOIN projeto ON membrosequipe.equipe_idEquipe = projeto.idEquipe  INNER JOIN equipe ON projeto.idEquipe = equipe.idEquipe WHERE membrosequipe.equipe_idEquipe = '"+idEquipe+"' AND projeto.status != 'Finalizado'";   
   console.log("EquipeDAO:obtermembrosequipe - sqlObtermembrosequipe = "+sqlObtermembrosequipe);
   this._connection.query(sqlObtermembrosequipe, callback);
 }
