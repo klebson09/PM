@@ -8,7 +8,7 @@
                     <h5 class="modal-title">Atenção</h5>
                 </div>
                 <div class="modal-body">
-                    <p><small>Selecione os membros da equipe e o tutor</small></p>
+                    <p><small>Selecione os membros da equipe (pelo menos dois desenvolvedores) e o tutor</small></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Fechar</button>
@@ -104,13 +104,28 @@
   function validarCampos(){
     //Validando se campo tutor esta preenchido
       var tutor = document.getElementById("selectTutor").value;
-      var devs = document.getElementsByName("membrosEquipe")[0].value;
+      var devs = document.getElementById("tabelaMembros");
+      var maisDeUmDev = validarDevs(devs);
         
-      if(tutor == "0" || devs == ""){
+      if(tutor == "0" || !maisDeUmDev){
         document.getElementById("msgErroTutorDevs").click();
       } else{
         document.getElementById("msform").submit();
       }
+  }
+
+  function validarDevs(devs){
+
+    var ehValido = true;
+
+    var qtdMembros = (devs.rows.length)-1;
+
+    if(qtdMembros == 1){
+      alert(qtdMembros);
+      ehValido = false; 
+    }
+
+    return ehValido;
   }
 
 </script>
