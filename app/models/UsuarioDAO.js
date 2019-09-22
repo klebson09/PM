@@ -17,7 +17,7 @@ UsuarioDAO.prototype.autenticar = function(usuario, callback){
 
 UsuarioDAO.prototype.obterMembrosEquipe = function(callback){
   console.log("OBTER MEMBROS DA EQUIPE");
-  var sql =  "SELECT idContaUsuario, nomeUsuario, email, tipoUsuario FROM conta_usuario WHERE tipoUsuario = 'D'";
+  var sql =  "SELECT idContaUsuario, nomeUsuario, email, tipoUsuario FROM conta_usuario LEFT JOIN membrosequipe ON conta_usuario.idContaUsuario = membrosequipe.conta_usuario_idContaUsuario WHERE tipoUsuario = 'D' AND NOT EXISTS (SELECT * FROM membrosequipe WHERE membrosequipe.conta_usuario_idContaUsuario = conta_usuario.idContaUsuario)";
   this._connection.query(sql, callback);
 }
 
