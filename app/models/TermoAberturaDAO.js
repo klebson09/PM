@@ -1,5 +1,3 @@
-var sqlInsertTermoAbertura =  'INSERT INTO termo_abertura (idProjeto, tituloProjeto, objetivo, escopo, escopoNegativo, interfacesOutrosProjetos, prazoEstimado, orcamento, restricoes)';
-
 function TermoAberturaDAO(connection){
   this._connection = connection();
 }
@@ -21,8 +19,9 @@ TermoAberturaDAO.prototype.criarTermoAbertura = function(termoAbertura, callback
   var restricoes = termoAbertura.restricoesProjeto;
 
   console.log("prazoEstimado --------------------> "+prazoEstimado);
-
-  sqlInsertTermoAbertura += "VALUES ("+idProjeto+", '"+tituloProjeto+"', '"+objetivo+"', '"+escopo+"', '"+escopoNegativo+"', '"+interfacesOutrosProjetos+"', '"+prazoEstimado+"', "+orcamento+", '"+restricoes+"')";
+  
+  var sqlInsertTermoAbertura =  'INSERT INTO termo_abertura (idProjeto, tituloProjeto, objetivo, escopo, escopoNegativo, interfacesOutrosProjetos, prazoEstimado, orcamento, restricoes)'; 
+  sqlInsertTermoAbertura += " VALUES ("+idProjeto+", '"+tituloProjeto+"', '"+objetivo+"', '"+escopo+"', '"+escopoNegativo+"', '"+interfacesOutrosProjetos+"', '"+prazoEstimado+"', "+orcamento+", '"+restricoes+"')";
   console.log(sqlInsertTermoAbertura);
   // sql = sql.concat(tituloWhere);
     // this._connection.query(sql, [tituloWhere], function (err, result) {
