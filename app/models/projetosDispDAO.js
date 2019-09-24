@@ -1,6 +1,4 @@
- var sqlProjeto = "INSERT INTO projeto (idPlataforma, idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade)";
-
-function projetosDispDAO(connection){
+ function projetosDispDAO(connection){
   this._connection = connection();
 }
 
@@ -29,7 +27,7 @@ projetosDispDAO.prototype.criarProjeto = function(dadosProjeto, idUsuario, callb
   var areaAtuacao = dadosProjeto.areaAtuacao;
   var descricao = dadosProjeto.descricaoProjeto;
   var finalidade = dadosProjeto.finalidade;
-
+  var sqlProjeto = "INSERT INTO projeto (idPlataforma, idContaUsuario, nomeProjeto, areaAtuacao, descricao, finalidade)";
   sqlProjeto +=  " VALUES ('"+idPlataforma+"', '"+idUsuario+"', '"+nomeProjeto+"', '"+areaAtuacao+"',  '"+descricao+"', '"+finalidade+"')";
   console.log("sql = "+sqlProjeto);
   this._connection.query(sqlProjeto, callback);
