@@ -175,7 +175,7 @@ module.exports.encerrarNegociacaoProjetoDefinitivo = function(application, req, 
 
 	var connection = application.config.dbConnection;
 	var projetosDispDAO = new application.app.models.projetosDispDAO(connection);
-	var termoAberturaDAO = new application.app.models.termoAberturaDAO(connection);
+	var termoAberturaDAO = new application.app.models.TermoAberturaDAO(connection);
 	var nomeEquipe = req.body.nomeEqp;
 	var nomeProjeto = req.body.nomeProj;
 	var idEquipe = req.body.idEqp;
