@@ -250,6 +250,8 @@ function exibirMensagemErro(){
 
 	$("#msg").animate({bottom:75}, 250, function() {
 
+		$("#msg").css("display", "block");
+
 		$("#msform").css("opacity", 0.4);
 
 		$("#msg").removeAttr('style');
@@ -263,8 +265,7 @@ function exibirMensagemErro(){
 
 
 function fecharMsg(){
-	var divMsg = $("msg");
-	divMsg.display = 'block';
+	$("#msg").css("display", "none");
 	$("#msform").css("opacity", 1);
 	msgs = [];
 }
