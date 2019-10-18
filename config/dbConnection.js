@@ -4,8 +4,8 @@ var mysql = require('mysql');
 var connMysql =function(){
   return mysql.createConnection({
     host: 'mysql.projectmarketplace.kinghost.net',
-    user: 'projectmar_add1',
-    password: 'root321',
+    user: 'projectmar_add2',
+    password: 'Mlbs321',
     database: 'projectmarketp'
   });
 }
