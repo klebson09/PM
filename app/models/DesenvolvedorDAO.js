@@ -46,7 +46,7 @@ DesenvolvedorDAO.prototype.incluirDadosEducacionaisDev = function(idContaUsuario
   var curso = usuario.curso;
   var nivel = usuario.nivel;
   var nivperiodo = usuario.nivperiodo;
-  var docDeclaracaoMatricula = usuario.docDeclaracaoMatricula; 
+  var docDeclaracaoMatricula = "   "; 
 
   var sqlDadosEducacionaisDev = "INSERT INTO dados_educacionais_desenvolvedor (idContaUsuario, matricula, instituicaoEnsino, curso, turno, periodo, declaracaoMatricula)";
   sqlDadosEducacionaisDev += "VALUES ('"+idContaUsuario+"', '"+matricula+"', '"+instituicaoEnsino+"', '"+curso+"',  '"+nivel+"',  '"+nivperiodo+"',  '"+docDeclaracaoMatricula+"')";
@@ -81,7 +81,7 @@ DesenvolvedorDAO.prototype.alterarDadosDesenvolvedor = function(idContaUsuario, 
    var curso = usuario.curso;
    var turno = usuario.turno;
    var periodo = usuario.periodo;
-   var declaracaoMatricula = usuario.declaracaoMatricula;
+   var declaracaoMatricula = " ";
 
    //Consultas
    var sqlAtualizarContaUsuario = "UPDATE conta_usuario SET nomeUsuario='"+nome+"', cpf_cnpj='"+cpf+"', email='"+email+"', dataNascimento='"+dataNascimento+"' WHERE idContaUsuario = "+idContaUsuario;   
