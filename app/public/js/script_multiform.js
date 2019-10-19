@@ -105,27 +105,18 @@ $('.cpf_cnpj').blur(function(){
 
 	}else{
 
+		var msgErroValidacao = "";
+
 		if(cpf_cnpj == ''){
-
-			//alert("deu bronca aqui era pra exibir");
-
-			msgs.push($(this).attr("placeholder")+" está vazio!");
-
-			exibirMensagemErro();
-
+			msgErroValidacao = $(this).attr("placeholder")+" está vazio!";
 		}else{
-
-			//var erro_valida_cpf_cnpj = 'CPF ou CNPJ inválido!';
-
-			msgs.push($(this).attr("placeholder")+" está inválido!");
-
-			//msgs.push(inputs[i].getAttribute("placeholder")+" está vazio!");
-
-			exibirMensagemErro();
-
+			msgErroValidacao = $(this).attr("placeholder")+" está inválido!";
 		}
 
-
+		if(!(msgs.length > 0)) {
+			msgs.push(msgErroValidacao);
+			exibirMensagemErro();
+		}
 
 		$(this).addClass("error");
 
